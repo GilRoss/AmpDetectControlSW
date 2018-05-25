@@ -97,7 +97,7 @@ void DeviceCommDriver::InitializePort(String^ sPortId)
 	_serialPort->BaudRate = 38400;
 	_serialPort->Parity = Parity::None;
 	_serialPort->DataBits = 8;
-	_serialPort->StopBits = StopBits::One;
+	_serialPort->StopBits = StopBits::Two;
 	_serialPort->Handshake = Handshake::None;
 	_serialPort->ReadTimeout = 3000;
 	_serialPort->WriteTimeout = 3000;

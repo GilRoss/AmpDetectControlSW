@@ -954,7 +954,7 @@ private: System::ComponentModel::IContainer^  components;
 
 				ProtocolDataGrid[1, nRowIdx]->Value = Convert::ToString(nStepIdx + 1);
 				ProtocolDataGrid[2, nRowIdx]->Value = Convert::ToString((double)step.GetTargetTemp() / 1000);
-				ProtocolDataGrid[3, nRowIdx]->Value = Convert::ToString((double)step.GetHoldTime() / 1000);
+				ProtocolDataGrid[3, nRowIdx]->Value = Convert::ToString((double)step.GetHoldTimer() / 1000);
 				ProtocolDataGrid[4, nRowIdx]->Value = Convert::ToString((double)step.GetRampRate() / 1000);
 
 				//All optical channels supported by this system.
@@ -986,7 +986,7 @@ private: System::ComponentModel::IContainer^  components;
 
 			Step step;
 			step.SetTargetTemp((int32_t)(Convert::ToDouble(ProtocolDataGrid[2, nRowIdx]->Value) * 1000));
-			step.SetHoldTime((uint32_t)(Convert::ToDouble(ProtocolDataGrid[3, nRowIdx]->Value) * 1000));
+			step.SetHoldTimer((uint32_t)(Convert::ToDouble(ProtocolDataGrid[3, nRowIdx]->Value) * 1000));
 			step.SetRampRate((int32_t)(Convert::ToDouble(ProtocolDataGrid[4, nRowIdx]->Value) * 1000));
 			for (int nChanIdx = 0; nChanIdx < (int)step.GetNumOpticsChans(); nChanIdx++)
 				step.SetReadChanFlg(nChanIdx, Convert::ToBoolean(((DataGridViewCheckBoxCell^)ProtocolDataGrid[5 + nChanIdx, nRowIdx])->Value) == true);
@@ -1194,10 +1194,12 @@ private: System::ComponentModel::IContainer^  components;
 			if (_opticalDataFile != nullptr)
 			{
 				delete (IDisposable^)(_opticalDataFile);
+				_opticalDataFile = nullptr;
 			}
 			if (_thermalDataFile != nullptr)
 			{
 				delete (IDisposable^)(_thermalDataFile);
+				_thermalDataFile = nullptr;
 			}
 			return;
 		}
@@ -1219,7 +1221,7 @@ private: System::ComponentModel::IContainer^  components;
 				RunStatusGrid[2, nSiteIdx]->Value = Convert::ToString(siteStatus.GetSegmentIdx() + 1);
 				RunStatusGrid[3, nSiteIdx]->Value = Convert::ToString(siteStatus.GetCycle() + 1);
 				RunStatusGrid[4, nSiteIdx]->Value = Convert::ToString(siteStatus.GetStepIdx() + 1);
-				RunStatusGrid[5, nSiteIdx]->Value = Convert::ToString((double)siteStatus.GetHoldTime() / 1000);
+				RunStatusGrid[5, nSiteIdx]->Value = Convert::ToString((double)siteStatus.GetHoldTimer() / 1000);
 				RunStatusGrid[6, nSiteIdx]->Value = Convert::ToString((double)siteStatus.GetTemperature() / 1000);
 			}
 			else

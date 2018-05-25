@@ -89,9 +89,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LITTLE_ENDIAN</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>D:\Data\Gizmo1\Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\GizmoDLL;$(ProjectDir)..\..\Shared\CommMessages</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -103,7 +103,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LITTLE_ENDIAN</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>D:\Data\Gizmo1\Software\GizmoSW\GizmoDLL;D:\Data\Gizmo1\Shared</AdditionalIncludeDirectories>
     </ClCompile>
@@ -116,9 +116,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LITTLE_ENDIAN</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\GizmoDLL;$(ProjectDir)..\..\..\Shared</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\GizmoDLL;$(ProjectDir)..\..\Shared\CommMessages</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -129,9 +129,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LITTLE_ENDIAN</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\GizmoDLL;$(ProjectDir)..\..\..\Shared</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\GizmoDLL;$(ProjectDir)..\..\Shared\CommMessages</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -151,11 +151,11 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Shared\HostMessages.h" />
-    <ClInclude Include="..\..\..\Shared\HostMsgFactory.h" />
-    <ClInclude Include="..\..\..\Shared\PcrProtocol.h" />
-    <ClInclude Include="..\..\..\Shared\StreamingObj.h" />
-    <ClInclude Include="..\..\..\Shared\SysStatus.h" />
+    <ClInclude Include="..\..\Shared\CommMessages\HostMessages.h" />
+    <ClInclude Include="..\..\Shared\CommMessages\HostMsgFactory.h" />
+    <ClInclude Include="..\..\Shared\CommMessages\PcrProtocol.h" />
+    <ClInclude Include="..\..\Shared\CommMessages\StreamingObj.h" />
+    <ClInclude Include="..\..\Shared\CommMessages\SysStatus.h" />
     <ClInclude Include="DeviceCommDriver.h" />
     <ClInclude Include="Form1.h">
       <FileType>CppForm</FileType>
