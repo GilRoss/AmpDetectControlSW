@@ -991,7 +991,7 @@ private: System::ComponentModel::IContainer^  components;
 			for (int nChanIdx = 0; nChanIdx < (int)step.GetNumOpticsChans(); nChanIdx++)
 				step.SetReadChanFlg(nChanIdx, Convert::ToBoolean(((DataGridViewCheckBoxCell^)ProtocolDataGrid[5 + nChanIdx, nRowIdx])->Value) == true);
 			step.SetMeltFlg(Convert::ToBoolean(((DataGridViewCheckBoxCell^)ProtocolDataGrid[11, nRowIdx])->Value) == true);
-			seg.PushStep(step);
+			seg.AddStep(step);
 
 			if ((nRowIdx >= ProtocolDataGrid->Rows->Count - 1) || (Convert::ToInt32(ProtocolDataGrid[0, nRowIdx + 1]->Value) > 0))
 				_pPcrProtocol->AddSegment(seg);
