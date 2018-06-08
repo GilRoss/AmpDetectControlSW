@@ -27,9 +27,6 @@
     <ClInclude Include="Form1.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="DeviceCommDriver.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="resource1.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -46,6 +43,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Shared\CommMessages\SysStatus.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceCommDriver.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
