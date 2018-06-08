@@ -21,4 +21,10 @@ extern "C" GIZMOLIBRARY_API int CloseComm();
 extern "C" GIZMOLIBRARY_API bool IsPortOpenFlg();
 
 // Set LED state.
-extern "C" GIZMOLIBRARY_API int SetOpticsLed(int nSiteIdx, int nChanIdx, int nIntensity, int nDuration_us);
+extern "C" GIZMOLIBRARY_API int SetOpticsLed(int nSiteIdx, int nLedIdx, int nLedIntensity, int nLedDuration_us);
+
+// Get Diode value.
+extern "C" GIZMOLIBRARY_API int GetDiodeValue(int nDiodeIdx, int* data);
+
+// Read Optics.
+extern "C" GIZMOLIBRARY_API int ReadOptics(int nDiodeIdx, int nLedIdx, int nLedIntensity, int nIntegrationTime_us, int* data);
