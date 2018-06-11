@@ -107,18 +107,18 @@ namespace CppCLR_WinformsProjekt {
 
 
 
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Cycles;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Steps;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Setpoint;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Time;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  RampRate;
-	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Blue1;
-	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Green;
-	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Red1;
-	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Brown;
-	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Red2;
-	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Blue2;
-	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Melt;
+
+
+
+
+
+
+
+
+
+
+
+
 	private: System::Windows::Forms::Button^  DeleteStep;
 	private: System::Windows::Forms::SaveFileDialog^  saveProtocolDlg;
 	private: System::Windows::Forms::Button^  SelectProtocolBtn;
@@ -175,6 +175,13 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  CycleCol;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepCol;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepTimeCol;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  Cycles;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  Steps;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  Setpoint;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  Time;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  RampRate;
+private: System::Windows::Forms::DataGridViewCheckBoxColumn^  OpticalAcq;
+private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Melt;
 
 
 
@@ -254,18 +261,6 @@ private: System::ComponentModel::IContainer^  components;
 			this->ProtocolName = (gcnew System::Windows::Forms::RichTextBox());
 			this->SaveProtocol = (gcnew System::Windows::Forms::Button());
 			this->ProtocolDataGrid = (gcnew System::Windows::Forms::DataGridView());
-			this->Cycles = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Steps = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Setpoint = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Time = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->RampRate = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Blue1 = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			this->Green = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			this->Red1 = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			this->Brown = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			this->Red2 = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			this->Blue2 = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			this->Melt = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
 			this->AdvancedTab = (gcnew System::Windows::Forms::TabPage());
 			this->ActuateSetpoint = (gcnew System::Windows::Forms::Button());
 			this->label5 = (gcnew System::Windows::Forms::Label());
@@ -274,6 +269,13 @@ private: System::ComponentModel::IContainer^  components;
 			this->saveProtocolDlg = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->StatusTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->SelectDataFolderDlg = (gcnew System::Windows::Forms::FolderBrowserDialog());
+			this->Cycles = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Steps = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Setpoint = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Time = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->RampRate = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->OpticalAcq = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
+			this->Melt = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
 			this->GizmoTabs->SuspendLayout();
 			this->GizmoTab->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->BeginInit();
@@ -293,7 +295,7 @@ private: System::ComponentModel::IContainer^  components;
 			this->GizmoTabs->Controls->Add(this->ProtocolsTab);
 			this->GizmoTabs->Controls->Add(this->AdvancedTab);
 			this->GizmoTabs->Location = System::Drawing::Point(9, 10);
-			this->GizmoTabs->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->GizmoTabs->Margin = System::Windows::Forms::Padding(2);
 			this->GizmoTabs->Name = L"GizmoTabs";
 			this->GizmoTabs->SelectedIndex = 0;
 			this->GizmoTabs->Size = System::Drawing::Size(886, 606);
@@ -317,9 +319,9 @@ private: System::ComponentModel::IContainer^  components;
 			this->GizmoTab->Controls->Add(this->StopPcrBtn);
 			this->GizmoTab->Controls->Add(this->RunPcrBtn);
 			this->GizmoTab->Location = System::Drawing::Point(4, 22);
-			this->GizmoTab->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->GizmoTab->Margin = System::Windows::Forms::Padding(2);
 			this->GizmoTab->Name = L"GizmoTab";
-			this->GizmoTab->Padding = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->GizmoTab->Padding = System::Windows::Forms::Padding(2);
 			this->GizmoTab->Size = System::Drawing::Size(878, 580);
 			this->GizmoTab->TabIndex = 0;
 			this->GizmoTab->Text = L"Gizmo";
@@ -329,7 +331,7 @@ private: System::ComponentModel::IContainer^  components;
 			// SelectDataFolderButton
 			// 
 			this->SelectDataFolderButton->Location = System::Drawing::Point(390, 50);
-			this->SelectDataFolderButton->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->SelectDataFolderButton->Margin = System::Windows::Forms::Padding(2);
 			this->SelectDataFolderButton->Name = L"SelectDataFolderButton";
 			this->SelectDataFolderButton->Size = System::Drawing::Size(32, 26);
 			this->SelectDataFolderButton->TabIndex = 14;
@@ -340,7 +342,7 @@ private: System::ComponentModel::IContainer^  components;
 			// SelectedDataFolder
 			// 
 			this->SelectedDataFolder->Location = System::Drawing::Point(81, 50);
-			this->SelectedDataFolder->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->SelectedDataFolder->Margin = System::Windows::Forms::Padding(2);
 			this->SelectedDataFolder->Multiline = false;
 			this->SelectedDataFolder->Name = L"SelectedDataFolder";
 			this->SelectedDataFolder->ReadOnly = true;
@@ -370,7 +372,7 @@ private: System::ComponentModel::IContainer^  components;
 			legend1->Name = L"Legend1";
 			this->ThermalGraph->Legends->Add(legend1);
 			this->ThermalGraph->Location = System::Drawing::Point(7, 418);
-			this->ThermalGraph->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->ThermalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->ThermalGraph->Name = L"ThermalGraph";
 			series1->ChartArea = L"ChartArea1";
 			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
@@ -406,7 +408,7 @@ private: System::ComponentModel::IContainer^  components;
 			legend2->Name = L"Legend1";
 			this->OpticalGraph->Legends->Add(legend2);
 			this->OpticalGraph->Location = System::Drawing::Point(7, 240);
-			this->OpticalGraph->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->OpticalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->OpticalGraph->Name = L"OpticalGraph";
 			series5->ChartArea = L"ChartArea1";
 			series5->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
@@ -433,7 +435,7 @@ private: System::ComponentModel::IContainer^  components;
 			this->PidSelection->FormattingEnabled = true;
 			this->PidSelection->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Meerstetter", L"Homegrown" });
 			this->PidSelection->Location = System::Drawing::Point(268, 115);
-			this->PidSelection->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->PidSelection->Margin = System::Windows::Forms::Padding(2);
 			this->PidSelection->Name = L"PidSelection";
 			this->PidSelection->Size = System::Drawing::Size(119, 21);
 			this->PidSelection->TabIndex = 9;
@@ -453,7 +455,7 @@ private: System::ComponentModel::IContainer^  components;
 			this->CommPortSelection->AllowDrop = true;
 			this->CommPortSelection->FormattingEnabled = true;
 			this->CommPortSelection->Location = System::Drawing::Point(81, 115);
-			this->CommPortSelection->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->CommPortSelection->Margin = System::Windows::Forms::Padding(2);
 			this->CommPortSelection->Name = L"CommPortSelection";
 			this->CommPortSelection->Size = System::Drawing::Size(119, 21);
 			this->CommPortSelection->TabIndex = 7;
@@ -483,7 +485,7 @@ private: System::ComponentModel::IContainer^  components;
 					this->ActiveCol, this->SegmentCol, this->CycleCol, this->StepCol, this->StepTimeCol, this->TemperatureCol
 			});
 			this->RunStatusGrid->Location = System::Drawing::Point(450, 7);
-			this->RunStatusGrid->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->RunStatusGrid->Margin = System::Windows::Forms::Padding(2);
 			this->RunStatusGrid->MultiSelect = false;
 			this->RunStatusGrid->Name = L"RunStatusGrid";
 			this->RunStatusGrid->ReadOnly = true;
@@ -563,7 +565,7 @@ private: System::ComponentModel::IContainer^  components;
 			// SelectProtocolBtn
 			// 
 			this->SelectProtocolBtn->Location = System::Drawing::Point(390, 7);
-			this->SelectProtocolBtn->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->SelectProtocolBtn->Margin = System::Windows::Forms::Padding(2);
 			this->SelectProtocolBtn->Name = L"SelectProtocolBtn";
 			this->SelectProtocolBtn->Size = System::Drawing::Size(32, 26);
 			this->SelectProtocolBtn->TabIndex = 4;
@@ -574,7 +576,7 @@ private: System::ComponentModel::IContainer^  components;
 			// SelectedProtocol
 			// 
 			this->SelectedProtocol->Location = System::Drawing::Point(81, 7);
-			this->SelectedProtocol->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->SelectedProtocol->Margin = System::Windows::Forms::Padding(2);
 			this->SelectedProtocol->Multiline = false;
 			this->SelectedProtocol->Name = L"SelectedProtocol";
 			this->SelectedProtocol->ReadOnly = true;
@@ -595,7 +597,7 @@ private: System::ComponentModel::IContainer^  components;
 			// StopPcrBtn
 			// 
 			this->StopPcrBtn->Location = System::Drawing::Point(240, 180);
-			this->StopPcrBtn->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->StopPcrBtn->Margin = System::Windows::Forms::Padding(2);
 			this->StopPcrBtn->Name = L"StopPcrBtn";
 			this->StopPcrBtn->Size = System::Drawing::Size(56, 26);
 			this->StopPcrBtn->TabIndex = 1;
@@ -606,7 +608,7 @@ private: System::ComponentModel::IContainer^  components;
 			// RunPcrBtn
 			// 
 			this->RunPcrBtn->Location = System::Drawing::Point(4, 180);
-			this->RunPcrBtn->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->RunPcrBtn->Margin = System::Windows::Forms::Padding(2);
 			this->RunPcrBtn->Name = L"RunPcrBtn";
 			this->RunPcrBtn->Size = System::Drawing::Size(56, 26);
 			this->RunPcrBtn->TabIndex = 0;
@@ -623,9 +625,9 @@ private: System::ComponentModel::IContainer^  components;
 			this->ProtocolsTab->Controls->Add(this->SaveProtocol);
 			this->ProtocolsTab->Controls->Add(this->ProtocolDataGrid);
 			this->ProtocolsTab->Location = System::Drawing::Point(4, 22);
-			this->ProtocolsTab->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->ProtocolsTab->Margin = System::Windows::Forms::Padding(2);
 			this->ProtocolsTab->Name = L"ProtocolsTab";
-			this->ProtocolsTab->Padding = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->ProtocolsTab->Padding = System::Windows::Forms::Padding(2);
 			this->ProtocolsTab->Size = System::Drawing::Size(878, 580);
 			this->ProtocolsTab->TabIndex = 1;
 			this->ProtocolsTab->Text = L"Protocols";
@@ -634,7 +636,7 @@ private: System::ComponentModel::IContainer^  components;
 			// DeleteStep
 			// 
 			this->DeleteStep->Location = System::Drawing::Point(2, 77);
-			this->DeleteStep->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->DeleteStep->Margin = System::Windows::Forms::Padding(2);
 			this->DeleteStep->Name = L"DeleteStep";
 			this->DeleteStep->Size = System::Drawing::Size(92, 23);
 			this->DeleteStep->TabIndex = 7;
@@ -645,7 +647,7 @@ private: System::ComponentModel::IContainer^  components;
 			// NewStep
 			// 
 			this->NewStep->Location = System::Drawing::Point(2, 39);
-			this->NewStep->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->NewStep->Margin = System::Windows::Forms::Padding(2);
 			this->NewStep->Name = L"NewStep";
 			this->NewStep->Size = System::Drawing::Size(92, 23);
 			this->NewStep->TabIndex = 6;
@@ -656,7 +658,7 @@ private: System::ComponentModel::IContainer^  components;
 			// OpenProtocol
 			// 
 			this->OpenProtocol->Location = System::Drawing::Point(393, 13);
-			this->OpenProtocol->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->OpenProtocol->Margin = System::Windows::Forms::Padding(2);
 			this->OpenProtocol->Name = L"OpenProtocol";
 			this->OpenProtocol->Size = System::Drawing::Size(24, 20);
 			this->OpenProtocol->TabIndex = 4;
@@ -667,7 +669,7 @@ private: System::ComponentModel::IContainer^  components;
 			// ProtocolName
 			// 
 			this->ProtocolName->Location = System::Drawing::Point(98, 11);
-			this->ProtocolName->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->ProtocolName->Margin = System::Windows::Forms::Padding(2);
 			this->ProtocolName->Name = L"ProtocolName";
 			this->ProtocolName->ReadOnly = true;
 			this->ProtocolName->Size = System::Drawing::Size(284, 24);
@@ -677,7 +679,7 @@ private: System::ComponentModel::IContainer^  components;
 			// SaveProtocol
 			// 
 			this->SaveProtocol->Location = System::Drawing::Point(2, 119);
-			this->SaveProtocol->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->SaveProtocol->Margin = System::Windows::Forms::Padding(2);
 			this->SaveProtocol->Name = L"SaveProtocol";
 			this->SaveProtocol->Size = System::Drawing::Size(92, 23);
 			this->SaveProtocol->TabIndex = 2;
@@ -695,17 +697,63 @@ private: System::ComponentModel::IContainer^  components;
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->ProtocolDataGrid->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->ProtocolDataGrid->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(12) {
+			this->ProtocolDataGrid->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(7) {
 				this->Cycles,
-					this->Steps, this->Setpoint, this->Time, this->RampRate, this->Blue1, this->Green, this->Red1, this->Brown, this->Red2, this->Blue2,
-					this->Melt
+					this->Steps, this->Setpoint, this->Time, this->RampRate, this->OpticalAcq, this->Melt
 			});
 			this->ProtocolDataGrid->Location = System::Drawing::Point(98, 39);
-			this->ProtocolDataGrid->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->ProtocolDataGrid->Margin = System::Windows::Forms::Padding(2);
 			this->ProtocolDataGrid->Name = L"ProtocolDataGrid";
 			this->ProtocolDataGrid->RowTemplate->Height = 24;
 			this->ProtocolDataGrid->Size = System::Drawing::Size(549, 385);
 			this->ProtocolDataGrid->TabIndex = 0;
+			// 
+			// AdvancedTab
+			// 
+			this->AdvancedTab->Controls->Add(this->ActuateSetpoint);
+			this->AdvancedTab->Controls->Add(this->label5);
+			this->AdvancedTab->Controls->Add(this->ManControlSetpoint);
+			this->AdvancedTab->Location = System::Drawing::Point(4, 22);
+			this->AdvancedTab->Margin = System::Windows::Forms::Padding(2);
+			this->AdvancedTab->Name = L"AdvancedTab";
+			this->AdvancedTab->Size = System::Drawing::Size(878, 580);
+			this->AdvancedTab->TabIndex = 2;
+			this->AdvancedTab->Text = L"Advanced";
+			this->AdvancedTab->UseVisualStyleBackColor = true;
+			// 
+			// ActuateSetpoint
+			// 
+			this->ActuateSetpoint->Location = System::Drawing::Point(88, 41);
+			this->ActuateSetpoint->Margin = System::Windows::Forms::Padding(2);
+			this->ActuateSetpoint->Name = L"ActuateSetpoint";
+			this->ActuateSetpoint->Size = System::Drawing::Size(56, 19);
+			this->ActuateSetpoint->TabIndex = 2;
+			this->ActuateSetpoint->Text = L"Actuate";
+			this->ActuateSetpoint->UseVisualStyleBackColor = true;
+			this->ActuateSetpoint->Click += gcnew System::EventHandler(this, &Form1::ActuateSetpoint_Click);
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Location = System::Drawing::Point(2, 25);
+			this->label5->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(46, 13);
+			this->label5->TabIndex = 1;
+			this->label5->Text = L"Setpoint";
+			// 
+			// ManControlSetpoint
+			// 
+			this->ManControlSetpoint->Location = System::Drawing::Point(2, 41);
+			this->ManControlSetpoint->Margin = System::Windows::Forms::Padding(2);
+			this->ManControlSetpoint->Name = L"ManControlSetpoint";
+			this->ManControlSetpoint->Size = System::Drawing::Size(72, 20);
+			this->ManControlSetpoint->TabIndex = 0;
+			// 
+			// StatusTimer
+			// 
+			this->StatusTimer->Enabled = true;
+			this->StatusTimer->Tick += gcnew System::EventHandler(this, &Form1::StatusTimer_Tick);
 			// 
 			// Cycles
 			// 
@@ -753,53 +801,13 @@ private: System::ComponentModel::IContainer^  components;
 			this->RampRate->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
 			this->RampRate->Width = 67;
 			// 
-			// Blue1
+			// OpticalAcq
 			// 
-			this->Blue1->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->Blue1->HeaderText = L"Blue1";
-			this->Blue1->Name = L"Blue1";
-			this->Blue1->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->Blue1->Width = 40;
-			// 
-			// Green
-			// 
-			this->Green->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->Green->HeaderText = L"Green";
-			this->Green->Name = L"Green";
-			this->Green->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->Green->Width = 42;
-			// 
-			// Red1
-			// 
-			this->Red1->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->Red1->HeaderText = L"Red1";
-			this->Red1->Name = L"Red1";
-			this->Red1->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->Red1->Width = 39;
-			// 
-			// Brown
-			// 
-			this->Brown->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->Brown->HeaderText = L"Brown";
-			this->Brown->Name = L"Brown";
-			this->Brown->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->Brown->Width = 43;
-			// 
-			// Red2
-			// 
-			this->Red2->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->Red2->HeaderText = L"Red2";
-			this->Red2->Name = L"Red2";
-			this->Red2->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->Red2->Width = 39;
-			// 
-			// Blue2
-			// 
-			this->Blue2->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->Blue2->HeaderText = L"Blue2";
-			this->Blue2->Name = L"Blue2";
-			this->Blue2->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->Blue2->Width = 40;
+			this->OpticalAcq->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+			this->OpticalAcq->HeaderText = L"Opt Acq";
+			this->OpticalAcq->Name = L"OpticalAcq";
+			this->OpticalAcq->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->OpticalAcq->Width = 52;
 			// 
 			// Melt
 			// 
@@ -807,53 +815,6 @@ private: System::ComponentModel::IContainer^  components;
 			this->Melt->HeaderText = L"Melt";
 			this->Melt->Name = L"Melt";
 			this->Melt->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			// 
-			// AdvancedTab
-			// 
-			this->AdvancedTab->Controls->Add(this->ActuateSetpoint);
-			this->AdvancedTab->Controls->Add(this->label5);
-			this->AdvancedTab->Controls->Add(this->ManControlSetpoint);
-			this->AdvancedTab->Location = System::Drawing::Point(4, 22);
-			this->AdvancedTab->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
-			this->AdvancedTab->Name = L"AdvancedTab";
-			this->AdvancedTab->Size = System::Drawing::Size(878, 580);
-			this->AdvancedTab->TabIndex = 2;
-			this->AdvancedTab->Text = L"Advanced";
-			this->AdvancedTab->UseVisualStyleBackColor = true;
-			// 
-			// ActuateSetpoint
-			// 
-			this->ActuateSetpoint->Location = System::Drawing::Point(88, 41);
-			this->ActuateSetpoint->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
-			this->ActuateSetpoint->Name = L"ActuateSetpoint";
-			this->ActuateSetpoint->Size = System::Drawing::Size(56, 19);
-			this->ActuateSetpoint->TabIndex = 2;
-			this->ActuateSetpoint->Text = L"Actuate";
-			this->ActuateSetpoint->UseVisualStyleBackColor = true;
-			this->ActuateSetpoint->Click += gcnew System::EventHandler(this, &Form1::ActuateSetpoint_Click);
-			// 
-			// label5
-			// 
-			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(2, 25);
-			this->label5->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(46, 13);
-			this->label5->TabIndex = 1;
-			this->label5->Text = L"Setpoint";
-			// 
-			// ManControlSetpoint
-			// 
-			this->ManControlSetpoint->Location = System::Drawing::Point(2, 41);
-			this->ManControlSetpoint->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
-			this->ManControlSetpoint->Name = L"ManControlSetpoint";
-			this->ManControlSetpoint->Size = System::Drawing::Size(72, 20);
-			this->ManControlSetpoint->TabIndex = 0;
-			// 
-			// StatusTimer
-			// 
-			this->StatusTimer->Enabled = true;
-			this->StatusTimer->Tick += gcnew System::EventHandler(this, &Form1::StatusTimer_Tick);
 			// 
 			// Form1
 			// 
@@ -957,11 +918,11 @@ private: System::ComponentModel::IContainer^  components;
 				ProtocolDataGrid[3, nRowIdx]->Value = Convert::ToString((double)step.GetHoldTimer() / 1000);
 				ProtocolDataGrid[4, nRowIdx]->Value = Convert::ToString((double)step.GetRampRate() / 1000);
 
-				//All optical channels supported by this system.
-				for (int nChanIdx = 0; nChanIdx < (int)step.GetNumOpticsChans(); nChanIdx++)
-					ProtocolDataGrid[5 + nChanIdx, nRowIdx]->Value = step.GetReadChanFlg(nChanIdx);
+				//Optical acquisition.
+				ProtocolDataGrid[5, nRowIdx]->Value = step.GetOpticalAcqFlg();
 
-				ProtocolDataGrid[11, nRowIdx]->Value = step.GetMeltFlg();
+				//Melt
+				ProtocolDataGrid[6, nRowIdx]->Value = step.GetMeltFlg();
 			}
 		}
 	}
@@ -988,9 +949,8 @@ private: System::ComponentModel::IContainer^  components;
 			step.SetTargetTemp((int32_t)(Convert::ToDouble(ProtocolDataGrid[2, nRowIdx]->Value) * 1000));
 			step.SetHoldTimer((uint32_t)(Convert::ToDouble(ProtocolDataGrid[3, nRowIdx]->Value) * 1000));
 			step.SetRampRate((int32_t)(Convert::ToDouble(ProtocolDataGrid[4, nRowIdx]->Value) * 1000));
-			for (int nChanIdx = 0; nChanIdx < (int)step.GetNumOpticsChans(); nChanIdx++)
-				step.SetReadChanFlg(nChanIdx, Convert::ToBoolean(((DataGridViewCheckBoxCell^)ProtocolDataGrid[5 + nChanIdx, nRowIdx])->Value) == true);
-			step.SetMeltFlg(Convert::ToBoolean(((DataGridViewCheckBoxCell^)ProtocolDataGrid[11, nRowIdx])->Value) == true);
+			step.SetOpticalAcqFlg(Convert::ToBoolean(((DataGridViewCheckBoxCell^)ProtocolDataGrid[5, nRowIdx])->Value) == true);
+			step.SetMeltFlg(Convert::ToBoolean(((DataGridViewCheckBoxCell^)ProtocolDataGrid[6, nRowIdx])->Value) == true);
 			seg.AddStep(step);
 
 			if ((nRowIdx >= ProtocolDataGrid->Rows->Count - 1) || (Convert::ToInt32(ProtocolDataGrid[0, nRowIdx + 1]->Value) > 0))
