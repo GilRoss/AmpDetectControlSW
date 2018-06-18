@@ -176,19 +176,36 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  CycleCol;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepCol;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepTimeCol;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  Cycles;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  Steps;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  Setpoint;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  Time;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  RampRate;
-private: System::Windows::Forms::DataGridViewCheckBoxColumn^  OpticalAcq;
-private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Melt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+private: System::Windows::Forms::GroupBox^  groupBox2;
 private: System::Windows::Forms::GroupBox^  groupBox1;
-private: System::Windows::Forms::Button^  DelOptAcq;
-private: System::Windows::Forms::Button^  AddOptAcq;
+private: System::Windows::Forms::Button^  DelOptReadBtn;
+
+private: System::Windows::Forms::Button^  AddOptReadBtn;
+
 private: System::Windows::Forms::DataGridView^  OpticalReadsGrid;
-
-
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  LEDIndex;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  LedIntensity;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  LedStabilizationTime;
@@ -196,10 +213,14 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  DetectorIndex;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  DetectorIntegrationTime;
 private: System::Windows::Forms::Label^  label7;
 private: System::Windows::Forms::ComboBox^  OpticsTypeCombo;
-
-
 private: System::Windows::Forms::Label^  label6;
-private: System::Windows::Forms::GroupBox^  groupBox2;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  Cycles;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  Steps;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  Setpoint;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  Time;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  RampRate;
+private: System::Windows::Forms::DataGridViewCheckBoxColumn^  OpticalAcq;
+private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Melt;
 
 
 
@@ -237,17 +258,17 @@ private: System::ComponentModel::IContainer^  components;
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series5 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series6 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series7 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea3 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series8 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series9 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series10 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series11 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea4 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series12 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series13 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series14 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->GizmoTabs = (gcnew System::Windows::Forms::TabControl());
 			this->GizmoTab = (gcnew System::Windows::Forms::TabPage());
 			this->SelectDataFolderButton = (gcnew System::Windows::Forms::Button());
@@ -274,8 +295,8 @@ private: System::ComponentModel::IContainer^  components;
 			this->RunPcrBtn = (gcnew System::Windows::Forms::Button());
 			this->ProtocolsTab = (gcnew System::Windows::Forms::TabPage());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			this->DelOptAcq = (gcnew System::Windows::Forms::Button());
-			this->AddOptAcq = (gcnew System::Windows::Forms::Button());
+			this->DelOptReadBtn = (gcnew System::Windows::Forms::Button());
+			this->AddOptReadBtn = (gcnew System::Windows::Forms::Button());
 			this->OpticalReadsGrid = (gcnew System::Windows::Forms::DataGridView());
 			this->LEDIndex = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->LedIntensity = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
@@ -398,35 +419,35 @@ private: System::ComponentModel::IContainer^  components;
 			this->ThermalGraph->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->ThermalGraph->BorderlineColor = System::Drawing::Color::Black;
-			chartArea1->AxisY->Maximum = 90000;
-			chartArea1->AxisY->Minimum = 40000;
-			chartArea1->Name = L"ChartArea1";
-			this->ThermalGraph->ChartAreas->Add(chartArea1);
-			legend1->Name = L"Legend1";
-			this->ThermalGraph->Legends->Add(legend1);
+			chartArea3->AxisY->Maximum = 90000;
+			chartArea3->AxisY->Minimum = 40000;
+			chartArea3->Name = L"ChartArea1";
+			this->ThermalGraph->ChartAreas->Add(chartArea3);
+			legend3->Name = L"Legend1";
+			this->ThermalGraph->Legends->Add(legend3);
 			this->ThermalGraph->Location = System::Drawing::Point(7, 418);
 			this->ThermalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->ThermalGraph->Name = L"ThermalGraph";
-			series1->ChartArea = L"ChartArea1";
-			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series1->Legend = L"Legend1";
-			series1->Name = L"Block";
-			series2->ChartArea = L"ChartArea1";
-			series2->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series2->Legend = L"Legend1";
-			series2->Name = L"Top Heater";
-			series3->ChartArea = L"ChartArea1";
-			series3->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series3->Legend = L"Legend1";
-			series3->Name = L"Current";
-			series4->ChartArea = L"ChartArea1";
-			series4->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series4->Legend = L"Legend1";
-			series4->Name = L"Sample";
-			this->ThermalGraph->Series->Add(series1);
-			this->ThermalGraph->Series->Add(series2);
-			this->ThermalGraph->Series->Add(series3);
-			this->ThermalGraph->Series->Add(series4);
+			series8->ChartArea = L"ChartArea1";
+			series8->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series8->Legend = L"Legend1";
+			series8->Name = L"Block";
+			series9->ChartArea = L"ChartArea1";
+			series9->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series9->Legend = L"Legend1";
+			series9->Name = L"Top Heater";
+			series10->ChartArea = L"ChartArea1";
+			series10->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series10->Legend = L"Legend1";
+			series10->Name = L"Current";
+			series11->ChartArea = L"ChartArea1";
+			series11->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series11->Legend = L"Legend1";
+			series11->Name = L"Sample";
+			this->ThermalGraph->Series->Add(series8);
+			this->ThermalGraph->Series->Add(series9);
+			this->ThermalGraph->Series->Add(series10);
+			this->ThermalGraph->Series->Add(series11);
 			this->ThermalGraph->Size = System::Drawing::Size(857, 159);
 			this->ThermalGraph->TabIndex = 11;
 			this->ThermalGraph->Text = L"Thermal Data";
@@ -436,28 +457,28 @@ private: System::ComponentModel::IContainer^  components;
 			this->OpticalGraph->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			chartArea2->Name = L"ChartArea1";
-			this->OpticalGraph->ChartAreas->Add(chartArea2);
-			legend2->Name = L"Legend1";
-			this->OpticalGraph->Legends->Add(legend2);
+			chartArea4->Name = L"ChartArea1";
+			this->OpticalGraph->ChartAreas->Add(chartArea4);
+			legend4->Name = L"Legend1";
+			this->OpticalGraph->Legends->Add(legend4);
 			this->OpticalGraph->Location = System::Drawing::Point(7, 240);
 			this->OpticalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->OpticalGraph->Name = L"OpticalGraph";
-			series5->ChartArea = L"ChartArea1";
-			series5->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series5->Legend = L"Legend1";
-			series5->Name = L"Illuminated";
-			series6->ChartArea = L"ChartArea1";
-			series6->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series6->Legend = L"Legend1";
-			series6->Name = L"Dark";
-			series7->ChartArea = L"ChartArea1";
-			series7->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series7->Legend = L"Legend1";
-			series7->Name = L"Temperature";
-			this->OpticalGraph->Series->Add(series5);
-			this->OpticalGraph->Series->Add(series6);
-			this->OpticalGraph->Series->Add(series7);
+			series12->ChartArea = L"ChartArea1";
+			series12->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series12->Legend = L"Legend1";
+			series12->Name = L"Illuminated";
+			series13->ChartArea = L"ChartArea1";
+			series13->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series13->Legend = L"Legend1";
+			series13->Name = L"Dark";
+			series14->ChartArea = L"ChartArea1";
+			series14->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series14->Legend = L"Legend1";
+			series14->Name = L"Temperature";
+			this->OpticalGraph->Series->Add(series12);
+			this->OpticalGraph->Series->Add(series13);
+			this->OpticalGraph->Series->Add(series14);
 			this->OpticalGraph->Size = System::Drawing::Size(857, 149);
 			this->OpticalGraph->TabIndex = 10;
 			this->OpticalGraph->Text = L"Optical Data";
@@ -670,40 +691,40 @@ private: System::ComponentModel::IContainer^  components;
 			// 
 			// groupBox1
 			// 
-			this->groupBox1->Controls->Add(this->DelOptAcq);
-			this->groupBox1->Controls->Add(this->AddOptAcq);
+			this->groupBox1->Controls->Add(this->DelOptReadBtn);
+			this->groupBox1->Controls->Add(this->AddOptReadBtn);
 			this->groupBox1->Controls->Add(this->OpticalReadsGrid);
 			this->groupBox1->Controls->Add(this->label7);
 			this->groupBox1->Controls->Add(this->OpticsTypeCombo);
 			this->groupBox1->Controls->Add(this->label6);
-			this->groupBox1->Location = System::Drawing::Point(5, 20);
+			this->groupBox1->Location = System::Drawing::Point(5, 362);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(840, 213);
-			this->groupBox1->TabIndex = 8;
+			this->groupBox1->Size = System::Drawing::Size(868, 213);
+			this->groupBox1->TabIndex = 10;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Optics";
 			// 
-			// DelOptAcq
+			// DelOptReadBtn
 			// 
-			this->DelOptAcq->Location = System::Drawing::Point(38, 123);
-			this->DelOptAcq->Margin = System::Windows::Forms::Padding(2);
-			this->DelOptAcq->Name = L"DelOptAcq";
-			this->DelOptAcq->Size = System::Drawing::Size(92, 23);
-			this->DelOptAcq->TabIndex = 11;
-			this->DelOptAcq->Text = L"Delete";
-			this->DelOptAcq->UseVisualStyleBackColor = true;
-			this->DelOptAcq->Click += gcnew System::EventHandler(this, &Form1::DelOptAcq_Click);
+			this->DelOptReadBtn->Location = System::Drawing::Point(38, 123);
+			this->DelOptReadBtn->Margin = System::Windows::Forms::Padding(2);
+			this->DelOptReadBtn->Name = L"DelOptReadBtn";
+			this->DelOptReadBtn->Size = System::Drawing::Size(120, 23);
+			this->DelOptReadBtn->TabIndex = 11;
+			this->DelOptReadBtn->Text = L"Delete";
+			this->DelOptReadBtn->UseVisualStyleBackColor = true;
+			this->DelOptReadBtn->Click += gcnew System::EventHandler(this, &Form1::DelOptReadBtn_Click);
 			// 
-			// AddOptAcq
+			// AddOptReadBtn
 			// 
-			this->AddOptAcq->Location = System::Drawing::Point(38, 84);
-			this->AddOptAcq->Margin = System::Windows::Forms::Padding(2);
-			this->AddOptAcq->Name = L"AddOptAcq";
-			this->AddOptAcq->Size = System::Drawing::Size(92, 23);
-			this->AddOptAcq->TabIndex = 10;
-			this->AddOptAcq->Text = L"Add";
-			this->AddOptAcq->UseVisualStyleBackColor = true;
-			this->AddOptAcq->Click += gcnew System::EventHandler(this, &Form1::AddOptAcq_Click);
+			this->AddOptReadBtn->Location = System::Drawing::Point(38, 84);
+			this->AddOptReadBtn->Margin = System::Windows::Forms::Padding(2);
+			this->AddOptReadBtn->Name = L"AddOptReadBtn";
+			this->AddOptReadBtn->Size = System::Drawing::Size(120, 23);
+			this->AddOptReadBtn->TabIndex = 10;
+			this->AddOptReadBtn->Text = L"Add";
+			this->AddOptReadBtn->UseVisualStyleBackColor = true;
+			this->AddOptReadBtn->Click += gcnew System::EventHandler(this, &Form1::AddOptReadBtn_Click);
 			// 
 			// OpticalReadsGrid
 			// 
@@ -723,7 +744,7 @@ private: System::ComponentModel::IContainer^  components;
 			this->OpticalReadsGrid->Margin = System::Windows::Forms::Padding(2);
 			this->OpticalReadsGrid->Name = L"OpticalReadsGrid";
 			this->OpticalReadsGrid->RowTemplate->Height = 24;
-			this->OpticalReadsGrid->Size = System::Drawing::Size(549, 151);
+			this->OpticalReadsGrid->Size = System::Drawing::Size(577, 151);
 			this->OpticalReadsGrid->TabIndex = 3;
 			// 
 			// LEDIndex
@@ -767,7 +788,7 @@ private: System::ComponentModel::IContainer^  components;
 			this->OpticsTypeCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Photodiode", L"Camera" });
 			this->OpticsTypeCombo->Location = System::Drawing::Point(9, 44);
 			this->OpticsTypeCombo->Name = L"OpticsTypeCombo";
-			this->OpticsTypeCombo->Size = System::Drawing::Size(121, 21);
+			this->OpticsTypeCombo->Size = System::Drawing::Size(149, 21);
 			this->OpticsTypeCombo->TabIndex = 1;
 			// 
 			// label6
@@ -781,10 +802,10 @@ private: System::ComponentModel::IContainer^  components;
 			// 
 			// DeleteStep
 			// 
-			this->DeleteStep->Location = System::Drawing::Point(43, 346);
+			this->DeleteStep->Location = System::Drawing::Point(43, 156);
 			this->DeleteStep->Margin = System::Windows::Forms::Padding(2);
 			this->DeleteStep->Name = L"DeleteStep";
-			this->DeleteStep->Size = System::Drawing::Size(92, 23);
+			this->DeleteStep->Size = System::Drawing::Size(120, 23);
 			this->DeleteStep->TabIndex = 7;
 			this->DeleteStep->Text = L"Delete Step";
 			this->DeleteStep->UseVisualStyleBackColor = true;
@@ -792,10 +813,10 @@ private: System::ComponentModel::IContainer^  components;
 			// 
 			// NewStep
 			// 
-			this->NewStep->Location = System::Drawing::Point(43, 308);
+			this->NewStep->Location = System::Drawing::Point(43, 118);
 			this->NewStep->Margin = System::Windows::Forms::Padding(2);
 			this->NewStep->Name = L"NewStep";
-			this->NewStep->Size = System::Drawing::Size(92, 23);
+			this->NewStep->Size = System::Drawing::Size(120, 23);
 			this->NewStep->TabIndex = 6;
 			this->NewStep->Text = L"New Step";
 			this->NewStep->UseVisualStyleBackColor = true;
@@ -803,10 +824,10 @@ private: System::ComponentModel::IContainer^  components;
 			// 
 			// OpenProtocol
 			// 
-			this->OpenProtocol->Location = System::Drawing::Point(475, 282);
+			this->OpenProtocol->Location = System::Drawing::Point(339, 17);
 			this->OpenProtocol->Margin = System::Windows::Forms::Padding(2);
 			this->OpenProtocol->Name = L"OpenProtocol";
-			this->OpenProtocol->Size = System::Drawing::Size(24, 20);
+			this->OpenProtocol->Size = System::Drawing::Size(52, 20);
 			this->OpenProtocol->TabIndex = 4;
 			this->OpenProtocol->Text = L"...";
 			this->OpenProtocol->UseVisualStyleBackColor = true;
@@ -814,20 +835,20 @@ private: System::ComponentModel::IContainer^  components;
 			// 
 			// ProtocolName
 			// 
-			this->ProtocolName->Location = System::Drawing::Point(180, 280);
+			this->ProtocolName->Location = System::Drawing::Point(14, 13);
 			this->ProtocolName->Margin = System::Windows::Forms::Padding(2);
 			this->ProtocolName->Name = L"ProtocolName";
 			this->ProtocolName->ReadOnly = true;
-			this->ProtocolName->Size = System::Drawing::Size(284, 24);
+			this->ProtocolName->Size = System::Drawing::Size(312, 24);
 			this->ProtocolName->TabIndex = 3;
 			this->ProtocolName->Text = L"";
 			// 
 			// SaveProtocol
 			// 
-			this->SaveProtocol->Location = System::Drawing::Point(43, 388);
+			this->SaveProtocol->Location = System::Drawing::Point(753, 11);
 			this->SaveProtocol->Margin = System::Windows::Forms::Padding(2);
 			this->SaveProtocol->Name = L"SaveProtocol";
-			this->SaveProtocol->Size = System::Drawing::Size(92, 23);
+			this->SaveProtocol->Size = System::Drawing::Size(120, 23);
 			this->SaveProtocol->TabIndex = 2;
 			this->SaveProtocol->Text = L"Save Protocol";
 			this->SaveProtocol->UseVisualStyleBackColor = true;
@@ -847,11 +868,11 @@ private: System::ComponentModel::IContainer^  components;
 				this->Cycles,
 					this->Steps, this->Setpoint, this->Time, this->RampRate, this->OpticalAcq, this->Melt
 			});
-			this->ProtocolDataGrid->Location = System::Drawing::Point(180, 308);
+			this->ProtocolDataGrid->Location = System::Drawing::Point(180, 118);
 			this->ProtocolDataGrid->Margin = System::Windows::Forms::Padding(2);
 			this->ProtocolDataGrid->Name = L"ProtocolDataGrid";
 			this->ProtocolDataGrid->RowTemplate->Height = 24;
-			this->ProtocolDataGrid->Size = System::Drawing::Size(549, 196);
+			this->ProtocolDataGrid->Size = System::Drawing::Size(577, 196);
 			this->ProtocolDataGrid->TabIndex = 0;
 			// 
 			// Cycles
@@ -903,10 +924,10 @@ private: System::ComponentModel::IContainer^  components;
 			// OpticalAcq
 			// 
 			this->OpticalAcq->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->OpticalAcq->HeaderText = L"Opt Acq";
+			this->OpticalAcq->HeaderText = L"Optical Read";
 			this->OpticalAcq->Name = L"OpticalAcq";
 			this->OpticalAcq->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->OpticalAcq->Width = 52;
+			this->OpticalAcq->Width = 75;
 			// 
 			// Melt
 			// 
@@ -917,12 +938,12 @@ private: System::ComponentModel::IContainer^  components;
 			// 
 			// groupBox2
 			// 
-			this->groupBox2->Location = System::Drawing::Point(5, 257);
+			this->groupBox2->Location = System::Drawing::Point(5, 81);
 			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(840, 298);
+			this->groupBox2->Size = System::Drawing::Size(868, 256);
 			this->groupBox2->TabIndex = 9;
 			this->groupBox2->TabStop = false;
-			this->groupBox2->Text = L"Protocol";
+			this->groupBox2->Text = L"Thermal Profile";
 			// 
 			// AdvancedTab
 			// 
@@ -1162,14 +1183,14 @@ private: System::ComponentModel::IContainer^  components;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void AddOptAcq_Click(System::Object^  sender, System::EventArgs^  e) 
+	private: System::Void AddOptReadBtn_Click(System::Object^  sender, System::EventArgs^  e) 
 	{
 		DataGridViewRow^ row = gcnew DataGridViewRow;
 		OpticalReadsGrid->Rows->Add(row);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void DelOptAcq_Click(System::Object^  sender, System::EventArgs^  e) 
+	private: System::Void DelOptReadBtn_Click(System::Object^  sender, System::EventArgs^  e) 
 	{
 		for (int nRowIdx = OpticalReadsGrid->Rows->Count - 1; nRowIdx >= 0; nRowIdx--)
 		{
