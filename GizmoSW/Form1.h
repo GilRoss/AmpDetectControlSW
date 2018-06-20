@@ -1,9 +1,25 @@
 #pragma once
 
+#include <windows.h>
+#include <stdio.h>
+#include <conio.h>
+#include <tchar.h>
+#include <iostream>
+
+
 #include "PcrProtocol.h"
 #include "DeviceCommDriver.h"
 #include "HostMessages.h"
 //#include "GizmoDLL.h"
+
+#define BUF_SIZE 256
+
+typedef struct {
+	HANDLE hFileMap;
+	void *CamCaptureDone;
+	char MapName[BUF_SIZE];
+	size_t size;
+}CameraStatus;
 
 using namespace System::Windows::Forms::DataVisualization::Charting;
 
@@ -25,6 +41,53 @@ namespace CppCLR_WinformsProjekt {
 		Form1(void)
 		{
 			InitializeComponent();
+
+
+			ErrCode SharedMemInitialize();
+			//Create Shared Memory
+			CameraStatus camStatus;
+
+			sprintf_s(camStatus.MapName, BUF_SIZE, "Local\\CameraCaptureDoneFlag");
+			camStatus.size = 1;
+
+			camStatus.hFileMap = CreateFileMapping(INVALID_HANDLE_VALUE,
+				NULL,
+				PAGE_READWRITE,
+				0,
+				camStatus.size,
+				camStatus.MapName);
+
+			if (camStatus.hFileMap == NULL)
+			{
+				_tprintf(TEXT("Could not create file mapping object (%d).\n"), GetLastError());
+			}
+			else
+			{
+				camStatus.CamCaptureDone = MapViewOfFile(camStatus.hFileMap, FILE_MAP_ALL_ACCESS, 0, 0, camStatus.size);
+				if (camStatus.CamCaptureDone == NULL)
+				{
+					_tprintf(TEXT("Could not map view of file (%d).\n"), GetLastError());
+					CloseHandle(camStatus.hFileMap);
+				}
+					
+			}
+
+			char *camData = (char*)camStatus.CamCaptureDone;
+
+			// Write 0 to shared memory
+			memset(camData, '0', camStatus.size);
+
+			while (true)
+			{
+				if (*camData == '0')
+				{
+					std::cout << "Python Successfully wrote " << *camData << "to Shared Memory" << std::endl;
+					memset(camData, '1', camStatus.size);
+				}
+			}
+
+			
+			
 
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
@@ -219,17 +282,17 @@ private: System::ComponentModel::IContainer^  components;
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series5 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series6 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series7 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea3 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series8 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series9 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series10 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series11 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea4 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series12 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series13 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series14 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->GizmoTabs = (gcnew System::Windows::Forms::TabControl());
 			this->GizmoTab = (gcnew System::Windows::Forms::TabPage());
 			this->SelectDataFolderButton = (gcnew System::Windows::Forms::Button());
@@ -261,6 +324,13 @@ private: System::ComponentModel::IContainer^  components;
 			this->ProtocolName = (gcnew System::Windows::Forms::RichTextBox());
 			this->SaveProtocol = (gcnew System::Windows::Forms::Button());
 			this->ProtocolDataGrid = (gcnew System::Windows::Forms::DataGridView());
+			this->Cycles = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Steps = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Setpoint = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Time = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->RampRate = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->OpticalAcq = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
+			this->Melt = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
 			this->AdvancedTab = (gcnew System::Windows::Forms::TabPage());
 			this->ActuateSetpoint = (gcnew System::Windows::Forms::Button());
 			this->label5 = (gcnew System::Windows::Forms::Label());
@@ -269,13 +339,6 @@ private: System::ComponentModel::IContainer^  components;
 			this->saveProtocolDlg = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->StatusTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->SelectDataFolderDlg = (gcnew System::Windows::Forms::FolderBrowserDialog());
-			this->Cycles = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Steps = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Setpoint = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->Time = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->RampRate = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->OpticalAcq = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
-			this->Melt = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
 			this->GizmoTabs->SuspendLayout();
 			this->GizmoTab->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->BeginInit();
@@ -365,35 +428,35 @@ private: System::ComponentModel::IContainer^  components;
 			this->ThermalGraph->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->ThermalGraph->BorderlineColor = System::Drawing::Color::Black;
-			chartArea1->AxisY->Maximum = 100000;
-			chartArea1->AxisY->Minimum = 45000;
-			chartArea1->Name = L"ChartArea1";
-			this->ThermalGraph->ChartAreas->Add(chartArea1);
-			legend1->Name = L"Legend1";
-			this->ThermalGraph->Legends->Add(legend1);
+			chartArea3->AxisY->Maximum = 100000;
+			chartArea3->AxisY->Minimum = 45000;
+			chartArea3->Name = L"ChartArea1";
+			this->ThermalGraph->ChartAreas->Add(chartArea3);
+			legend3->Name = L"Legend1";
+			this->ThermalGraph->Legends->Add(legend3);
 			this->ThermalGraph->Location = System::Drawing::Point(7, 418);
 			this->ThermalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->ThermalGraph->Name = L"ThermalGraph";
-			series1->ChartArea = L"ChartArea1";
-			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series1->Legend = L"Legend1";
-			series1->Name = L"Block";
-			series2->ChartArea = L"ChartArea1";
-			series2->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series2->Legend = L"Legend1";
-			series2->Name = L"Top Heater";
-			series3->ChartArea = L"ChartArea1";
-			series3->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series3->Legend = L"Legend1";
-			series3->Name = L"Current";
-			series4->ChartArea = L"ChartArea1";
-			series4->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series4->Legend = L"Legend1";
-			series4->Name = L"Sample";
-			this->ThermalGraph->Series->Add(series1);
-			this->ThermalGraph->Series->Add(series2);
-			this->ThermalGraph->Series->Add(series3);
-			this->ThermalGraph->Series->Add(series4);
+			series8->ChartArea = L"ChartArea1";
+			series8->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series8->Legend = L"Legend1";
+			series8->Name = L"Block";
+			series9->ChartArea = L"ChartArea1";
+			series9->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series9->Legend = L"Legend1";
+			series9->Name = L"Top Heater";
+			series10->ChartArea = L"ChartArea1";
+			series10->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series10->Legend = L"Legend1";
+			series10->Name = L"Current";
+			series11->ChartArea = L"ChartArea1";
+			series11->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series11->Legend = L"Legend1";
+			series11->Name = L"Sample";
+			this->ThermalGraph->Series->Add(series8);
+			this->ThermalGraph->Series->Add(series9);
+			this->ThermalGraph->Series->Add(series10);
+			this->ThermalGraph->Series->Add(series11);
 			this->ThermalGraph->Size = System::Drawing::Size(857, 159);
 			this->ThermalGraph->TabIndex = 11;
 			this->ThermalGraph->Text = L"Thermal Data";
@@ -403,28 +466,28 @@ private: System::ComponentModel::IContainer^  components;
 			this->OpticalGraph->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			chartArea2->Name = L"ChartArea1";
-			this->OpticalGraph->ChartAreas->Add(chartArea2);
-			legend2->Name = L"Legend1";
-			this->OpticalGraph->Legends->Add(legend2);
+			chartArea4->Name = L"ChartArea1";
+			this->OpticalGraph->ChartAreas->Add(chartArea4);
+			legend4->Name = L"Legend1";
+			this->OpticalGraph->Legends->Add(legend4);
 			this->OpticalGraph->Location = System::Drawing::Point(7, 240);
 			this->OpticalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->OpticalGraph->Name = L"OpticalGraph";
-			series5->ChartArea = L"ChartArea1";
-			series5->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series5->Legend = L"Legend1";
-			series5->Name = L"Illuminated";
-			series6->ChartArea = L"ChartArea1";
-			series6->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series6->Legend = L"Legend1";
-			series6->Name = L"Dark";
-			series7->ChartArea = L"ChartArea1";
-			series7->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series7->Legend = L"Legend1";
-			series7->Name = L"Temperature";
-			this->OpticalGraph->Series->Add(series5);
-			this->OpticalGraph->Series->Add(series6);
-			this->OpticalGraph->Series->Add(series7);
+			series12->ChartArea = L"ChartArea1";
+			series12->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series12->Legend = L"Legend1";
+			series12->Name = L"Illuminated";
+			series13->ChartArea = L"ChartArea1";
+			series13->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series13->Legend = L"Legend1";
+			series13->Name = L"Dark";
+			series14->ChartArea = L"ChartArea1";
+			series14->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series14->Legend = L"Legend1";
+			series14->Name = L"Temperature";
+			this->OpticalGraph->Series->Add(series12);
+			this->OpticalGraph->Series->Add(series13);
+			this->OpticalGraph->Series->Add(series14);
 			this->OpticalGraph->Size = System::Drawing::Size(857, 149);
 			this->OpticalGraph->TabIndex = 10;
 			this->OpticalGraph->Text = L"Optical Data";
@@ -708,53 +771,6 @@ private: System::ComponentModel::IContainer^  components;
 			this->ProtocolDataGrid->Size = System::Drawing::Size(549, 385);
 			this->ProtocolDataGrid->TabIndex = 0;
 			// 
-			// AdvancedTab
-			// 
-			this->AdvancedTab->Controls->Add(this->ActuateSetpoint);
-			this->AdvancedTab->Controls->Add(this->label5);
-			this->AdvancedTab->Controls->Add(this->ManControlSetpoint);
-			this->AdvancedTab->Location = System::Drawing::Point(4, 22);
-			this->AdvancedTab->Margin = System::Windows::Forms::Padding(2);
-			this->AdvancedTab->Name = L"AdvancedTab";
-			this->AdvancedTab->Size = System::Drawing::Size(878, 580);
-			this->AdvancedTab->TabIndex = 2;
-			this->AdvancedTab->Text = L"Advanced";
-			this->AdvancedTab->UseVisualStyleBackColor = true;
-			// 
-			// ActuateSetpoint
-			// 
-			this->ActuateSetpoint->Location = System::Drawing::Point(88, 41);
-			this->ActuateSetpoint->Margin = System::Windows::Forms::Padding(2);
-			this->ActuateSetpoint->Name = L"ActuateSetpoint";
-			this->ActuateSetpoint->Size = System::Drawing::Size(56, 19);
-			this->ActuateSetpoint->TabIndex = 2;
-			this->ActuateSetpoint->Text = L"Actuate";
-			this->ActuateSetpoint->UseVisualStyleBackColor = true;
-			this->ActuateSetpoint->Click += gcnew System::EventHandler(this, &Form1::ActuateSetpoint_Click);
-			// 
-			// label5
-			// 
-			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(2, 25);
-			this->label5->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(46, 13);
-			this->label5->TabIndex = 1;
-			this->label5->Text = L"Setpoint";
-			// 
-			// ManControlSetpoint
-			// 
-			this->ManControlSetpoint->Location = System::Drawing::Point(2, 41);
-			this->ManControlSetpoint->Margin = System::Windows::Forms::Padding(2);
-			this->ManControlSetpoint->Name = L"ManControlSetpoint";
-			this->ManControlSetpoint->Size = System::Drawing::Size(72, 20);
-			this->ManControlSetpoint->TabIndex = 0;
-			// 
-			// StatusTimer
-			// 
-			this->StatusTimer->Enabled = true;
-			this->StatusTimer->Tick += gcnew System::EventHandler(this, &Form1::StatusTimer_Tick);
-			// 
 			// Cycles
 			// 
 			this->Cycles->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
@@ -815,6 +831,61 @@ private: System::ComponentModel::IContainer^  components;
 			this->Melt->HeaderText = L"Melt";
 			this->Melt->Name = L"Melt";
 			this->Melt->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			// 
+			// AdvancedTab
+			// 
+			this->AdvancedTab->Controls->Add(this->ActuateSetpoint);
+			this->AdvancedTab->Controls->Add(this->label5);
+			this->AdvancedTab->Controls->Add(this->ManControlSetpoint);
+			this->AdvancedTab->Location = System::Drawing::Point(4, 22);
+			this->AdvancedTab->Margin = System::Windows::Forms::Padding(2);
+			this->AdvancedTab->Name = L"AdvancedTab";
+			this->AdvancedTab->Size = System::Drawing::Size(878, 580);
+			this->AdvancedTab->TabIndex = 2;
+			this->AdvancedTab->Text = L"Advanced";
+			this->AdvancedTab->UseVisualStyleBackColor = true;
+			// 
+			// ActuateSetpoint
+			// 
+			this->ActuateSetpoint->Location = System::Drawing::Point(88, 41);
+			this->ActuateSetpoint->Margin = System::Windows::Forms::Padding(2);
+			this->ActuateSetpoint->Name = L"ActuateSetpoint";
+			this->ActuateSetpoint->Size = System::Drawing::Size(56, 19);
+			this->ActuateSetpoint->TabIndex = 2;
+			this->ActuateSetpoint->Text = L"Actuate";
+			this->ActuateSetpoint->UseVisualStyleBackColor = true;
+			this->ActuateSetpoint->Click += gcnew System::EventHandler(this, &Form1::ActuateSetpoint_Click);
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Location = System::Drawing::Point(2, 25);
+			this->label5->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(46, 13);
+			this->label5->TabIndex = 1;
+			this->label5->Text = L"Setpoint";
+			// 
+			// ManControlSetpoint
+			// 
+			this->ManControlSetpoint->Location = System::Drawing::Point(2, 41);
+			this->ManControlSetpoint->Margin = System::Windows::Forms::Padding(2);
+			this->ManControlSetpoint->Name = L"ManControlSetpoint";
+			this->ManControlSetpoint->Size = System::Drawing::Size(72, 20);
+			this->ManControlSetpoint->TabIndex = 0;
+			// 
+			// saveProtocolDlg
+			// 
+			this->saveProtocolDlg->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &Form1::saveProtocolDlg_FileOk);
+			// 
+			// StatusTimer
+			// 
+			this->StatusTimer->Enabled = true;
+			this->StatusTimer->Tick += gcnew System::EventHandler(this, &Form1::StatusTimer_Tick);
+			// 
+			// SelectDataFolderDlg
+			// 
+			this->SelectDataFolderDlg->HelpRequest += gcnew System::EventHandler(this, &Form1::SelectDataFolderDlg_HelpRequest);
 			// 
 			// Form1
 			// 
@@ -1264,5 +1335,9 @@ private: System::ComponentModel::IContainer^  components;
 			}
 		}
 	}
+private: System::Void saveProtocolDlg_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
+}
+private: System::Void SelectDataFolderDlg_HelpRequest(System::Object^  sender, System::EventArgs^  e) {
+}
 };
 }
