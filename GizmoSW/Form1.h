@@ -42,7 +42,7 @@ namespace CppCLR_WinformsProjekt {
 		{
 			InitializeComponent();
 
-
+#if 0
 			ErrCode SharedMemInitialize();
 			//Create Shared Memory
 			CameraStatus camStatus;
@@ -85,7 +85,7 @@ namespace CppCLR_WinformsProjekt {
 					memset(camData, '1', camStatus.size);
 				}
 			}
-
+#endif
 			
 			
 
