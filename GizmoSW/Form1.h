@@ -1462,7 +1462,7 @@ private: System::ComponentModel::IContainer^  components;
 				{
 					thermRec = response.GetThermalRec(i);
 					blockSeries->Points->AddXY(thermRec._nTimeTag_ms, thermRec._nChan1_mC);
-					sampleSeries->Points->AddXY(thermRec._nTimeTag_ms, thermRec._nChan4_mC);
+					sampleSeries->Points->AddXY(thermRec._nTimeTag_ms, thermRec._nChan2_mC);
 					topSeries->Points->AddXY(thermRec._nTimeTag_ms, thermRec._nChan3_mC);
 					currentSeries->Points->AddXY(thermRec._nTimeTag_ms, thermRec._nCurrent_mA);
 
