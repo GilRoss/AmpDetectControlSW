@@ -1077,7 +1077,7 @@ private: System::ComponentModel::IContainer^  components;
 		OpticalReadsGrid->Rows->Clear();
 
 		//Iterate through all optical reads in this protocol.
-		OpticsTypeCombo->SelectedIndex = _pPcrProtocol->GetOpticalType();
+		OpticsTypeCombo->SelectedIndex = _pPcrProtocol->GetDetectorType();
 		for (int i = 0; i < (int)_pPcrProtocol->GetNumOpticalReads(); i++)
 		{
 			DataGridViewRow^ row = gcnew DataGridViewRow;
