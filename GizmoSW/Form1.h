@@ -95,7 +95,8 @@ namespace CppCLR_WinformsProjekt {
 			_pPcrProtocol = new PcrProtocol();
 			_devCommDrv = gcnew DeviceCommDriver();
 			_devCommDrv->SetPortId("COM4");
-			PidSelection->SelectedIndex = 0;
+			PidSelection->SelectedIndex = 1;
+			OpticsTypeCombo->SelectedIndex = 0;
 			Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
 			blockSeries->Points->AddXY(0, 0);
 			Series^ illuminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[0];
@@ -238,6 +239,44 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  CycleCol;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepCol;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepTimeCol;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+private: System::Windows::Forms::GroupBox^  groupBox2;
+private: System::Windows::Forms::GroupBox^  groupBox1;
+private: System::Windows::Forms::Button^  DelOptReadBtn;
+
+private: System::Windows::Forms::Button^  AddOptReadBtn;
+
+private: System::Windows::Forms::DataGridView^  OpticalReadsGrid;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  LEDIndex;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  LedIntensity;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  LedStabilizationTime;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  DetectorIndex;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  DetectorIntegrationTime;
+private: System::Windows::Forms::Label^  label7;
+private: System::Windows::Forms::ComboBox^  OpticsTypeCombo;
+private: System::Windows::Forms::Label^  label6;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  Cycles;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  Steps;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  Setpoint;
@@ -318,6 +357,18 @@ private: System::ComponentModel::IContainer^  components;
 			this->StopPcrBtn = (gcnew System::Windows::Forms::Button());
 			this->RunPcrBtn = (gcnew System::Windows::Forms::Button());
 			this->ProtocolsTab = (gcnew System::Windows::Forms::TabPage());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->DelOptReadBtn = (gcnew System::Windows::Forms::Button());
+			this->AddOptReadBtn = (gcnew System::Windows::Forms::Button());
+			this->OpticalReadsGrid = (gcnew System::Windows::Forms::DataGridView());
+			this->LEDIndex = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->LedIntensity = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->LedStabilizationTime = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->DetectorIndex = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->DetectorIntegrationTime = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->OpticsTypeCombo = (gcnew System::Windows::Forms::ComboBox());
+			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->DeleteStep = (gcnew System::Windows::Forms::Button());
 			this->NewStep = (gcnew System::Windows::Forms::Button());
 			this->OpenProtocol = (gcnew System::Windows::Forms::Button());
@@ -331,6 +382,7 @@ private: System::ComponentModel::IContainer^  components;
 			this->RampRate = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->OpticalAcq = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
 			this->Melt = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
+			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
 			this->AdvancedTab = (gcnew System::Windows::Forms::TabPage());
 			this->ActuateSetpoint = (gcnew System::Windows::Forms::Button());
 			this->label5 = (gcnew System::Windows::Forms::Label());
@@ -345,6 +397,8 @@ private: System::ComponentModel::IContainer^  components;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalGraph))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->RunStatusGrid))->BeginInit();
 			this->ProtocolsTab->SuspendLayout();
+			this->groupBox1->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalReadsGrid))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ProtocolDataGrid))->BeginInit();
 			this->AdvancedTab->SuspendLayout();
 			this->SuspendLayout();
@@ -428,12 +482,12 @@ private: System::ComponentModel::IContainer^  components;
 			this->ThermalGraph->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->ThermalGraph->BorderlineColor = System::Drawing::Color::Black;
-			chartArea3->AxisY->Maximum = 100000;
-			chartArea3->AxisY->Minimum = 45000;
-			chartArea3->Name = L"ChartArea1";
-			this->ThermalGraph->ChartAreas->Add(chartArea3);
-			legend3->Name = L"Legend1";
-			this->ThermalGraph->Legends->Add(legend3);
+			chartArea1->AxisY->Maximum = 100000;
+			chartArea1->AxisY->Minimum = 50000;
+			chartArea1->Name = L"ChartArea1";
+			this->ThermalGraph->ChartAreas->Add(chartArea1);
+			legend1->Name = L"Legend1";
+			this->ThermalGraph->Legends->Add(legend1);
 			this->ThermalGraph->Location = System::Drawing::Point(7, 418);
 			this->ThermalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->ThermalGraph->Name = L"ThermalGraph";
@@ -681,12 +735,14 @@ private: System::ComponentModel::IContainer^  components;
 			// 
 			// ProtocolsTab
 			// 
+			this->ProtocolsTab->Controls->Add(this->groupBox1);
 			this->ProtocolsTab->Controls->Add(this->DeleteStep);
 			this->ProtocolsTab->Controls->Add(this->NewStep);
 			this->ProtocolsTab->Controls->Add(this->OpenProtocol);
 			this->ProtocolsTab->Controls->Add(this->ProtocolName);
 			this->ProtocolsTab->Controls->Add(this->SaveProtocol);
 			this->ProtocolsTab->Controls->Add(this->ProtocolDataGrid);
+			this->ProtocolsTab->Controls->Add(this->groupBox2);
 			this->ProtocolsTab->Location = System::Drawing::Point(4, 22);
 			this->ProtocolsTab->Margin = System::Windows::Forms::Padding(2);
 			this->ProtocolsTab->Name = L"ProtocolsTab";
@@ -696,12 +752,123 @@ private: System::ComponentModel::IContainer^  components;
 			this->ProtocolsTab->Text = L"Protocols";
 			this->ProtocolsTab->UseVisualStyleBackColor = true;
 			// 
+			// groupBox1
+			// 
+			this->groupBox1->Controls->Add(this->DelOptReadBtn);
+			this->groupBox1->Controls->Add(this->AddOptReadBtn);
+			this->groupBox1->Controls->Add(this->OpticalReadsGrid);
+			this->groupBox1->Controls->Add(this->label7);
+			this->groupBox1->Controls->Add(this->OpticsTypeCombo);
+			this->groupBox1->Controls->Add(this->label6);
+			this->groupBox1->Location = System::Drawing::Point(5, 362);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(868, 213);
+			this->groupBox1->TabIndex = 10;
+			this->groupBox1->TabStop = false;
+			this->groupBox1->Text = L"Optics";
+			// 
+			// DelOptReadBtn
+			// 
+			this->DelOptReadBtn->Location = System::Drawing::Point(38, 123);
+			this->DelOptReadBtn->Margin = System::Windows::Forms::Padding(2);
+			this->DelOptReadBtn->Name = L"DelOptReadBtn";
+			this->DelOptReadBtn->Size = System::Drawing::Size(120, 23);
+			this->DelOptReadBtn->TabIndex = 11;
+			this->DelOptReadBtn->Text = L"Delete";
+			this->DelOptReadBtn->UseVisualStyleBackColor = true;
+			this->DelOptReadBtn->Click += gcnew System::EventHandler(this, &Form1::DelOptReadBtn_Click);
+			// 
+			// AddOptReadBtn
+			// 
+			this->AddOptReadBtn->Location = System::Drawing::Point(38, 84);
+			this->AddOptReadBtn->Margin = System::Windows::Forms::Padding(2);
+			this->AddOptReadBtn->Name = L"AddOptReadBtn";
+			this->AddOptReadBtn->Size = System::Drawing::Size(120, 23);
+			this->AddOptReadBtn->TabIndex = 10;
+			this->AddOptReadBtn->Text = L"Add";
+			this->AddOptReadBtn->UseVisualStyleBackColor = true;
+			this->AddOptReadBtn->Click += gcnew System::EventHandler(this, &Form1::AddOptReadBtn_Click);
+			// 
+			// OpticalReadsGrid
+			// 
+			this->OpticalReadsGrid->AllowUserToAddRows = false;
+			this->OpticalReadsGrid->AllowUserToDeleteRows = false;
+			this->OpticalReadsGrid->AllowUserToResizeColumns = false;
+			this->OpticalReadsGrid->AllowUserToResizeRows = false;
+			this->OpticalReadsGrid->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->OpticalReadsGrid->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->OpticalReadsGrid->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(5) {
+				this->LEDIndex,
+					this->LedIntensity, this->LedStabilizationTime, this->DetectorIndex, this->DetectorIntegrationTime
+			});
+			this->OpticalReadsGrid->Location = System::Drawing::Point(175, 43);
+			this->OpticalReadsGrid->Margin = System::Windows::Forms::Padding(2);
+			this->OpticalReadsGrid->Name = L"OpticalReadsGrid";
+			this->OpticalReadsGrid->RowTemplate->Height = 24;
+			this->OpticalReadsGrid->Size = System::Drawing::Size(577, 151);
+			this->OpticalReadsGrid->TabIndex = 3;
+			// 
+			// LEDIndex
+			// 
+			this->LEDIndex->HeaderText = L"LED Index";
+			this->LEDIndex->Name = L"LEDIndex";
+			// 
+			// LedIntensity
+			// 
+			this->LedIntensity->HeaderText = L"LED Intensity";
+			this->LedIntensity->Name = L"LedIntensity";
+			// 
+			// LedStabilizationTime
+			// 
+			this->LedStabilizationTime->HeaderText = L"LED Stabilization Time (us)";
+			this->LedStabilizationTime->Name = L"LedStabilizationTime";
+			// 
+			// DetectorIndex
+			// 
+			this->DetectorIndex->HeaderText = L"Detector Index";
+			this->DetectorIndex->Name = L"DetectorIndex";
+			// 
+			// DetectorIntegrationTime
+			// 
+			this->DetectorIntegrationTime->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
+			this->DetectorIntegrationTime->HeaderText = L"Detector Integration Time (us)";
+			this->DetectorIntegrationTime->Name = L"DetectorIntegrationTime";
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Location = System::Drawing::Point(172, 28);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(72, 13);
+			this->label7->TabIndex = 2;
+			this->label7->Text = L"Optical reads:";
+			// 
+			// OpticsTypeCombo
+			// 
+			this->OpticsTypeCombo->FormattingEnabled = true;
+			this->OpticsTypeCombo->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Photodiode", L"Camera" });
+			this->OpticsTypeCombo->Location = System::Drawing::Point(9, 44);
+			this->OpticsTypeCombo->Name = L"OpticsTypeCombo";
+			this->OpticsTypeCombo->Size = System::Drawing::Size(149, 21);
+			this->OpticsTypeCombo->TabIndex = 1;
+			// 
+			// label6
+			// 
+			this->label6->AutoSize = true;
+			this->label6->Location = System::Drawing::Point(6, 28);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(34, 13);
+			this->label6->TabIndex = 0;
+			this->label6->Text = L"Type:";
+			// 
 			// DeleteStep
 			// 
-			this->DeleteStep->Location = System::Drawing::Point(2, 77);
+			this->DeleteStep->Location = System::Drawing::Point(43, 156);
 			this->DeleteStep->Margin = System::Windows::Forms::Padding(2);
 			this->DeleteStep->Name = L"DeleteStep";
-			this->DeleteStep->Size = System::Drawing::Size(92, 23);
+			this->DeleteStep->Size = System::Drawing::Size(120, 23);
 			this->DeleteStep->TabIndex = 7;
 			this->DeleteStep->Text = L"Delete Step";
 			this->DeleteStep->UseVisualStyleBackColor = true;
@@ -709,10 +876,10 @@ private: System::ComponentModel::IContainer^  components;
 			// 
 			// NewStep
 			// 
-			this->NewStep->Location = System::Drawing::Point(2, 39);
+			this->NewStep->Location = System::Drawing::Point(43, 118);
 			this->NewStep->Margin = System::Windows::Forms::Padding(2);
 			this->NewStep->Name = L"NewStep";
-			this->NewStep->Size = System::Drawing::Size(92, 23);
+			this->NewStep->Size = System::Drawing::Size(120, 23);
 			this->NewStep->TabIndex = 6;
 			this->NewStep->Text = L"New Step";
 			this->NewStep->UseVisualStyleBackColor = true;
@@ -720,10 +887,10 @@ private: System::ComponentModel::IContainer^  components;
 			// 
 			// OpenProtocol
 			// 
-			this->OpenProtocol->Location = System::Drawing::Point(393, 13);
+			this->OpenProtocol->Location = System::Drawing::Point(339, 17);
 			this->OpenProtocol->Margin = System::Windows::Forms::Padding(2);
 			this->OpenProtocol->Name = L"OpenProtocol";
-			this->OpenProtocol->Size = System::Drawing::Size(24, 20);
+			this->OpenProtocol->Size = System::Drawing::Size(52, 20);
 			this->OpenProtocol->TabIndex = 4;
 			this->OpenProtocol->Text = L"...";
 			this->OpenProtocol->UseVisualStyleBackColor = true;
@@ -731,20 +898,20 @@ private: System::ComponentModel::IContainer^  components;
 			// 
 			// ProtocolName
 			// 
-			this->ProtocolName->Location = System::Drawing::Point(98, 11);
+			this->ProtocolName->Location = System::Drawing::Point(14, 13);
 			this->ProtocolName->Margin = System::Windows::Forms::Padding(2);
 			this->ProtocolName->Name = L"ProtocolName";
 			this->ProtocolName->ReadOnly = true;
-			this->ProtocolName->Size = System::Drawing::Size(284, 24);
+			this->ProtocolName->Size = System::Drawing::Size(312, 24);
 			this->ProtocolName->TabIndex = 3;
 			this->ProtocolName->Text = L"";
 			// 
 			// SaveProtocol
 			// 
-			this->SaveProtocol->Location = System::Drawing::Point(2, 119);
+			this->SaveProtocol->Location = System::Drawing::Point(753, 11);
 			this->SaveProtocol->Margin = System::Windows::Forms::Padding(2);
 			this->SaveProtocol->Name = L"SaveProtocol";
-			this->SaveProtocol->Size = System::Drawing::Size(92, 23);
+			this->SaveProtocol->Size = System::Drawing::Size(120, 23);
 			this->SaveProtocol->TabIndex = 2;
 			this->SaveProtocol->Text = L"Save Protocol";
 			this->SaveProtocol->UseVisualStyleBackColor = true;
@@ -764,11 +931,11 @@ private: System::ComponentModel::IContainer^  components;
 				this->Cycles,
 					this->Steps, this->Setpoint, this->Time, this->RampRate, this->OpticalAcq, this->Melt
 			});
-			this->ProtocolDataGrid->Location = System::Drawing::Point(98, 39);
+			this->ProtocolDataGrid->Location = System::Drawing::Point(180, 118);
 			this->ProtocolDataGrid->Margin = System::Windows::Forms::Padding(2);
 			this->ProtocolDataGrid->Name = L"ProtocolDataGrid";
 			this->ProtocolDataGrid->RowTemplate->Height = 24;
-			this->ProtocolDataGrid->Size = System::Drawing::Size(549, 385);
+			this->ProtocolDataGrid->Size = System::Drawing::Size(577, 196);
 			this->ProtocolDataGrid->TabIndex = 0;
 			// 
 			// Cycles
@@ -820,10 +987,10 @@ private: System::ComponentModel::IContainer^  components;
 			// OpticalAcq
 			// 
 			this->OpticalAcq->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->OpticalAcq->HeaderText = L"Opt Acq";
+			this->OpticalAcq->HeaderText = L"Optical Read";
 			this->OpticalAcq->Name = L"OpticalAcq";
 			this->OpticalAcq->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->OpticalAcq->Width = 52;
+			this->OpticalAcq->Width = 75;
 			// 
 			// Melt
 			// 
@@ -831,6 +998,15 @@ private: System::ComponentModel::IContainer^  components;
 			this->Melt->HeaderText = L"Melt";
 			this->Melt->Name = L"Melt";
 			this->Melt->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			// 
+			// groupBox2
+			// 
+			this->groupBox2->Location = System::Drawing::Point(5, 81);
+			this->groupBox2->Name = L"groupBox2";
+			this->groupBox2->Size = System::Drawing::Size(868, 256);
+			this->groupBox2->TabIndex = 9;
+			this->groupBox2->TabStop = false;
+			this->groupBox2->Text = L"Thermal Profile";
 			// 
 			// AdvancedTab
 			// 
@@ -874,18 +1050,10 @@ private: System::ComponentModel::IContainer^  components;
 			this->ManControlSetpoint->Size = System::Drawing::Size(72, 20);
 			this->ManControlSetpoint->TabIndex = 0;
 			// 
-			// saveProtocolDlg
-			// 
-			this->saveProtocolDlg->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &Form1::saveProtocolDlg_FileOk);
-			// 
 			// StatusTimer
 			// 
 			this->StatusTimer->Enabled = true;
 			this->StatusTimer->Tick += gcnew System::EventHandler(this, &Form1::StatusTimer_Tick);
-			// 
-			// SelectDataFolderDlg
-			// 
-			this->SelectDataFolderDlg->HelpRequest += gcnew System::EventHandler(this, &Form1::SelectDataFolderDlg_HelpRequest);
 			// 
 			// Form1
 			// 
@@ -902,6 +1070,9 @@ private: System::ComponentModel::IContainer^  components;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalGraph))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->RunStatusGrid))->EndInit();
 			this->ProtocolsTab->ResumeLayout(false);
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalReadsGrid))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ProtocolDataGrid))->EndInit();
 			this->AdvancedTab->ResumeLayout(false);
 			this->AdvancedTab->PerformLayout();
@@ -966,6 +1137,23 @@ private: System::ComponentModel::IContainer^  components;
 	private: System::Void WritePcrProtocolToGui()
 	{
 		ProtocolDataGrid->Rows->Clear();
+		OpticalReadsGrid->Rows->Clear();
+
+		//Iterate through all optical reads in this protocol.
+		OpticsTypeCombo->SelectedIndex = _pPcrProtocol->GetDetectorType();
+		for (int i = 0; i < (int)_pPcrProtocol->GetNumOpticalReads(); i++)
+		{
+			DataGridViewRow^ row = gcnew DataGridViewRow;
+			OpticalReadsGrid->Rows->Add(row);
+			int nRowIdx = OpticalReadsGrid->RowCount - 1;
+			OpticalRead optRead = _pPcrProtocol->GetOpticalRead(i);
+
+			OpticalReadsGrid[0, nRowIdx]->Value = optRead.GetLedIdx();
+			OpticalReadsGrid[1, nRowIdx]->Value = optRead.GetLedIntensity();
+			OpticalReadsGrid[2, nRowIdx]->Value = optRead.GetLedStablizationTime();
+			OpticalReadsGrid[3, nRowIdx]->Value = optRead.GetDetectorIdx();
+			OpticalReadsGrid[4, nRowIdx]->Value = optRead.GetDetectorIntegrationTime();
+		}
 
 		//Iterate through all segments in this protocol.
 		for (int nSegIdx = 0; nSegIdx < (int)_pPcrProtocol->GetNumSegs(); nSegIdx++)
@@ -1002,7 +1190,18 @@ private: System::ComponentModel::IContainer^  components;
 	private: System::Void ReadPcrProtocolFromGui()
 	{
 		_pPcrProtocol->Clear();
-		
+
+		OpticalRead optRead;
+		for (int nRowIdx = 0; nRowIdx < OpticalReadsGrid->Rows->Count; nRowIdx++)
+		{
+			optRead.SetLedIdx(Convert::ToInt32(OpticalReadsGrid[0, nRowIdx]->Value));
+			optRead.SetLedIntensity(Convert::ToInt32(OpticalReadsGrid[1, nRowIdx]->Value));
+			optRead.SetLedStablizationTime(Convert::ToInt32(OpticalReadsGrid[2, nRowIdx]->Value));
+			optRead.SetDetectorIdx(Convert::ToInt32(OpticalReadsGrid[3, nRowIdx]->Value));
+			optRead.SetDetectorIntegrationTime(Convert::ToInt32(OpticalReadsGrid[4, nRowIdx]->Value));
+			_pPcrProtocol->AddOpticalRead(optRead);
+		}
+
 		Segment seg;
 		for (int nRowIdx = 0; nRowIdx < ProtocolDataGrid->Rows->Count; nRowIdx++)
 		{
@@ -1043,6 +1242,23 @@ private: System::ComponentModel::IContainer^  components;
 		{
 			if (ProtocolDataGrid->Rows[nRowIdx]->Selected)
 				ProtocolDataGrid->Rows->RemoveAt(nRowIdx);
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void AddOptReadBtn_Click(System::Object^  sender, System::EventArgs^  e) 
+	{
+		DataGridViewRow^ row = gcnew DataGridViewRow;
+		OpticalReadsGrid->Rows->Add(row);
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void DelOptReadBtn_Click(System::Object^  sender, System::EventArgs^  e) 
+	{
+		for (int nRowIdx = OpticalReadsGrid->Rows->Count - 1; nRowIdx >= 0; nRowIdx--)
+		{
+			if (OpticalReadsGrid->Rows[nRowIdx]->Selected)
+				OpticalReadsGrid->Rows->RemoveAt(nRowIdx);
 		}
 	}
 
