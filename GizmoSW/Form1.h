@@ -15,11 +15,20 @@
 #define BUF_SIZE 256
 
 typedef struct {
+	uint8_t _nCameraIndex;
+	uint8_t _nCameraCaptureStart;
+	uint8_t _nCameraCaptureDone;
+}CameraStatus;
+
+typedef struct {
 	HANDLE hFileMap;
-	void *CamCaptureDone;
+	CameraStatus *camCaptureStatus;
 	char MapName[BUF_SIZE];
 	size_t size;
-}CameraStatus;
+}CameraStatusHeader;
+
+CameraStatusHeader camStatusHdr;
+CameraStatus camStatus;
 
 using namespace System::Windows::Forms::DataVisualization::Charting;
 
@@ -41,54 +50,8 @@ namespace CppCLR_WinformsProjekt {
 		Form1(void)
 		{
 			InitializeComponent();
-
-#if 0
 			ErrCode SharedMemInitialize();
-			//Create Shared Memory
-			CameraStatus camStatus;
-
-			sprintf_s(camStatus.MapName, BUF_SIZE, "Local\\CameraCaptureDoneFlag");
-			camStatus.size = 1;
-
-			camStatus.hFileMap = CreateFileMapping(INVALID_HANDLE_VALUE,
-				NULL,
-				PAGE_READWRITE,
-				0,
-				camStatus.size,
-				camStatus.MapName);
-
-			if (camStatus.hFileMap == NULL)
-			{
-				_tprintf(TEXT("Could not create file mapping object (%d).\n"), GetLastError());
-			}
-			else
-			{
-				camStatus.CamCaptureDone = MapViewOfFile(camStatus.hFileMap, FILE_MAP_ALL_ACCESS, 0, 0, camStatus.size);
-				if (camStatus.CamCaptureDone == NULL)
-				{
-					_tprintf(TEXT("Could not map view of file (%d).\n"), GetLastError());
-					CloseHandle(camStatus.hFileMap);
-				}
-					
-			}
-
-			char *camData = (char*)camStatus.CamCaptureDone;
-
-			// Write 0 to shared memory
-			memset(camData, '0', camStatus.size);
-
-			while (true)
-			{
-				if (*camData == '0')
-				{
-					std::cout << "Python Successfully wrote " << *camData << "to Shared Memory" << std::endl;
-					memset(camData, '1', camStatus.size);
-				}
-			}
-#endif
 			
-			
-
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
@@ -1117,6 +1080,51 @@ private: System::ComponentModel::IContainer^  components;
 #pragma endregion
 
 	/////////////////////////////////////////////////////////////////////////////////
+	ErrCode SharedMemInitialize()
+	{
+		sprintf_s(camStatusHdr.MapName, BUF_SIZE, "Local\\CameraCaptureDoneFlag");
+		camStatusHdr.size = sizeof(CameraStatus);
+
+		camStatusHdr.hFileMap = CreateFileMapping(INVALID_HANDLE_VALUE,
+			NULL,
+			PAGE_READWRITE,
+			0,
+			camStatusHdr.size,
+			camStatusHdr.MapName);
+
+		if (camStatusHdr.hFileMap == NULL)
+		{
+			_tprintf(TEXT("Could not create file mapping object (%d).\n"), GetLastError());
+			return kMemoryMappingErr;
+		}
+		else
+		{
+			camStatusHdr.camCaptureStatus = (CameraStatus*)MapViewOfFile(camStatusHdr.hFileMap, FILE_MAP_ALL_ACCESS, 0, 0, camStatusHdr.size);
+			if (camStatusHdr.camCaptureStatus == NULL)
+			{
+				_tprintf(TEXT("Could not map view of file (%d).\n"), GetLastError());
+				CloseHandle(camStatusHdr.hFileMap);
+				return kMemoryMappingErr;
+			}
+
+		}
+#if 0
+		char *camData = (char*)camStatusHdr.camCaptureStatus->_nCameraCaptureDone;
+
+		// Write 0 to shared memory
+		memset(camData, '0', camStatusHdr.size);
+
+		while (true)
+		{
+			if (*camData == '0')
+			{
+				std::cout << "Python Successfully wrote " << *camData << "to Shared Memory" << std::endl;
+				memset(camData, '1', camStatusHdr.size);
+			}
+		}
+#endif
+	}
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void OpenProtocol_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		openProtocolDlg->FileName = ProtocolName->Text;
@@ -1228,6 +1236,7 @@ private: System::ComponentModel::IContainer^  components;
 		_pPcrProtocol->Clear();
 
 		OpticalRead optRead;
+		_pPcrProtocol->SetDetectorType(OpticsTypeCombo->SelectedIndex);
 		for (int nRowIdx = 0; nRowIdx < OpticalReadsGrid->Rows->Count; nRowIdx++)
 		{
 			optRead.SetLedIdx(Convert::ToInt32(OpticalReadsGrid[0, nRowIdx]->Value));
@@ -1386,9 +1395,13 @@ private: System::ComponentModel::IContainer^  components;
 					Series^ illuminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[0];
 					Series^ darkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[1];
 					Series^ shuttleTempSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[2];
+					Series^ refIlluminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[3];
+					Series^ refDarkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[4];
 					illuminatedSeries->Points->Clear();
 					darkSeries->Points->Clear();
 					shuttleTempSeries->Points->Clear();
+					refIlluminatedSeries->Points->Clear();
+					refDarkSeries->Points->Clear();
 
 					Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
 					Series^ topSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[1];
