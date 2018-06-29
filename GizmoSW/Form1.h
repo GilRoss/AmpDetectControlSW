@@ -1391,6 +1391,12 @@ private: System::ComponentModel::IContainer^  components;
 					DateTime^ today = DateTime::Now;
 					_opticalDataFile = gcnew System::IO::StreamWriter(SelectedDataFolder->Text + "\\" + today->ToString("yyyyMMddhhmmss") + "_optical.csv");
 					_thermalDataFile = gcnew System::IO::StreamWriter(SelectedDataFolder->Text + "\\" + today->ToString("yyyyMMddhhmmss") + "_thermal.csv");
+					_thermalDataFile->WriteLine("Time (ms)" + "," +
+						"Block (mC)" + "," +
+						"Sample (mC)" + "," +
+						"unused" + "," +
+						"unused" + "," +
+						"Current (mA)");
 
 					Series^ illuminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[0];
 					Series^ darkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[1];
