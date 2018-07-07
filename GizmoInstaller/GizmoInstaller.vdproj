@@ -37,6 +37,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -53,6 +61,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -130,15 +146,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:GizmoInstaller"
-        "ProductCode" = "8:{8AFF3348-6A21-4BFC-BEA8-8EA613F22317}"
-        "PackageCode" = "8:{EEA6ED5C-D9BA-4195-965E-EA73E27DA57E}"
+        "ProductCode" = "8:{073D1001-BF58-4F97-B7D3-9EEDA0250D88}"
+        "PackageCode" = "8:{BC647434-B52F-4DB4-BE0C-86F1A0F530B8}"
         "UpgradeCode" = "8:{67EE22AE-38FC-4203-978B-C50001925AA3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.1"
         "Manufacturer" = "8:Licence Owner"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
