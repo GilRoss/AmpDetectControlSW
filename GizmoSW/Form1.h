@@ -253,6 +253,19 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  LedStabilizationTim
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  DetectorIndex;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  RefDetectorIndex;
 private: System::Windows::Forms::DataGridViewTextBoxColumn^  DetectorIntegrationTime;
+private: System::Windows::Forms::DataGridView^  PidGrid;
+
+
+
+
+
+private: System::Windows::Forms::Button^  SetPidParams;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  TypeCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  PGainCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainICol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainDCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  SlopeCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  YInterceptCol;
 
 
 
@@ -296,19 +309,19 @@ private: System::ComponentModel::IContainer^  components;
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea5 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend5 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series19 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series20 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series21 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series22 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea6 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend6 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series23 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series24 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series25 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series26 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series27 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series5 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series6 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series7 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series8 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series9 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->GizmoTabs = (gcnew System::Windows::Forms::TabControl());
 			this->GizmoTab = (gcnew System::Windows::Forms::TabPage());
 			this->SelectDataFolderButton = (gcnew System::Windows::Forms::Button());
@@ -338,6 +351,12 @@ private: System::ComponentModel::IContainer^  components;
 			this->DelOptReadBtn = (gcnew System::Windows::Forms::Button());
 			this->AddOptReadBtn = (gcnew System::Windows::Forms::Button());
 			this->OpticalReadsGrid = (gcnew System::Windows::Forms::DataGridView());
+			this->LEDIndex = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->LedIntensity = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->LedStabilizationTime = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->DetectorIndex = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->RefDetectorIndex = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->DetectorIntegrationTime = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->OpticsTypeCombo = (gcnew System::Windows::Forms::ComboBox());
 			this->label6 = (gcnew System::Windows::Forms::Label());
@@ -356,6 +375,8 @@ private: System::ComponentModel::IContainer^  components;
 			this->Melt = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
 			this->AdvancedTab = (gcnew System::Windows::Forms::TabPage());
+			this->SetPidParams = (gcnew System::Windows::Forms::Button());
+			this->PidGrid = (gcnew System::Windows::Forms::DataGridView());
 			this->ActuateSetpoint = (gcnew System::Windows::Forms::Button());
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->ManControlSetpoint = (gcnew System::Windows::Forms::TextBox());
@@ -363,12 +384,12 @@ private: System::ComponentModel::IContainer^  components;
 			this->saveProtocolDlg = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->StatusTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->SelectDataFolderDlg = (gcnew System::Windows::Forms::FolderBrowserDialog());
-			this->LEDIndex = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->LedIntensity = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->LedStabilizationTime = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->DetectorIndex = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->RefDetectorIndex = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->DetectorIntegrationTime = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->TypeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->PGainCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->GainICol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->GainDCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->SlopeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->YInterceptCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->GizmoTabs->SuspendLayout();
 			this->GizmoTab->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->BeginInit();
@@ -379,6 +400,7 @@ private: System::ComponentModel::IContainer^  components;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalReadsGrid))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ProtocolDataGrid))->BeginInit();
 			this->AdvancedTab->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PidGrid))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// GizmoTabs
@@ -460,35 +482,35 @@ private: System::ComponentModel::IContainer^  components;
 			this->ThermalGraph->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->ThermalGraph->BorderlineColor = System::Drawing::Color::Black;
-			chartArea5->AxisY->Maximum = 100000;
-			chartArea5->AxisY->Minimum = 50000;
-			chartArea5->Name = L"ChartArea1";
-			this->ThermalGraph->ChartAreas->Add(chartArea5);
-			legend5->Name = L"Legend1";
-			this->ThermalGraph->Legends->Add(legend5);
+			chartArea1->AxisY->Maximum = 100000;
+			chartArea1->AxisY->Minimum = 50000;
+			chartArea1->Name = L"ChartArea1";
+			this->ThermalGraph->ChartAreas->Add(chartArea1);
+			legend1->Name = L"Legend1";
+			this->ThermalGraph->Legends->Add(legend1);
 			this->ThermalGraph->Location = System::Drawing::Point(7, 418);
 			this->ThermalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->ThermalGraph->Name = L"ThermalGraph";
-			series19->ChartArea = L"ChartArea1";
-			series19->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series19->Legend = L"Legend1";
-			series19->Name = L"Block";
-			series20->ChartArea = L"ChartArea1";
-			series20->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series20->Legend = L"Legend1";
-			series20->Name = L"Top Heater";
-			series21->ChartArea = L"ChartArea1";
-			series21->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series21->Legend = L"Legend1";
-			series21->Name = L"Current";
-			series22->ChartArea = L"ChartArea1";
-			series22->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series22->Legend = L"Legend1";
-			series22->Name = L"Sample";
-			this->ThermalGraph->Series->Add(series19);
-			this->ThermalGraph->Series->Add(series20);
-			this->ThermalGraph->Series->Add(series21);
-			this->ThermalGraph->Series->Add(series22);
+			series1->ChartArea = L"ChartArea1";
+			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series1->Legend = L"Legend1";
+			series1->Name = L"Block";
+			series2->ChartArea = L"ChartArea1";
+			series2->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series2->Legend = L"Legend1";
+			series2->Name = L"Top Heater";
+			series3->ChartArea = L"ChartArea1";
+			series3->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series3->Legend = L"Legend1";
+			series3->Name = L"Current";
+			series4->ChartArea = L"ChartArea1";
+			series4->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series4->Legend = L"Legend1";
+			series4->Name = L"Sample";
+			this->ThermalGraph->Series->Add(series1);
+			this->ThermalGraph->Series->Add(series2);
+			this->ThermalGraph->Series->Add(series3);
+			this->ThermalGraph->Series->Add(series4);
 			this->ThermalGraph->Size = System::Drawing::Size(857, 159);
 			this->ThermalGraph->TabIndex = 11;
 			this->ThermalGraph->Text = L"Thermal Data";
@@ -498,38 +520,38 @@ private: System::ComponentModel::IContainer^  components;
 			this->OpticalGraph->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			chartArea6->Name = L"ChartArea1";
-			this->OpticalGraph->ChartAreas->Add(chartArea6);
-			legend6->Name = L"Legend1";
-			this->OpticalGraph->Legends->Add(legend6);
+			chartArea2->Name = L"ChartArea1";
+			this->OpticalGraph->ChartAreas->Add(chartArea2);
+			legend2->Name = L"Legend1";
+			this->OpticalGraph->Legends->Add(legend2);
 			this->OpticalGraph->Location = System::Drawing::Point(7, 240);
 			this->OpticalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->OpticalGraph->Name = L"OpticalGraph";
-			series23->ChartArea = L"ChartArea1";
-			series23->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series23->Legend = L"Legend1";
-			series23->Name = L"Illuminated";
-			series24->ChartArea = L"ChartArea1";
-			series24->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series24->Legend = L"Legend1";
-			series24->Name = L"Dark";
-			series25->ChartArea = L"ChartArea1";
-			series25->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series25->Legend = L"Legend1";
-			series25->Name = L"Temperature";
-			series26->ChartArea = L"ChartArea1";
-			series26->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series26->Legend = L"Legend1";
-			series26->Name = L"RefIlluminated";
-			series27->ChartArea = L"ChartArea1";
-			series27->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series27->Legend = L"Legend1";
-			series27->Name = L"RefDark";
-			this->OpticalGraph->Series->Add(series23);
-			this->OpticalGraph->Series->Add(series24);
-			this->OpticalGraph->Series->Add(series25);
-			this->OpticalGraph->Series->Add(series26);
-			this->OpticalGraph->Series->Add(series27);
+			series5->ChartArea = L"ChartArea1";
+			series5->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series5->Legend = L"Legend1";
+			series5->Name = L"Illuminated";
+			series6->ChartArea = L"ChartArea1";
+			series6->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series6->Legend = L"Legend1";
+			series6->Name = L"Dark";
+			series7->ChartArea = L"ChartArea1";
+			series7->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series7->Legend = L"Legend1";
+			series7->Name = L"Temperature";
+			series8->ChartArea = L"ChartArea1";
+			series8->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series8->Legend = L"Legend1";
+			series8->Name = L"RefIlluminated";
+			series9->ChartArea = L"ChartArea1";
+			series9->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series9->Legend = L"Legend1";
+			series9->Name = L"RefDark";
+			this->OpticalGraph->Series->Add(series5);
+			this->OpticalGraph->Series->Add(series6);
+			this->OpticalGraph->Series->Add(series7);
+			this->OpticalGraph->Series->Add(series8);
+			this->OpticalGraph->Series->Add(series9);
 			this->OpticalGraph->Size = System::Drawing::Size(857, 149);
 			this->OpticalGraph->TabIndex = 10;
 			this->OpticalGraph->Text = L"Optical Data";
@@ -800,6 +822,40 @@ private: System::ComponentModel::IContainer^  components;
 			this->OpticalReadsGrid->TabIndex = 3;
 			this->OpticalReadsGrid->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Form1::OpticalReadsGrid_CellContentClick);
 			// 
+			// LEDIndex
+			// 
+			this->LEDIndex->HeaderText = L"LED Index";
+			this->LEDIndex->Name = L"LEDIndex";
+			this->LEDIndex->Width = 75;
+			// 
+			// LedIntensity
+			// 
+			this->LedIntensity->HeaderText = L"LED Intensity";
+			this->LedIntensity->Name = L"LedIntensity";
+			// 
+			// LedStabilizationTime
+			// 
+			this->LedStabilizationTime->HeaderText = L"LED Stabilization Time (us)";
+			this->LedStabilizationTime->Name = L"LedStabilizationTime";
+			// 
+			// DetectorIndex
+			// 
+			this->DetectorIndex->HeaderText = L"Detector Index";
+			this->DetectorIndex->Name = L"DetectorIndex";
+			this->DetectorIndex->Width = 75;
+			// 
+			// RefDetectorIndex
+			// 
+			this->RefDetectorIndex->HeaderText = L"RefDetector Index";
+			this->RefDetectorIndex->Name = L"RefDetectorIndex";
+			this->RefDetectorIndex->Width = 75;
+			// 
+			// DetectorIntegrationTime
+			// 
+			this->DetectorIntegrationTime->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
+			this->DetectorIntegrationTime->HeaderText = L"Detector Integration Time (us)";
+			this->DetectorIntegrationTime->Name = L"DetectorIntegrationTime";
+			// 
 			// label7
 			// 
 			this->label7->AutoSize = true;
@@ -974,6 +1030,8 @@ private: System::ComponentModel::IContainer^  components;
 			// 
 			// AdvancedTab
 			// 
+			this->AdvancedTab->Controls->Add(this->SetPidParams);
+			this->AdvancedTab->Controls->Add(this->PidGrid);
 			this->AdvancedTab->Controls->Add(this->ActuateSetpoint);
 			this->AdvancedTab->Controls->Add(this->label5);
 			this->AdvancedTab->Controls->Add(this->ManControlSetpoint);
@@ -984,6 +1042,32 @@ private: System::ComponentModel::IContainer^  components;
 			this->AdvancedTab->TabIndex = 2;
 			this->AdvancedTab->Text = L"Advanced";
 			this->AdvancedTab->UseVisualStyleBackColor = true;
+			this->AdvancedTab->Enter += gcnew System::EventHandler(this, &Form1::AdvancedTab_Enter);
+			// 
+			// SetPidParams
+			// 
+			this->SetPidParams->Location = System::Drawing::Point(673, 110);
+			this->SetPidParams->Margin = System::Windows::Forms::Padding(2);
+			this->SetPidParams->Name = L"SetPidParams";
+			this->SetPidParams->Size = System::Drawing::Size(56, 19);
+			this->SetPidParams->TabIndex = 4;
+			this->SetPidParams->Text = L"Set";
+			this->SetPidParams->UseVisualStyleBackColor = true;
+			this->SetPidParams->Click += gcnew System::EventHandler(this, &Form1::SetPidParams_Click);
+			// 
+			// PidGrid
+			// 
+			this->PidGrid->AllowUserToAddRows = false;
+			this->PidGrid->AllowUserToDeleteRows = false;
+			this->PidGrid->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->PidGrid->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(6) {
+				this->TypeCol, this->PGainCol,
+					this->GainICol, this->GainDCol, this->SlopeCol, this->YInterceptCol
+			});
+			this->PidGrid->Location = System::Drawing::Point(10, 110);
+			this->PidGrid->Name = L"PidGrid";
+			this->PidGrid->Size = System::Drawing::Size(658, 164);
+			this->PidGrid->TabIndex = 3;
 			// 
 			// ActuateSetpoint
 			// 
@@ -1019,39 +1103,36 @@ private: System::ComponentModel::IContainer^  components;
 			this->StatusTimer->Enabled = true;
 			this->StatusTimer->Tick += gcnew System::EventHandler(this, &Form1::StatusTimer_Tick);
 			// 
-			// LEDIndex
+			// TypeCol
 			// 
-			this->LEDIndex->HeaderText = L"LED Index";
-			this->LEDIndex->Name = L"LEDIndex";
-			this->LEDIndex->Width = 75;
+			this->TypeCol->HeaderText = L"Type";
+			this->TypeCol->Name = L"TypeCol";
 			// 
-			// LedIntensity
+			// PGainCol
 			// 
-			this->LedIntensity->HeaderText = L"LED Intensity";
-			this->LedIntensity->Name = L"LedIntensity";
+			this->PGainCol->HeaderText = L"Kp";
+			this->PGainCol->Name = L"PGainCol";
 			// 
-			// LedStabilizationTime
+			// GainICol
 			// 
-			this->LedStabilizationTime->HeaderText = L"LED Stabilization Time (us)";
-			this->LedStabilizationTime->Name = L"LedStabilizationTime";
+			this->GainICol->HeaderText = L"Ki";
+			this->GainICol->Name = L"GainICol";
 			// 
-			// DetectorIndex
+			// GainDCol
 			// 
-			this->DetectorIndex->HeaderText = L"Detector Index";
-			this->DetectorIndex->Name = L"DetectorIndex";
-			this->DetectorIndex->Width = 75;
+			this->GainDCol->HeaderText = L"Kd";
+			this->GainDCol->Name = L"GainDCol";
 			// 
-			// RefDetectorIndex
+			// SlopeCol
 			// 
-			this->RefDetectorIndex->HeaderText = L"RefDetector Index";
-			this->RefDetectorIndex->Name = L"RefDetectorIndex";
-			this->RefDetectorIndex->Width = 75;
+			this->SlopeCol->HeaderText = L"Slope";
+			this->SlopeCol->Name = L"SlopeCol";
 			// 
-			// DetectorIntegrationTime
+			// YInterceptCol
 			// 
-			this->DetectorIntegrationTime->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
-			this->DetectorIntegrationTime->HeaderText = L"Detector Integration Time (us)";
-			this->DetectorIntegrationTime->Name = L"DetectorIntegrationTime";
+			this->YInterceptCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
+			this->YInterceptCol->HeaderText = L"Y Intercept";
+			this->YInterceptCol->Name = L"YInterceptCol";
 			// 
 			// Form1
 			// 
@@ -1074,6 +1155,7 @@ private: System::ComponentModel::IContainer^  components;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ProtocolDataGrid))->EndInit();
 			this->AdvancedTab->ResumeLayout(false);
 			this->AdvancedTab->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PidGrid))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -1335,7 +1417,7 @@ private: System::ComponentModel::IContainer^  components;
 		{
 			MessageBox::Show("First, select a protocol.");
 		}
-		else if (CommPortSelection->SelectedItem == nullptr)
+		else if (CommPortSelection->Text == "")
 		{
 			MessageBox::Show("First, select a port.");
 		}
@@ -1446,6 +1528,60 @@ private: System::ComponentModel::IContainer^  components;
 				if (nErrCode != ErrCode::kNoError)
 					MessageBox::Show("Could not stop the PCR protocol.");
 			}
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void SetPidParams_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		SetPidParamsReq	request;
+		HostMsg			response;
+
+		if (CommPortSelection->Text == "")
+			MessageBox::Show("First, select a port.");
+		else
+		{
+			request.SetType(PidType::kTemperature);
+			_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
+
+			request.SetType(PidType::kCurrent);
+			_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void AdvancedTab_Enter(System::Object^  sender, System::EventArgs^  e)
+	{
+		GetPidParamsReq	request;
+		GetPidParamsRes	response;
+
+		if (CommPortSelection->Text == "")
+			MessageBox::Show("First, select a port.");
+		else
+		{
+			if (PidGrid->RowCount == 0)
+			{
+				PidGrid->Rows->Add(gcnew DataGridViewRow);
+				PidGrid->Rows->Add(gcnew DataGridViewRow);
+			}
+
+			request.SetType(PidType::kTemperature);
+			_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
+			PidGrid[0, PidType::kTemperature]->Value = "Temperature";
+			PidGrid[1, PidType::kTemperature]->Value = Convert::ToString((float)response.GetPGain() / 1000);
+			PidGrid[2, PidType::kTemperature]->Value = Convert::ToString((float)response.GetIGain() / 1000);
+			PidGrid[3, PidType::kTemperature]->Value = Convert::ToString((float)response.GetDGain() / 1000);
+			PidGrid[4, PidType::kTemperature]->Value = Convert::ToString((float)response.GetSlope() / 1000);
+			PidGrid[5, PidType::kTemperature]->Value = Convert::ToString((float)response.GetYIntercept() / 1000);
+
+			request.SetType(PidType::kCurrent);
+			_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
+			PidGrid[0, PidType::kTemperature]->Value = "Current";
+			PidGrid[1, PidType::kTemperature]->Value = Convert::ToString((float)response.GetPGain() / 1000);
+			PidGrid[2, PidType::kTemperature]->Value = Convert::ToString((float)response.GetIGain() / 1000);
+			PidGrid[3, PidType::kTemperature]->Value = Convert::ToString((float)response.GetDGain() / 1000);
+			PidGrid[4, PidType::kTemperature]->Value = Convert::ToString((float)response.GetSlope() / 1000);
+			PidGrid[5, PidType::kTemperature]->Value = Convert::ToString((float)response.GetYIntercept() / 1000);
 		}
 	}
 
