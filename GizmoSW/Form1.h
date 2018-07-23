@@ -278,6 +278,12 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  YInterceptCol;
 
 
 
+
+
+
+
+
+
 private: System::ComponentModel::IContainer^  components;
 
 
@@ -1107,6 +1113,7 @@ private: System::ComponentModel::IContainer^  components;
 			// 
 			this->TypeCol->HeaderText = L"Type";
 			this->TypeCol->Name = L"TypeCol";
+			this->TypeCol->ReadOnly = true;
 			// 
 			// PGainCol
 			// 
@@ -1161,51 +1168,6 @@ private: System::ComponentModel::IContainer^  components;
 		}
 #pragma endregion
 
-	/////////////////////////////////////////////////////////////////////////////////
-	ErrCode SharedMemInitialize()
-	{
-		sprintf_s(camStatusHdr.MapName, BUF_SIZE, "Local\\CameraCaptureDoneFlag");
-		camStatusHdr.size = sizeof(CameraStatus);
-
-		camStatusHdr.hFileMap = CreateFileMapping(INVALID_HANDLE_VALUE,
-			NULL,
-			PAGE_READWRITE,
-			0,
-			camStatusHdr.size,
-			camStatusHdr.MapName);
-
-		if (camStatusHdr.hFileMap == NULL)
-		{
-			_tprintf(TEXT("Could not create file mapping object (%d).\n"), GetLastError());
-			return kMemoryMappingErr;
-		}
-		else
-		{
-			camStatusHdr.camCaptureStatus = (CameraStatus*)MapViewOfFile(camStatusHdr.hFileMap, FILE_MAP_ALL_ACCESS, 0, 0, camStatusHdr.size);
-			if (camStatusHdr.camCaptureStatus == NULL)
-			{
-				_tprintf(TEXT("Could not map view of file (%d).\n"), GetLastError());
-				CloseHandle(camStatusHdr.hFileMap);
-				return kMemoryMappingErr;
-			}
-
-		}
-#if 0
-		char *camData = (char*)camStatusHdr.camCaptureStatus->_nCameraCaptureDone;
-
-		// Write 0 to shared memory
-		memset(camData, '0', camStatusHdr.size);
-
-		while (true)
-		{
-			if (*camData == '0')
-			{
-				std::cout << "Python Successfully wrote " << *camData << "to Shared Memory" << std::endl;
-				memset(camData, '1', camStatusHdr.size);
-			}
-		}
-#endif
-	}
 	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void OpenProtocol_Click(System::Object^  sender, System::EventArgs^  e)
 	{
@@ -1265,7 +1227,7 @@ private: System::ComponentModel::IContainer^  components;
 		OpticalReadsGrid->Rows->Clear();
 
 		//Iterate through all optical reads in this protocol.
-		OpticsTypeCombo->SelectedIndex = _pPcrProtocol->GetDetectorType();
+		OpticsTypeCombo->SelectedIndex = _pPcrProtocol->GetFluorDetectorType();
 		for (int i = 0; i < (int)_pPcrProtocol->GetNumOpticalReads(); i++)
 		{
 			DataGridViewRow^ row = gcnew DataGridViewRow;
@@ -1318,7 +1280,7 @@ private: System::ComponentModel::IContainer^  components;
 		_pPcrProtocol->Clear();
 
 		OpticalRead optRead;
-		_pPcrProtocol->SetDetectorType(OpticsTypeCombo->SelectedIndex);
+		_pPcrProtocol->SetFluorDetectorType((FluorDetectorType)OpticsTypeCombo->SelectedIndex);
 		for (int nRowIdx = 0; nRowIdx < OpticalReadsGrid->Rows->Count; nRowIdx++)
 		{
 			optRead.SetLedIdx(Convert::ToInt32(OpticalReadsGrid[0, nRowIdx]->Value));
@@ -1541,10 +1503,23 @@ private: System::ComponentModel::IContainer^  components;
 			MessageBox::Show("First, select a port.");
 		else
 		{
+			PidParams pidParams;
 			request.SetType(PidType::kTemperature);
+			pidParams.SetKp((uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kTemperature]->Value) * 1000));
+			pidParams.SetKi((uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kTemperature]->Value) * 1000));
+			pidParams.SetKd((uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kTemperature]->Value) * 1000));
+			pidParams.SetSlope((int32_t)(Convert::ToDouble(PidGrid[4, PidType::kTemperature]->Value) * 1000));
+			pidParams.SetYIntercept((int32_t)(Convert::ToDouble(PidGrid[5, PidType::kTemperature]->Value) * 1000));
+			request.SetPidParams(pidParams);
 			_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
 
 			request.SetType(PidType::kCurrent);
+			pidParams.SetKp((uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kCurrent]->Value) * 1000));
+			pidParams.SetKi((uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kCurrent]->Value) * 1000));
+			pidParams.SetKd((uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kCurrent]->Value) * 1000));
+			pidParams.SetSlope((int32_t)(Convert::ToDouble(PidGrid[4, PidType::kCurrent]->Value) * 1000));
+			pidParams.SetYIntercept((int32_t)(Convert::ToDouble(PidGrid[5, PidType::kCurrent]->Value) * 1000));
+			request.SetPidParams(pidParams);
 			_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
 		}
 	}
@@ -1567,21 +1542,23 @@ private: System::ComponentModel::IContainer^  components;
 
 			request.SetType(PidType::kTemperature);
 			_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
+			PidParams pidParams = response.GetPidParams();
 			PidGrid[0, PidType::kTemperature]->Value = "Temperature";
-			PidGrid[1, PidType::kTemperature]->Value = Convert::ToString((float)response.GetPGain() / 1000);
-			PidGrid[2, PidType::kTemperature]->Value = Convert::ToString((float)response.GetIGain() / 1000);
-			PidGrid[3, PidType::kTemperature]->Value = Convert::ToString((float)response.GetDGain() / 1000);
-			PidGrid[4, PidType::kTemperature]->Value = Convert::ToString((float)response.GetSlope() / 1000);
-			PidGrid[5, PidType::kTemperature]->Value = Convert::ToString((float)response.GetYIntercept() / 1000);
+			PidGrid[1, PidType::kTemperature]->Value = Convert::ToString((float)pidParams.GetKp() / 1000);
+			PidGrid[2, PidType::kTemperature]->Value = Convert::ToString((float)pidParams.GetKi() / 1000);
+			PidGrid[3, PidType::kTemperature]->Value = Convert::ToString((float)pidParams.GetKd() / 1000);
+			PidGrid[4, PidType::kTemperature]->Value = Convert::ToString((float)pidParams.GetSlope() / 1000);
+			PidGrid[5, PidType::kTemperature]->Value = Convert::ToString((float)pidParams.GetYIntercept() / 1000);
 
 			request.SetType(PidType::kCurrent);
 			_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
-			PidGrid[0, PidType::kTemperature]->Value = "Current";
-			PidGrid[1, PidType::kTemperature]->Value = Convert::ToString((float)response.GetPGain() / 1000);
-			PidGrid[2, PidType::kTemperature]->Value = Convert::ToString((float)response.GetIGain() / 1000);
-			PidGrid[3, PidType::kTemperature]->Value = Convert::ToString((float)response.GetDGain() / 1000);
-			PidGrid[4, PidType::kTemperature]->Value = Convert::ToString((float)response.GetSlope() / 1000);
-			PidGrid[5, PidType::kTemperature]->Value = Convert::ToString((float)response.GetYIntercept() / 1000);
+			pidParams = response.GetPidParams();
+			PidGrid[0, PidType::kCurrent]->Value = "Current";
+			PidGrid[1, PidType::kCurrent]->Value = Convert::ToString((float)pidParams.GetKp() / 1000);
+			PidGrid[2, PidType::kCurrent]->Value = Convert::ToString((float)pidParams.GetKi() / 1000);
+			PidGrid[3, PidType::kCurrent]->Value = Convert::ToString((float)pidParams.GetKd() / 1000);
+			PidGrid[4, PidType::kCurrent]->Value = Convert::ToString((float)pidParams.GetSlope() / 1000);
+			PidGrid[5, PidType::kCurrent]->Value = Convert::ToString((float)pidParams.GetYIntercept() / 1000);
 		}
 	}
 
