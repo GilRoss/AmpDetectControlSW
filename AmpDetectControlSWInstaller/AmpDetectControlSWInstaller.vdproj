@@ -19,12 +19,6 @@
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6F67BA6E828F4DD3B52BA926D517EDDD"
-        "MsmSig" = "8:_UNDEFINED"
-        }
     }
     "Configurations"
     {
@@ -175,9 +169,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:GizmoInstaller"
+        "ProductName" = "8:AmpDetectControlSWInstaller"
         "ProductCode" = "8:{073D1001-BF58-4F97-B7D3-9EEDA0250D88}"
-        "PackageCode" = "8:{BC647434-B52F-4DB4-BE0C-86F1A0F530B8}"
+        "PackageCode" = "8:{8B1BB3D7-1052-425E-941E-BF26F6F6A660}"
         "UpgradeCode" = "8:{67EE22AE-38FC-4203-978B-C50001925AA3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -188,7 +182,7 @@
         "Manufacturer" = "8:Licence Owner"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:GizmoInstaller"
+        "Title" = "8:AmpDetectControlSWInstaller"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Licence Owner"
         "Keywords" = "8:"
