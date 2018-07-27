@@ -10,7 +10,7 @@
 #include "PcrProtocol.h"
 #include "DeviceCommDriver.h"
 #include "HostMessages.h"
-//#include "GizmoDLL.h"
+//#include "AmpDetectDLL.h"
 
 #define BUF_SIZE 256
 
@@ -81,8 +81,8 @@ namespace CppCLR_WinformsProjekt {
 
 			delete _pPcrProtocol;
 		}
-	private: System::Windows::Forms::TabControl^  GizmoTabs;
-	private: System::Windows::Forms::TabPage^  GizmoTab;
+	private: System::Windows::Forms::TabControl^  AmpDetectTabs;
+	private: System::Windows::Forms::TabPage^  AmpDetectTab;
 	private: System::Windows::Forms::TabPage^  ProtocolsTab;
 	private: System::UInt32				_nHostDevCommErrCode = ErrCode::kDeviceCommErr;
 	private: System::IO::StreamWriter^			_opticalDataFile;
@@ -328,8 +328,8 @@ private: System::ComponentModel::IContainer^  components;
 			System::Windows::Forms::DataVisualization::Charting::Series^  series7 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			System::Windows::Forms::DataVisualization::Charting::Series^  series8 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			System::Windows::Forms::DataVisualization::Charting::Series^  series9 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			this->GizmoTabs = (gcnew System::Windows::Forms::TabControl());
-			this->GizmoTab = (gcnew System::Windows::Forms::TabPage());
+			this->AmpDetectTabs = (gcnew System::Windows::Forms::TabControl());
+			this->AmpDetectTab = (gcnew System::Windows::Forms::TabPage());
 			this->SelectDataFolderButton = (gcnew System::Windows::Forms::Button());
 			this->SelectedDataFolder = (gcnew System::Windows::Forms::RichTextBox());
 			this->label4 = (gcnew System::Windows::Forms::Label());
@@ -396,8 +396,8 @@ private: System::ComponentModel::IContainer^  components;
 			this->GainDCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->SlopeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->YInterceptCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->GizmoTabs->SuspendLayout();
-			this->GizmoTab->SuspendLayout();
+			this->AmpDetectTabs->SuspendLayout();
+			this->AmpDetectTab->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalGraph))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->RunStatusGrid))->BeginInit();
@@ -409,47 +409,47 @@ private: System::ComponentModel::IContainer^  components;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PidGrid))->BeginInit();
 			this->SuspendLayout();
 			// 
-			// GizmoTabs
+			// AmpDetectTabs
 			// 
-			this->GizmoTabs->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+			this->AmpDetectTabs->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->GizmoTabs->Controls->Add(this->GizmoTab);
-			this->GizmoTabs->Controls->Add(this->ProtocolsTab);
-			this->GizmoTabs->Controls->Add(this->AdvancedTab);
-			this->GizmoTabs->Location = System::Drawing::Point(9, 10);
-			this->GizmoTabs->Margin = System::Windows::Forms::Padding(2);
-			this->GizmoTabs->Name = L"GizmoTabs";
-			this->GizmoTabs->SelectedIndex = 0;
-			this->GizmoTabs->Size = System::Drawing::Size(886, 606);
-			this->GizmoTabs->TabIndex = 0;
+			this->AmpDetectTabs->Controls->Add(this->AmpDetectTab);
+			this->AmpDetectTabs->Controls->Add(this->ProtocolsTab);
+			this->AmpDetectTabs->Controls->Add(this->AdvancedTab);
+			this->AmpDetectTabs->Location = System::Drawing::Point(9, 10);
+			this->AmpDetectTabs->Margin = System::Windows::Forms::Padding(2);
+			this->AmpDetectTabs->Name = L"AmpDetectTabs";
+			this->AmpDetectTabs->SelectedIndex = 0;
+			this->AmpDetectTabs->Size = System::Drawing::Size(886, 606);
+			this->AmpDetectTabs->TabIndex = 0;
 			// 
-			// GizmoTab
+			// AmpDetectTab
 			// 
-			this->GizmoTab->Controls->Add(this->SelectDataFolderButton);
-			this->GizmoTab->Controls->Add(this->SelectedDataFolder);
-			this->GizmoTab->Controls->Add(this->label4);
-			this->GizmoTab->Controls->Add(this->ThermalGraph);
-			this->GizmoTab->Controls->Add(this->OpticalGraph);
-			this->GizmoTab->Controls->Add(this->PidSelection);
-			this->GizmoTab->Controls->Add(this->label3);
-			this->GizmoTab->Controls->Add(this->CommPortSelection);
-			this->GizmoTab->Controls->Add(this->label2);
-			this->GizmoTab->Controls->Add(this->RunStatusGrid);
-			this->GizmoTab->Controls->Add(this->SelectProtocolBtn);
-			this->GizmoTab->Controls->Add(this->SelectedProtocol);
-			this->GizmoTab->Controls->Add(this->label1);
-			this->GizmoTab->Controls->Add(this->StopPcrBtn);
-			this->GizmoTab->Controls->Add(this->RunPcrBtn);
-			this->GizmoTab->Location = System::Drawing::Point(4, 22);
-			this->GizmoTab->Margin = System::Windows::Forms::Padding(2);
-			this->GizmoTab->Name = L"GizmoTab";
-			this->GizmoTab->Padding = System::Windows::Forms::Padding(2);
-			this->GizmoTab->Size = System::Drawing::Size(878, 580);
-			this->GizmoTab->TabIndex = 0;
-			this->GizmoTab->Text = L"Gizmo";
-			this->GizmoTab->UseVisualStyleBackColor = true;
-			this->GizmoTab->Enter += gcnew System::EventHandler(this, &Form1::GizmoTab_Enter);
+			this->AmpDetectTab->Controls->Add(this->SelectDataFolderButton);
+			this->AmpDetectTab->Controls->Add(this->SelectedDataFolder);
+			this->AmpDetectTab->Controls->Add(this->label4);
+			this->AmpDetectTab->Controls->Add(this->ThermalGraph);
+			this->AmpDetectTab->Controls->Add(this->OpticalGraph);
+			this->AmpDetectTab->Controls->Add(this->PidSelection);
+			this->AmpDetectTab->Controls->Add(this->label3);
+			this->AmpDetectTab->Controls->Add(this->CommPortSelection);
+			this->AmpDetectTab->Controls->Add(this->label2);
+			this->AmpDetectTab->Controls->Add(this->RunStatusGrid);
+			this->AmpDetectTab->Controls->Add(this->SelectProtocolBtn);
+			this->AmpDetectTab->Controls->Add(this->SelectedProtocol);
+			this->AmpDetectTab->Controls->Add(this->label1);
+			this->AmpDetectTab->Controls->Add(this->StopPcrBtn);
+			this->AmpDetectTab->Controls->Add(this->RunPcrBtn);
+			this->AmpDetectTab->Location = System::Drawing::Point(4, 22);
+			this->AmpDetectTab->Margin = System::Windows::Forms::Padding(2);
+			this->AmpDetectTab->Name = L"AmpDetectTab";
+			this->AmpDetectTab->Padding = System::Windows::Forms::Padding(2);
+			this->AmpDetectTab->Size = System::Drawing::Size(878, 580);
+			this->AmpDetectTab->TabIndex = 0;
+			this->AmpDetectTab->Text = L"AmpDetect";
+			this->AmpDetectTab->UseVisualStyleBackColor = true;
+			this->AmpDetectTab->Enter += gcnew System::EventHandler(this, &Form1::AmpDetectTab_Enter);
 			// 
 			// SelectDataFolderButton
 			// 
@@ -1146,12 +1146,12 @@ private: System::ComponentModel::IContainer^  components;
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(904, 626);
-			this->Controls->Add(this->GizmoTabs);
+			this->Controls->Add(this->AmpDetectTabs);
 			this->Name = L"Form1";
-			this->Text = L"Gizmo";
-			this->GizmoTabs->ResumeLayout(false);
-			this->GizmoTab->ResumeLayout(false);
-			this->GizmoTab->PerformLayout();
+			this->Text = L"AmpDetect";
+			this->AmpDetectTabs->ResumeLayout(false);
+			this->AmpDetectTab->ResumeLayout(false);
+			this->AmpDetectTab->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalGraph))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->RunStatusGrid))->EndInit();
@@ -1579,7 +1579,7 @@ private: System::ComponentModel::IContainer^  components;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void GizmoTab_Enter(System::Object^  sender, System::EventArgs^  e) 
+	private: System::Void AmpDetectTab_Enter(System::Object^  sender, System::EventArgs^  e) 
 	{
 		CommPortSelection->Items->Clear();
 		array<String^>^ arPortNames = SerialPort::GetPortNames();
