@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GizmoSW", "GizmoSW\GizmoSW.
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "GizmoInstaller", "GizmoInstaller\GizmoInstaller.vdproj", "{C68C34A4-9E59-4B09-9701-F17012CA89DB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GizmoDLL", "GizmoDLL\GizmoDLL.vcxproj", "{D89AB9D7-8745-4A97-B4AC-D0906F89E522}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AmpDetectDLL", "..\Shared\AmpDetectDLL\AmpDetectDLL.vcxproj", "{D89AB9D7-8745-4A97-B4AC-D0906F89E522}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -190,11 +190,6 @@
       <DependentUpon>Form1.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GizmoDLL\GizmoDLL.vcxproj">
-      <Project>{d89ab9d7-8745-4a97-b4ac-d0906f89e522}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
