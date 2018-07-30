@@ -6,31 +6,21 @@
 #include <tchar.h>
 #include <iostream>
 
-
 #include "PcrProtocol.h"
 #include "DeviceCommDriver.h"
 #include "HostMessages.h"
 //#include "GizmoDLL.h"
-
-#define BUF_SIZE 256
-
-typedef struct {
-	uint8_t _nCameraIndex;
-	uint8_t _nCameraCaptureStart;
-	uint8_t _nCameraCaptureDone;
-}CameraStatus;
-
-typedef struct {
-	HANDLE hFileMap;
-	CameraStatus *camCaptureStatus;
-	char MapName[BUF_SIZE];
-	size_t size;
-}CameraStatusHeader;
-
-CameraStatusHeader camStatusHdr;
-CameraStatus camStatus;
+HINSTANCE cameraDll;
 
 using namespace System::Windows::Forms::DataVisualization::Charting;
+
+//bool GrabSucceddedStatus(void);
+typedef bool (WINAPI* GrabSucceededStatus)(void);
+//int CameraCapture(int cameraID, int exposure);
+typedef int (WINAPI* CameraCapture)(int cameraID, int exposure, int ledIntensity);
+GrabSucceededStatus imageCaptureStatus;
+CameraCapture captureImage;
+bool dllFuncValid = false;
 
 namespace CppCLR_WinformsProjekt {
 
@@ -50,7 +40,7 @@ namespace CppCLR_WinformsProjekt {
 		Form1(void)
 		{
 			InitializeComponent();
-			ErrCode SharedMemInitialize();
+			InitializeCamera();
 			
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
@@ -1080,51 +1070,6 @@ private: System::ComponentModel::IContainer^  components;
 #pragma endregion
 
 	/////////////////////////////////////////////////////////////////////////////////
-	ErrCode SharedMemInitialize()
-	{
-		sprintf_s(camStatusHdr.MapName, BUF_SIZE, "Local\\CameraCaptureDoneFlag");
-		camStatusHdr.size = sizeof(CameraStatus);
-
-		camStatusHdr.hFileMap = CreateFileMapping(INVALID_HANDLE_VALUE,
-			NULL,
-			PAGE_READWRITE,
-			0,
-			camStatusHdr.size,
-			camStatusHdr.MapName);
-
-		if (camStatusHdr.hFileMap == NULL)
-		{
-			_tprintf(TEXT("Could not create file mapping object (%d).\n"), GetLastError());
-			return kMemoryMappingErr;
-		}
-		else
-		{
-			camStatusHdr.camCaptureStatus = (CameraStatus*)MapViewOfFile(camStatusHdr.hFileMap, FILE_MAP_ALL_ACCESS, 0, 0, camStatusHdr.size);
-			if (camStatusHdr.camCaptureStatus == NULL)
-			{
-				_tprintf(TEXT("Could not map view of file (%d).\n"), GetLastError());
-				CloseHandle(camStatusHdr.hFileMap);
-				return kMemoryMappingErr;
-			}
-
-		}
-#if 0
-		char *camData = (char*)camStatusHdr.camCaptureStatus->_nCameraCaptureDone;
-
-		// Write 0 to shared memory
-		memset(camData, '0', camStatusHdr.size);
-
-		while (true)
-		{
-			if (*camData == '0')
-			{
-				std::cout << "Python Successfully wrote " << *camData << "to Shared Memory" << std::endl;
-				memset(camData, '1', camStatusHdr.size);
-			}
-		}
-#endif
-	}
-	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void OpenProtocol_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		openProtocolDlg->FileName = ProtocolName->Text;
@@ -1480,6 +1425,7 @@ private: System::ComponentModel::IContainer^  components;
 		GetStatusRes	response;
 
 		_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
+		CameraControl(response);
 		UpdateGUI(response);
 	}
 
@@ -1489,6 +1435,84 @@ private: System::ComponentModel::IContainer^  components;
 		_devCommDrv->SetPortId(CommPortSelection->Text);
 	}
 
+	private: System::Void InitializeCamera(void)
+	{
+		cameraDll = LoadLibrary(TEXT("BaslerMultiCamera.dll"));
+		if (cameraDll != NULL)
+		{
+			imageCaptureStatus = (GrabSucceededStatus)GetProcAddress(cameraDll, "GrabSucceededStatus");
+			captureImage = (CameraCapture)GetProcAddress(cameraDll, "CameraCapture");
+			if ((NULL != imageCaptureStatus) && (NULL != captureImage))
+			{
+				dllFuncValid = true;
+			}
+		}
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void CameraControl(GetStatusRes& statusResponse)
+	{
+		int nError = 0;
+		static uint32_t camCaptureStarted = 0;
+		static bool camCaptureDone = false;
+		SysStatus* pSysStatus = statusResponse.GetSysStatusPtr();
+		uint32_t testFlag = 0;
+		
+		// By default place nSiteIdx to 0, since there will be one site per Ampdetect unit
+		SiteStatus siteStatus = pSysStatus->GetSiteStatus(0);
+		if (dllFuncValid)
+		{
+			camCaptureDone = imageCaptureStatus();
+		}
+
+		// Check if camera capture has not started
+		if (!camCaptureStarted)
+		{
+			// Is Paused flag set in firmware
+			if (siteStatus.GetPausedFlg())
+			{
+				// Is software ready to take image?
+				if (siteStatus.GetCaptureCameraImageFlg())
+				{
+					// If camera is free, initiate image capture - check camera status using camera ID
+					if (camCaptureDone)
+					{
+						if (dllFuncValid)
+						{
+							camCaptureStarted = 1;
+							// Send command to dll to capture image
+							nError = captureImage(siteStatus.GetCameraIdx(), siteStatus.GetCameraExposure(), siteStatus.GetLedIntensity());
+							if (nError != 0)
+							{
+								MessageBox::Show("Could not find specified camera");
+								camCaptureDone = true;
+							}
+							else
+							{
+								camCaptureDone = true;
+							}
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			// Camera is done grabbing image
+			if (camCaptureDone)
+			{
+				PauseRunReq request;
+				HostMsg response;
+				camCaptureStarted = 0;
+				request.SetCaptureCameraImageFlg(FALSE);
+				// if camera captures done for a cycle, disable pause
+				request.SetPausedFlg(FALSE);
+				// Send Pause command to firmware
+				uint32_t nErrCode = _devCommDrv->MsgTransaction(request, &response);
+			}
+		}
+	}
+	
 	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void UpdateGUI(GetStatusRes& statusResponse)
 	{
