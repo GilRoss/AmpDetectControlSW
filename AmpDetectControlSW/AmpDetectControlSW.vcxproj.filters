@@ -42,9 +42,6 @@
     <ClInclude Include="..\..\Shared\CommMessages\SysStatus.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="DeviceCommDriver.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Shared\CommMessages\Common.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -68,9 +65,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Form1.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="DeviceCommDriver.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

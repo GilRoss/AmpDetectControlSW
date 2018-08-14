@@ -9,13 +9,29 @@
 
 #include "AmpDetectDLL.h"
 #include "PcrProtocol.h"
-HINSTANCE cameraDll;
 
 using namespace System::IO::Ports;
 using namespace msclr::interop;
 
 
 #define BUF_SIZE 256
+
+typedef struct {
+	uint8_t _nCameraIndex;
+	uint8_t _nCameraCaptureStart;
+	uint8_t _nCameraCaptureDone;
+}CameraStatus;
+
+typedef struct {
+	HANDLE hFileMap;
+	CameraStatus *camCaptureStatus;
+	char MapName[BUF_SIZE];
+	size_t size;
+}CameraStatusHeader;
+
+CameraStatusHeader camStatusHdr;
+CameraStatus camStatus;
+
 using namespace System::Windows::Forms::DataVisualization::Charting;
 
 //bool GrabSucceddedStatus(void);
@@ -44,14 +60,14 @@ namespace CppCLR_WinformsProjekt {
 		Form1(void)
 		{
 			InitializeComponent();
-			InitializeCamera();
-			
+//			InitializeCamera();
+
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
 			_pPcrProtocol = new PcrProtocol();
-//			_devCommDrv = gcnew DeviceCommDriver();
-//			_devCommDrv->SetPortId("COM4");
+			//			_devCommDrv = gcnew DeviceCommDriver();
+			//			_devCommDrv->SetPortId("COM4");
 			PidSelection->SelectedIndex = 1;
 			OpticsTypeCombo->SelectedIndex = 0;
 			Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
@@ -91,8 +107,8 @@ namespace CppCLR_WinformsProjekt {
 	private: System::Windows::Forms::Button^  SaveProtocol;
 	private: System::Windows::Forms::DataGridView^  ProtocolDataGrid;
 	private: System::Windows::Forms::RichTextBox^  ProtocolName;
-	private: PcrProtocol* _pPcrProtocol;
-//	private: DeviceCommDriver ^ _devCommDrv;
+	private: PcrProtocol * _pPcrProtocol;
+			 //	private: DeviceCommDriver ^ _devCommDrv;
 
 
 
@@ -152,13 +168,13 @@ namespace CppCLR_WinformsProjekt {
 
 
 
-private: System::Windows::Forms::DataGridView^  RunStatusGrid;
+	private: System::Windows::Forms::DataGridView^  RunStatusGrid;
 
 
 
 
 
-private: System::Windows::Forms::Timer^  StatusTimer;
+	private: System::Windows::Forms::Timer^  StatusTimer;
 
 
 
@@ -166,10 +182,10 @@ private: System::Windows::Forms::Timer^  StatusTimer;
 
 
 
-private: System::Windows::Forms::ComboBox^  CommPortSelection;
-private: System::Windows::Forms::Label^  label2;
-private: System::Windows::Forms::ComboBox^  PidSelection;
-private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::ComboBox^  CommPortSelection;
+	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::ComboBox^  PidSelection;
+	private: System::Windows::Forms::Label^  label3;
 
 
 
@@ -177,25 +193,25 @@ private: System::Windows::Forms::Label^  label3;
 
 
 
-private: System::Windows::Forms::DataVisualization::Charting::Chart^  ThermalGraph;
-private: System::Windows::Forms::DataVisualization::Charting::Chart^  OpticalGraph;
+	private: System::Windows::Forms::DataVisualization::Charting::Chart^  ThermalGraph;
+	private: System::Windows::Forms::DataVisualization::Charting::Chart^  OpticalGraph;
 
-private: System::Windows::Forms::Label^  label4;
-private: System::Windows::Forms::Button^  SelectDataFolderButton;
-private: System::Windows::Forms::RichTextBox^  SelectedDataFolder;
+	private: System::Windows::Forms::Label^  label4;
+	private: System::Windows::Forms::Button^  SelectDataFolderButton;
+	private: System::Windows::Forms::RichTextBox^  SelectedDataFolder;
 
-private: System::Windows::Forms::FolderBrowserDialog^  SelectDataFolderDlg;
-private: System::Windows::Forms::Button^  ActuateSetpoint;
+	private: System::Windows::Forms::FolderBrowserDialog^  SelectDataFolderDlg;
+	private: System::Windows::Forms::Button^  ActuateSetpoint;
 
-private: System::Windows::Forms::Label^  label5;
-private: System::Windows::Forms::TextBox^  ManControlSetpoint;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  SiteCol;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  ActiveCol;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  SegmentCol;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  CycleCol;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepCol;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepTimeCol;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
+	private: System::Windows::Forms::Label^  label5;
+	private: System::Windows::Forms::TextBox^  ManControlSetpoint;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  SiteCol;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  ActiveCol;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  SegmentCol;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  CycleCol;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepCol;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepTimeCol;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 
 
 
@@ -219,47 +235,47 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 
 
 
-private: System::Windows::Forms::GroupBox^  groupBox2;
-private: System::Windows::Forms::GroupBox^  groupBox1;
-private: System::Windows::Forms::Button^  DelOptReadBtn;
+	private: System::Windows::Forms::GroupBox^  groupBox2;
+	private: System::Windows::Forms::GroupBox^  groupBox1;
+	private: System::Windows::Forms::Button^  DelOptReadBtn;
 
-private: System::Windows::Forms::Button^  AddOptReadBtn;
+	private: System::Windows::Forms::Button^  AddOptReadBtn;
 
-private: System::Windows::Forms::DataGridView^  OpticalReadsGrid;
+	private: System::Windows::Forms::DataGridView^  OpticalReadsGrid;
 
 
 
 
 
-private: System::Windows::Forms::Label^  label7;
-private: System::Windows::Forms::ComboBox^  OpticsTypeCombo;
-private: System::Windows::Forms::Label^  label6;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  Cycles;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  Steps;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  Setpoint;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  Time;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  RampRate;
-private: System::Windows::Forms::DataGridViewCheckBoxColumn^  OpticalAcq;
-private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Melt;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  LEDIndex;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  LedIntensity;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  LedStabilizationTime;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  DetectorIndex;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  RefDetectorIndex;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  DetectorIntegrationTime;
-private: System::Windows::Forms::DataGridView^  PidGrid;
+	private: System::Windows::Forms::Label^  label7;
+	private: System::Windows::Forms::ComboBox^  OpticsTypeCombo;
+	private: System::Windows::Forms::Label^  label6;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Cycles;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Steps;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Setpoint;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Time;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  RampRate;
+	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  OpticalAcq;
+	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Melt;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  LEDIndex;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  LedIntensity;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  LedStabilizationTime;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  DetectorIndex;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  RefDetectorIndex;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  DetectorIntegrationTime;
+	private: System::Windows::Forms::DataGridView^  PidGrid;
 
 
 
 
 
-private: System::Windows::Forms::Button^  SetPidParams;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  TypeCol;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  PGainCol;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainICol;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainDCol;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  SlopeCol;
-private: System::Windows::Forms::DataGridViewTextBoxColumn^  YInterceptCol;
+	private: System::Windows::Forms::Button^  SetPidParams;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  TypeCol;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  PGainCol;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainICol;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainDCol;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  SlopeCol;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  YInterceptCol;
 
 
 
@@ -278,7 +294,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  YInterceptCol;
 
 
 
-private: System::ComponentModel::IContainer^  components;
+	private: System::ComponentModel::IContainer^  components;
 
 
 
@@ -1162,7 +1178,7 @@ private: System::ComponentModel::IContainer^  components;
 		}
 #pragma endregion
 
-	/////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void OpenProtocol_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		openProtocolDlg->FileName = ProtocolName->Text;
@@ -1186,7 +1202,7 @@ private: System::ComponentModel::IContainer^  components;
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
+			 /////////////////////////////////////////////////////////////////////////////////
 	private: System::Void SaveProtocol_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		saveProtocolDlg->FileName = ProtocolName->Text;
@@ -1214,7 +1230,7 @@ private: System::ComponentModel::IContainer^  components;
 		WritePcrProtocolToGui();
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
+			 /////////////////////////////////////////////////////////////////////////////////
 	private: System::Void WritePcrProtocolToGui()
 	{
 		ProtocolDataGrid->Rows->Clear();
@@ -1268,7 +1284,7 @@ private: System::ComponentModel::IContainer^  components;
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
+			 /////////////////////////////////////////////////////////////////////////////////
 	private: System::Void ReadPcrProtocolFromGui()
 	{
 		_pPcrProtocol->Clear();
@@ -1312,15 +1328,15 @@ private: System::ComponentModel::IContainer^  components;
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
+			 /////////////////////////////////////////////////////////////////////////////////
 	private: System::Void NewStep_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		DataGridViewRow^ row = gcnew DataGridViewRow;
 		ProtocolDataGrid->Rows->Add(row);
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void DeleteStep_Click(System::Object^  sender, System::EventArgs^  e) 
+			 /////////////////////////////////////////////////////////////////////////////////
+	private: System::Void DeleteStep_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		for (int nRowIdx = ProtocolDataGrid->Rows->Count - 1; nRowIdx >= 0; nRowIdx--)
 		{
@@ -1329,15 +1345,15 @@ private: System::ComponentModel::IContainer^  components;
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void AddOptReadBtn_Click(System::Object^  sender, System::EventArgs^  e) 
+			 /////////////////////////////////////////////////////////////////////////////////
+	private: System::Void AddOptReadBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		DataGridViewRow^ row = gcnew DataGridViewRow;
 		OpticalReadsGrid->Rows->Add(row);
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void DelOptReadBtn_Click(System::Object^  sender, System::EventArgs^  e) 
+			 /////////////////////////////////////////////////////////////////////////////////
+	private: System::Void DelOptReadBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		for (int nRowIdx = OpticalReadsGrid->Rows->Count - 1; nRowIdx >= 0; nRowIdx--)
 		{
@@ -1346,8 +1362,8 @@ private: System::ComponentModel::IContainer^  components;
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void SelectProtocolBtn_Click(System::Object^  sender, System::EventArgs^  e) 
+			 /////////////////////////////////////////////////////////////////////////////////
+	private: System::Void SelectProtocolBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		openProtocolDlg->FileName = ProtocolName->Text;
 		openProtocolDlg->AddExtension = true;
@@ -1357,8 +1373,8 @@ private: System::ComponentModel::IContainer^  components;
 			SelectedProtocol->Text = openProtocolDlg->FileName;
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void SelectDataFolderButton_Click(System::Object^  sender, System::EventArgs^  e) 
+			 /////////////////////////////////////////////////////////////////////////////////
+	private: System::Void SelectDataFolderButton_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		SelectDataFolderDlg->SelectedPath = SelectedDataFolder->Text;
 
@@ -1366,7 +1382,7 @@ private: System::ComponentModel::IContainer^  components;
 			SelectedDataFolder->Text = SelectDataFolderDlg->SelectedPath;
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
+			 /////////////////////////////////////////////////////////////////////////////////
 	private: System::Void RunPcrBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		if (SelectedProtocol->Text == "")
@@ -1441,7 +1457,7 @@ private: System::ComponentModel::IContainer^  components;
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
+			 /////////////////////////////////////////////////////////////////////////////////
 	private: System::Void StopPcrBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		if (CommPortSelection->SelectedItem == nullptr)
@@ -1464,7 +1480,7 @@ private: System::ComponentModel::IContainer^  components;
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
+			 /////////////////////////////////////////////////////////////////////////////////
 	private: System::Void SetPidParams_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		if (CommPortSelection->Text == "")
@@ -1473,23 +1489,23 @@ private: System::ComponentModel::IContainer^  components;
 		{
 			int nKp, nKi, nKd, nSlope, nYIntercept;
 
-			nKp			= (uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kTemperature]->Value) * 1000);
-			nKi			= (uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kTemperature]->Value) * 1000);
-			nKd			= (uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kTemperature]->Value) * 1000);
-			nSlope		= (int32_t)(Convert::ToDouble(PidGrid[4, PidType::kTemperature]->Value) * 1000);
-			nYIntercept	= (int32_t)(Convert::ToDouble(PidGrid[5, PidType::kTemperature]->Value) * 1000);
+			nKp = (uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kTemperature]->Value) * 1000);
+			nKi = (uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kTemperature]->Value) * 1000);
+			nKd = (uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kTemperature]->Value) * 1000);
+			nSlope = (int32_t)(Convert::ToDouble(PidGrid[4, PidType::kTemperature]->Value) * 1000);
+			nYIntercept = (int32_t)(Convert::ToDouble(PidGrid[5, PidType::kTemperature]->Value) * 1000);
 			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kTemperature, nKp, nKi, nKd, nSlope, nYIntercept);
 
-			nKp			= (uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kCurrent]->Value) * 1000);
-			nKi			= (uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kCurrent]->Value) * 1000);
-			nKd			= (uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kCurrent]->Value) * 1000);
-			nSlope		= (int32_t)(Convert::ToDouble(PidGrid[4, PidType::kCurrent]->Value) * 1000);
-			nYIntercept	= (int32_t)(Convert::ToDouble(PidGrid[5, PidType::kCurrent]->Value) * 1000);
+			nKp = (uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kCurrent]->Value) * 1000);
+			nKi = (uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kCurrent]->Value) * 1000);
+			nKd = (uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kCurrent]->Value) * 1000);
+			nSlope = (int32_t)(Convert::ToDouble(PidGrid[4, PidType::kCurrent]->Value) * 1000);
+			nYIntercept = (int32_t)(Convert::ToDouble(PidGrid[5, PidType::kCurrent]->Value) * 1000);
 			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kCurrent, nKp, nKi, nKd, nSlope, nYIntercept);
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
+			 /////////////////////////////////////////////////////////////////////////////////
 	private: System::Void AdvancedTab_Enter(System::Object^  sender, System::EventArgs^  e)
 	{
 		if (CommPortSelection->Text == "")
@@ -1522,7 +1538,7 @@ private: System::ComponentModel::IContainer^  components;
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
+			 /////////////////////////////////////////////////////////////////////////////////
 	private: System::Void ActuateSetpoint_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		ErrCode nErrCode = (ErrCode)AD_SetTemperatureSetpoint(0, (int)(Convert::ToDouble(ManControlSetpoint->Text) * 1000));
@@ -1530,111 +1546,31 @@ private: System::ComponentModel::IContainer^  components;
 			MessageBox::Show("Could not start manual control.");
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void AmpDetectTab_Enter(System::Object^  sender, System::EventArgs^  e) 
+			 /////////////////////////////////////////////////////////////////////////////////
+	private: System::Void AmpDetectTab_Enter(System::Object^  sender, System::EventArgs^  e)
 	{
 		CommPortSelection->Items->Clear();
 		array<String^>^ arPortNames = SerialPort::GetPortNames();
 		CommPortSelection->Items->AddRange(arPortNames);
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
+			 /////////////////////////////////////////////////////////////////////////////////
 	private: System::Void CommPortSelection_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e)
 	{
-		HostMsg			request(HostMsg::MakeObjId('G', 'S', 't', 't'));
-		GetStatusRes	response;
-
-		_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
-		CameraControl(response);
-		UpdateGUI(response);
+		String^ sTemp = CommPortSelection->Text;
+		sTemp = sTemp->Remove(0, 3); //To isolate the COM number, remove the "COM".
+		AD_Uninitialize();
+		AD_Initialize(1, Convert::ToUInt32(sTemp));
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////
+			 /////////////////////////////////////////////////////////////////////////////////
 	private: System::Void StatusTimer_Tick(System::Object^  sender, System::EventArgs^  e)
 	{
 		UpdateGUI();
 	}
 
-	private: System::Void InitializeCamera(void)
-	{
-		cameraDll = LoadLibrary(TEXT("BaslerMultiCamera.dll"));
-		if (cameraDll != NULL)
-		{
-			imageCaptureStatus = (GrabSucceededStatus)GetProcAddress(cameraDll, "GrabSucceededStatus");
-			captureImage = (CameraCapture)GetProcAddress(cameraDll, "CameraCapture");
-			if ((NULL != imageCaptureStatus) && (NULL != captureImage))
-			{
-				dllFuncValid = true;
-			}
-		}
-	}
-	
-	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void CameraControl(GetStatusRes& statusResponse)
-	{
-		int nError = 0;
-		static uint32_t camCaptureStarted = 0;
-		static bool camCaptureDone = false;
-		SysStatus* pSysStatus = statusResponse.GetSysStatusPtr();
-		uint32_t testFlag = 0;
-		
-		// By default place nSiteIdx to 0, since there will be one site per Ampdetect unit
-		SiteStatus siteStatus = pSysStatus->GetSiteStatus(0);
-		if (dllFuncValid)
-		{
-			camCaptureDone = imageCaptureStatus();
-		}
-
-		// Check if camera capture has not started
-		if (!camCaptureStarted)
-		{
-			// Is Paused flag set in firmware
-			if (siteStatus.GetPausedFlg())
-			{
-				// Is software ready to take image?
-				if (siteStatus.GetCaptureCameraImageFlg())
-				{
-					// If camera is free, initiate image capture - check camera status using camera ID
-					if (camCaptureDone)
-					{
-						if (dllFuncValid)
-						{
-							camCaptureStarted = 1;
-							// Send command to dll to capture image
-							nError = captureImage(siteStatus.GetCameraIdx(), siteStatus.GetCameraExposure(), siteStatus.GetLedIntensity());
-							if (nError != 0)
-							{
-								MessageBox::Show("Could not find specified camera");
-								camCaptureDone = true;
-							}
-							else
-							{
-								camCaptureDone = true;
-							}
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			// Camera is done grabbing image
-			if (camCaptureDone)
-			{
-				PauseRunReq request;
-				HostMsg response;
-				camCaptureStarted = 0;
-				request.SetCaptureCameraImageFlg(FALSE);
-				// if camera captures done for a cycle, disable pause
-				request.SetPausedFlg(FALSE);
-				// Send Pause command to firmware
-				uint32_t nErrCode = _devCommDrv->MsgTransaction(request, &response);
-			}
-		}
-	}
-	
-	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void UpdateGUI(GetStatusRes& statusResponse)
+			 /////////////////////////////////////////////////////////////////////////////////
+	private: System::Void UpdateGUI()
 	{
 		if (_nHostDevCommErrCode != ErrCode::kNoError)
 		{
@@ -1756,13 +1692,14 @@ private: System::ComponentModel::IContainer^  components;
 			}
 		}
 	}
-private: System::Void saveProtocolDlg_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
-}
-private: System::Void SelectDataFolderDlg_HelpRequest(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void OpticalGraph_Click(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void OpticalReadsGrid_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
-}
-};
+
+	private: System::Void saveProtocolDlg_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
+	}
+	private: System::Void SelectDataFolderDlg_HelpRequest(System::Object^  sender, System::EventArgs^  e) {
+	}
+	private: System::Void OpticalGraph_Click(System::Object^  sender, System::EventArgs^  e) {
+	}
+	private: System::Void OpticalReadsGrid_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
+	}
+	};
 }

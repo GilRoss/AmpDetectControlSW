@@ -163,7 +163,6 @@
     <ClInclude Include="..\..\Shared\CommMessages\PcrProtocol.h" />
     <ClInclude Include="..\..\Shared\CommMessages\StreamingObj.h" />
     <ClInclude Include="..\..\Shared\CommMessages\SysStatus.h" />
-    <ClInclude Include="DeviceCommDriver.h" />
     <ClInclude Include="Form1.h">
       <FileType>CppHeader</FileType>
     </ClInclude>
@@ -178,7 +177,6 @@
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="CppCLR_WinformsProjekt.cpp" />
-    <ClCompile Include="DeviceCommDriver.cpp" />
     <ClCompile Include="Form1.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
