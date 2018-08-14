@@ -9,30 +9,22 @@
 
 #include "AmpDetectDLL.h"
 #include "PcrProtocol.h"
+HINSTANCE cameraDll;
 
 using namespace System::IO::Ports;
 using namespace msclr::interop;
 
 
 #define BUF_SIZE 256
-
-typedef struct {
-	uint8_t _nCameraIndex;
-	uint8_t _nCameraCaptureStart;
-	uint8_t _nCameraCaptureDone;
-}CameraStatus;
-
-typedef struct {
-	HANDLE hFileMap;
-	CameraStatus *camCaptureStatus;
-	char MapName[BUF_SIZE];
-	size_t size;
-}CameraStatusHeader;
-
-CameraStatusHeader camStatusHdr;
-CameraStatus camStatus;
-
 using namespace System::Windows::Forms::DataVisualization::Charting;
+
+//bool GrabSucceddedStatus(void);
+typedef bool (WINAPI* GrabSucceededStatus)(void);
+//int CameraCapture(int cameraID, int exposure);
+typedef int (WINAPI* CameraCapture)(int cameraID, int exposure, int ledIntensity);
+GrabSucceededStatus imageCaptureStatus;
+CameraCapture captureImage;
+bool dllFuncValid = false;
 
 namespace CppCLR_WinformsProjekt {
 
@@ -52,6 +44,7 @@ namespace CppCLR_WinformsProjekt {
 		Form1(void)
 		{
 			InitializeComponent();
+			InitializeCamera();
 			
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
@@ -1548,10 +1541,12 @@ private: System::ComponentModel::IContainer^  components;
 	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void CommPortSelection_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e)
 	{
-		String^ sTemp = CommPortSelection->Text;
-		sTemp = sTemp->Remove(0, 3); //To isolate the COM number, remove the "COM".
-		AD_Uninitialize();
-		AD_Initialize(1, Convert::ToUInt32(sTemp));
+		HostMsg			request(HostMsg::MakeObjId('G', 'S', 't', 't'));
+		GetStatusRes	response;
+
+		_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
+		CameraControl(response);
+		UpdateGUI(response);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
@@ -1560,8 +1555,86 @@ private: System::ComponentModel::IContainer^  components;
 		UpdateGUI();
 	}
 
+	private: System::Void InitializeCamera(void)
+	{
+		cameraDll = LoadLibrary(TEXT("BaslerMultiCamera.dll"));
+		if (cameraDll != NULL)
+		{
+			imageCaptureStatus = (GrabSucceededStatus)GetProcAddress(cameraDll, "GrabSucceededStatus");
+			captureImage = (CameraCapture)GetProcAddress(cameraDll, "CameraCapture");
+			if ((NULL != imageCaptureStatus) && (NULL != captureImage))
+			{
+				dllFuncValid = true;
+			}
+		}
+	}
+	
 	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void UpdateGUI()
+	private: System::Void CameraControl(GetStatusRes& statusResponse)
+	{
+		int nError = 0;
+		static uint32_t camCaptureStarted = 0;
+		static bool camCaptureDone = false;
+		SysStatus* pSysStatus = statusResponse.GetSysStatusPtr();
+		uint32_t testFlag = 0;
+		
+		// By default place nSiteIdx to 0, since there will be one site per Ampdetect unit
+		SiteStatus siteStatus = pSysStatus->GetSiteStatus(0);
+		if (dllFuncValid)
+		{
+			camCaptureDone = imageCaptureStatus();
+		}
+
+		// Check if camera capture has not started
+		if (!camCaptureStarted)
+		{
+			// Is Paused flag set in firmware
+			if (siteStatus.GetPausedFlg())
+			{
+				// Is software ready to take image?
+				if (siteStatus.GetCaptureCameraImageFlg())
+				{
+					// If camera is free, initiate image capture - check camera status using camera ID
+					if (camCaptureDone)
+					{
+						if (dllFuncValid)
+						{
+							camCaptureStarted = 1;
+							// Send command to dll to capture image
+							nError = captureImage(siteStatus.GetCameraIdx(), siteStatus.GetCameraExposure(), siteStatus.GetLedIntensity());
+							if (nError != 0)
+							{
+								MessageBox::Show("Could not find specified camera");
+								camCaptureDone = true;
+							}
+							else
+							{
+								camCaptureDone = true;
+							}
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			// Camera is done grabbing image
+			if (camCaptureDone)
+			{
+				PauseRunReq request;
+				HostMsg response;
+				camCaptureStarted = 0;
+				request.SetCaptureCameraImageFlg(FALSE);
+				// if camera captures done for a cycle, disable pause
+				request.SetPausedFlg(FALSE);
+				// Send Pause command to firmware
+				uint32_t nErrCode = _devCommDrv->MsgTransaction(request, &response);
+			}
+		}
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void UpdateGUI(GetStatusRes& statusResponse)
 	{
 		if (_nHostDevCommErrCode != ErrCode::kNoError)
 		{

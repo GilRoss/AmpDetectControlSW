@@ -165,7 +165,7 @@
     <ClInclude Include="..\..\Shared\CommMessages\SysStatus.h" />
     <ClInclude Include="DeviceCommDriver.h" />
     <ClInclude Include="Form1.h">
-      <FileType>CppForm</FileType>
+      <FileType>CppHeader</FileType>
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
