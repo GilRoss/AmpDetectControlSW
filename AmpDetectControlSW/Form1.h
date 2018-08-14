@@ -5,12 +5,14 @@
 #include <conio.h>
 #include <tchar.h>
 #include <iostream>
+#include <msclr\marshal.h>
 
-
+#include "AmpDetectDLL.h"
 #include "PcrProtocol.h"
-#include "DeviceCommDriver.h"
-#include "HostMessages.h"
-//#include "AmpDetectDLL.h"
+
+using namespace System::IO::Ports;
+using namespace msclr::interop;
+
 
 #define BUF_SIZE 256
 
@@ -50,14 +52,13 @@ namespace CppCLR_WinformsProjekt {
 		Form1(void)
 		{
 			InitializeComponent();
-			ErrCode SharedMemInitialize();
 			
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
 			_pPcrProtocol = new PcrProtocol();
-			_devCommDrv = gcnew DeviceCommDriver();
-			_devCommDrv->SetPortId("COM4");
+//			_devCommDrv = gcnew DeviceCommDriver();
+//			_devCommDrv->SetPortId("COM4");
 			PidSelection->SelectedIndex = 1;
 			OpticsTypeCombo->SelectedIndex = 0;
 			Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
@@ -84,7 +85,7 @@ namespace CppCLR_WinformsProjekt {
 	private: System::Windows::Forms::TabControl^  AmpDetectTabs;
 	private: System::Windows::Forms::TabPage^  AmpDetectTab;
 	private: System::Windows::Forms::TabPage^  ProtocolsTab;
-	private: System::UInt32				_nHostDevCommErrCode = ErrCode::kDeviceCommErr;
+	private: System::UInt32				_nHostDevCommErrCode = ErrCode::kNoError;
 	private: System::IO::StreamWriter^			_opticalDataFile;
 	private: System::IO::StreamWriter^			_thermalDataFile;
 	protected:
@@ -98,7 +99,7 @@ namespace CppCLR_WinformsProjekt {
 	private: System::Windows::Forms::DataGridView^  ProtocolDataGrid;
 	private: System::Windows::Forms::RichTextBox^  ProtocolName;
 	private: PcrProtocol* _pPcrProtocol;
-	private: DeviceCommDriver ^ _devCommDrv;
+//	private: DeviceCommDriver ^ _devCommDrv;
 
 
 
@@ -1397,23 +1398,8 @@ private: System::ComponentModel::IContainer^  components;
 		}
 		else
 		{
-			System::IO::StreamReader^ file = gcnew System::IO::StreamReader(SelectedProtocol->Text);
-			System::IO::BinaryReader^ binFile = gcnew System::IO::BinaryReader(file->BaseStream);
-
-			uint8_t arTemp[5 * 1024];
-			array<uint8_t>^ protocolBuf = binFile->ReadBytes(sizeof(arTemp));
-			for (int i = 0; i < binFile->BaseStream->Length; i++)
-				arTemp[i] = protocolBuf[i];
-			*_pPcrProtocol << arTemp;
-			binFile->Close();
-
-			LoadPcrProtocolReq loadReq;
-			HostMsg response;
-			loadReq.SetSiteIdx(0);
-			loadReq.SetPcrProtocol(*_pPcrProtocol);
-
-			//Send selected PCR protocol to instrument.
-			uint32_t nErrCode = _devCommDrv->MsgTransaction(loadReq, &response);
+			marshal_context mc;
+			uint32_t nErrCode = AD_SetPcrProtocol(0, mc.marshal_as<LPCSTR>(SelectedProtocol->Text));
 			if (nErrCode != ErrCode::kNoError)
 			{
 				MessageBox::Show("Could not load PCR protocol.");
@@ -1421,11 +1407,7 @@ private: System::ComponentModel::IContainer^  components;
 			else
 			{
 				//Send "Start" command to instrument.
-				StartRunReq startReq;
-				startReq.SetSiteIdx(0);
-				startReq.SetMeerstetterPidFlg(PidSelection->SelectedIndex != 1);
-				startReq.SetMsgSize(startReq.GetStreamSize());
-				nErrCode = _devCommDrv->MsgTransaction(startReq, &response);
+				ErrCode nErrCode = (ErrCode)AD_StartRun(0);
 				if (nErrCode != ErrCode::kNoError)
 				{
 					MessageBox::Show("Could not start the PCR protocol.");
@@ -1482,11 +1464,7 @@ private: System::ComponentModel::IContainer^  components;
 			if (MessageBox::Show("Stop PCR protocol?", "Confirm Stop", System::Windows::Forms::MessageBoxButtons::OKCancel) == System::Windows::Forms::DialogResult::OK)
 			{
 				//Send "Stop" command to instrument.
-				StopRunReq request;
-				HostMsg response;
-				request.SetSiteIdx(0);
-				request.SetMsgSize(request.GetStreamSize());
-				uint32_t nErrCode = _devCommDrv->MsgTransaction(request, &response);
+				uint32_t nErrCode = AD_StopRun(0);
 				if (nErrCode != ErrCode::kNoError)
 					MessageBox::Show("Could not stop the PCR protocol.");
 			}
@@ -1496,40 +1474,31 @@ private: System::ComponentModel::IContainer^  components;
 	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void SetPidParams_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		SetPidParamsReq	request;
-		HostMsg			response;
-
 		if (CommPortSelection->Text == "")
 			MessageBox::Show("First, select a port.");
 		else
 		{
-			PidParams pidParams;
-			request.SetType(PidType::kTemperature);
-			pidParams.SetKp((uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kTemperature]->Value) * 1000));
-			pidParams.SetKi((uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kTemperature]->Value) * 1000));
-			pidParams.SetKd((uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kTemperature]->Value) * 1000));
-			pidParams.SetSlope((int32_t)(Convert::ToDouble(PidGrid[4, PidType::kTemperature]->Value) * 1000));
-			pidParams.SetYIntercept((int32_t)(Convert::ToDouble(PidGrid[5, PidType::kTemperature]->Value) * 1000));
-			request.SetPidParams(pidParams);
-			_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
+			int nKp, nKi, nKd, nSlope, nYIntercept;
 
-			request.SetType(PidType::kCurrent);
-			pidParams.SetKp((uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kCurrent]->Value) * 1000));
-			pidParams.SetKi((uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kCurrent]->Value) * 1000));
-			pidParams.SetKd((uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kCurrent]->Value) * 1000));
-			pidParams.SetSlope((int32_t)(Convert::ToDouble(PidGrid[4, PidType::kCurrent]->Value) * 1000));
-			pidParams.SetYIntercept((int32_t)(Convert::ToDouble(PidGrid[5, PidType::kCurrent]->Value) * 1000));
-			request.SetPidParams(pidParams);
-			_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
+			nKp			= (uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kTemperature]->Value) * 1000);
+			nKi			= (uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kTemperature]->Value) * 1000);
+			nKd			= (uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kTemperature]->Value) * 1000);
+			nSlope		= (int32_t)(Convert::ToDouble(PidGrid[4, PidType::kTemperature]->Value) * 1000);
+			nYIntercept	= (int32_t)(Convert::ToDouble(PidGrid[5, PidType::kTemperature]->Value) * 1000);
+			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kTemperature, nKp, nKi, nKd, nSlope, nYIntercept);
+
+			nKp			= (uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kCurrent]->Value) * 1000);
+			nKi			= (uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kCurrent]->Value) * 1000);
+			nKd			= (uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kCurrent]->Value) * 1000);
+			nSlope		= (int32_t)(Convert::ToDouble(PidGrid[4, PidType::kCurrent]->Value) * 1000);
+			nYIntercept	= (int32_t)(Convert::ToDouble(PidGrid[5, PidType::kCurrent]->Value) * 1000);
+			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kCurrent, nKp, nKi, nKd, nSlope, nYIntercept);
 		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void AdvancedTab_Enter(System::Object^  sender, System::EventArgs^  e)
 	{
-		GetPidParamsReq	request;
-		GetPidParamsRes	response;
-
 		if (CommPortSelection->Text == "")
 			MessageBox::Show("First, select a port.");
 		else
@@ -1540,42 +1509,32 @@ private: System::ComponentModel::IContainer^  components;
 				PidGrid->Rows->Add(gcnew DataGridViewRow);
 			}
 
-			request.SetType(PidType::kTemperature);
-			_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
-			PidParams pidParams = response.GetPidParams();
-			PidGrid[0, PidType::kTemperature]->Value = "Temperature";
-			PidGrid[1, PidType::kTemperature]->Value = Convert::ToString((float)pidParams.GetKp() / 1000);
-			PidGrid[2, PidType::kTemperature]->Value = Convert::ToString((float)pidParams.GetKi() / 1000);
-			PidGrid[3, PidType::kTemperature]->Value = Convert::ToString((float)pidParams.GetKd() / 1000);
-			PidGrid[4, PidType::kTemperature]->Value = Convert::ToString((float)pidParams.GetSlope() / 1000);
-			PidGrid[5, PidType::kTemperature]->Value = Convert::ToString((float)pidParams.GetYIntercept() / 1000);
+			int nKp, nKi, nKd, nSlope, nYIntercept;
+			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kTemperature, &nKp, &nKi, &nKd, &nSlope, &nYIntercept);
 
-			request.SetType(PidType::kCurrent);
-			_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
-			pidParams = response.GetPidParams();
+			PidGrid[0, PidType::kTemperature]->Value = "Temperature";
+			PidGrid[1, PidType::kTemperature]->Value = Convert::ToString((float)nKp / 1000);
+			PidGrid[2, PidType::kTemperature]->Value = Convert::ToString((float)nKi / 1000);
+			PidGrid[3, PidType::kTemperature]->Value = Convert::ToString((float)nKd / 1000);
+			PidGrid[4, PidType::kTemperature]->Value = Convert::ToString((float)nSlope / 1000);
+			PidGrid[5, PidType::kTemperature]->Value = Convert::ToString((float)nYIntercept / 1000);
+
+			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kCurrent, &nKp, &nKi, &nKd, &nSlope, &nYIntercept);
 			PidGrid[0, PidType::kCurrent]->Value = "Current";
-			PidGrid[1, PidType::kCurrent]->Value = Convert::ToString((float)pidParams.GetKp() / 1000);
-			PidGrid[2, PidType::kCurrent]->Value = Convert::ToString((float)pidParams.GetKi() / 1000);
-			PidGrid[3, PidType::kCurrent]->Value = Convert::ToString((float)pidParams.GetKd() / 1000);
-			PidGrid[4, PidType::kCurrent]->Value = Convert::ToString((float)pidParams.GetSlope() / 1000);
-			PidGrid[5, PidType::kCurrent]->Value = Convert::ToString((float)pidParams.GetYIntercept() / 1000);
+			PidGrid[1, PidType::kCurrent]->Value = Convert::ToString((float)nKp / 1000);
+			PidGrid[2, PidType::kCurrent]->Value = Convert::ToString((float)nKi / 1000);
+			PidGrid[3, PidType::kCurrent]->Value = Convert::ToString((float)nKd / 1000);
+			PidGrid[4, PidType::kCurrent]->Value = Convert::ToString((float)nSlope / 1000);
+			PidGrid[5, PidType::kCurrent]->Value = Convert::ToString((float)nYIntercept / 1000);
 		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void ActuateSetpoint_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		SetManControlSetpointReq	request;
-		HostMsg						response;
-
-		request.SetSiteIdx(0);
-		request.SetSetpoint((int32_t)(Convert::ToDouble(ManControlSetpoint->Text) * 1000));
-		request.SetMsgSize(request.GetStreamSize());
-		uint32_t nErrCode = _devCommDrv->MsgTransaction(request, &response);
+		ErrCode nErrCode = (ErrCode)AD_SetTemperatureSetpoint(0, (int)(Convert::ToDouble(ManControlSetpoint->Text) * 1000));
 		if (nErrCode != ErrCode::kNoError)
-		{
 			MessageBox::Show("Could not start manual control.");
-		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
@@ -1587,23 +1546,22 @@ private: System::ComponentModel::IContainer^  components;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void CommPortSelection_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e)
+	{
+		String^ sTemp = CommPortSelection->Text;
+		sTemp = sTemp->Remove(0, 3); //To isolate the COM number, remove the "COM".
+		AD_Uninitialize();
+		AD_Initialize(1, Convert::ToUInt32(sTemp));
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void StatusTimer_Tick(System::Object^  sender, System::EventArgs^  e)
 	{
-		HostMsg			request(HostMsg::MakeObjId('G', 'S', 't', 't'));
-		GetStatusRes	response;
-
-		_nHostDevCommErrCode = _devCommDrv->MsgTransaction(request, &response);
-		UpdateGUI(response);
+		UpdateGUI();
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void CommPortSelection_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) 
-	{
-		_devCommDrv->SetPortId(CommPortSelection->Text);
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////
-	private: System::Void UpdateGUI(GetStatusRes& statusResponse)
+	private: System::Void UpdateGUI()
 	{
 		if (_nHostDevCommErrCode != ErrCode::kNoError)
 		{
@@ -1620,25 +1578,26 @@ private: System::ComponentModel::IContainer^  components;
 			return;
 		}
 
-		const SysStatus* pSysStatus = statusResponse.GetSysStatusPtr();
-		for (int nSiteIdx = 0; nSiteIdx < (int)pSysStatus->GetNumSites(); nSiteIdx++)
+		for (int nSiteIdx = 0; nSiteIdx < (int)AD_GetNumExpectedSites(); nSiteIdx++)
 		{
+			//Update DLLs system status cache object. This data comes from the specified site.
+			AD_UpdateSysStatusCache(nSiteIdx);
+
 			if (nSiteIdx >= RunStatusGrid->RowCount)
 			{
 				DataGridViewRow^ row = gcnew DataGridViewRow;
 				RunStatusGrid->Rows->Add(row);
 			}
 
-			const SiteStatus& siteStatus = pSysStatus->GetSiteStatus(nSiteIdx);
 			RunStatusGrid[0, nSiteIdx]->Value = Convert::ToString(nSiteIdx + 1);
-			RunStatusGrid[1, nSiteIdx]->Value = siteStatus.GetRunningFlg() ? "Y" : "N";
-			if (siteStatus.GetRunningFlg() == true)
+			RunStatusGrid[1, nSiteIdx]->Value = AD_GetCachedRunningFlg() ? "Y" : "N";
+			if (AD_GetCachedRunningFlg() == true)
 			{
-				RunStatusGrid[2, nSiteIdx]->Value = Convert::ToString(siteStatus.GetSegmentIdx() + 1);
-				RunStatusGrid[3, nSiteIdx]->Value = Convert::ToString(siteStatus.GetCycle() + 1);
-				RunStatusGrid[4, nSiteIdx]->Value = Convert::ToString(siteStatus.GetStepIdx() + 1);
-				RunStatusGrid[5, nSiteIdx]->Value = Convert::ToString((double)siteStatus.GetHoldTimer() / 1000);
-				RunStatusGrid[6, nSiteIdx]->Value = Convert::ToString((double)siteStatus.GetTemperature() / 1000);
+				RunStatusGrid[2, nSiteIdx]->Value = Convert::ToString(AD_GetCachedSegmentIdx() + 1);
+				RunStatusGrid[3, nSiteIdx]->Value = Convert::ToString(AD_GetCachedCycleNum() + 1);
+				RunStatusGrid[4, nSiteIdx]->Value = Convert::ToString(AD_GetCachedStepIdx() + 1);
+				RunStatusGrid[5, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedHoldTimer() / 1000);
+				RunStatusGrid[6, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedTemperature() / 1000);
 			}
 			else
 			{
@@ -1654,77 +1613,67 @@ private: System::ComponentModel::IContainer^  components;
 			Series^ shuttleTempSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[2];
 			Series^ refIlluminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[3];
 			Series^ refDarkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[4];
-			if (siteStatus.GetNumOpticsRecs() > (uint32_t)illuminatedSeries->Points->Count)
+			if (AD_GetCachedNumOpticsRecs() > (int)illuminatedSeries->Points->Count)
 			{
-				GetOpticsRecsReq	request;
-				GetOpticsRecsRes	response;
-				request.SetSiteIdx(0);
-				request.SetFirstRecToReadIdx((uint32_t)illuminatedSeries->Points->Count);
-				request.SetNumRecsToRead(1);
-				uint32_t nErrCode = _devCommDrv->MsgTransaction(request, &response);
-
+				int nFirstRecToReadIdx = (uint32_t)illuminatedSeries->Points->Count;
+				int nMaxRecsToRead = AD_GetCachedNumOpticsRecs() - (int)illuminatedSeries->Points->Count;
+				int nNumRecsReturned = 0;
+				uint32_t nErrCode = AD_UpdateOpticalRecCache(0, nFirstRecToReadIdx, nMaxRecsToRead, &nNumRecsReturned);
 				if (nErrCode == ErrCode::kNoError)
 				{
-					//OpticsRec optRec = response.GetOpticsRec(0);
-					//optRec = siteStatus.GetOpticalRec(i);
-					OpticsRec optRec;
-					for (int i = 0; i < (int)response.GetNumOpticsRecs(); i++)
+					for (int i = 0; i < nNumRecsReturned; i++)
 					{
-						optRec = response.GetOpticsRec(i);
-						illuminatedSeries->Points->AddXY(optRec._nCycleIdx + 1, optRec._nIlluminatedRead);
-						darkSeries->Points->AddXY(optRec._nCycleIdx + 1, optRec._nDarkRead);
-						shuttleTempSeries->Points->AddXY(optRec._nCycleIdx + 1, optRec._nShuttleTemp_mC);
-						refIlluminatedSeries->Points->AddXY(optRec._nCycleIdx + 1, optRec._nRefIlluminatedRead);
-						refDarkSeries->Points->AddXY(optRec._nCycleIdx + 1, optRec._nRefDarkRead);
+						int nCycleNum = AD_GetCachedOpticalRecCycleNum(i);
+						illuminatedSeries->Points->AddXY(nCycleNum, AD_GetCachedOpticalRecIlluminatedRead(i));
+						darkSeries->Points->AddXY(nCycleNum, AD_GetCachedOpticalRecDarkRead(i));
+						shuttleTempSeries->Points->AddXY(nCycleNum, 0);
+						refIlluminatedSeries->Points->AddXY(nCycleNum, AD_GetCachedOpticalRecRefIlluminatedRead(i));
+						refDarkSeries->Points->AddXY(nCycleNum, AD_GetCachedOpticalRecRefDarkRead(i));
 
 						if (_opticalDataFile != nullptr)
 						{
-							_opticalDataFile->WriteLine(optRec._nCycleIdx + "," +
-								optRec._nLedIdx.ToString() + "," +
-								optRec._nDetectorIdx.ToString() + "," +
-								optRec._nIlluminatedRead.ToString() + "," +
-								optRec._nDarkRead.ToString() + "," +
-								optRec._nRefIlluminatedRead.ToString() + "," +
-								optRec._nRefDarkRead.ToString());
+							_opticalDataFile->WriteLine(nCycleNum + "," +
+								(AD_GetCachedOpticalRecLedIdx(i)).ToString() + "," +
+								(AD_GetCachedOpticalRecDetectorIdx(i)).ToString() + "," +
+								(AD_GetCachedOpticalRecIlluminatedRead(i)).ToString() + "," +
+								(AD_GetCachedOpticalRecDarkRead(i)).ToString() + "," +
+								(AD_GetCachedOpticalRecRefIlluminatedRead(i)).ToString() + "," +
+								(AD_GetCachedOpticalRecRefDarkRead(i)).ToString());
 						}
 					}
-					
 				}
 			}
 
-			if (siteStatus.GetNumThermalRecs() != 0)
+			if (AD_GetCachedNumThermalRecs() != 0)
 			{
 				Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
 				Series^ topSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[1];
 				Series^ currentSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[2];
 				Series^ sampleSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[3];
 
-				HostMsg				request(StreamingObj::MakeObjId('G', 'T', 'h', 'm'));
-				GetThermalRecsRes	response;
-				uint32_t nErrCode = _devCommDrv->MsgTransaction(request, &response);
-
-				ThermalRec thermRec;
-				for (int i = 0; i < (int)response.GetNumThermalRecs(); i++)
+				int nNumRecsReturned = 0;
+				uint32_t nErrCode = AD_UpdateThermalRecCache(0, 0, AD_GetCachedNumThermalRecs(), &nNumRecsReturned);
+				for (int i = 0; i < AD_GetCachedNumThermalRecs(); i++)
 				{
-					thermRec = response.GetThermalRec(i);
-					blockSeries->Points->AddXY(thermRec._nTimeTag_ms, thermRec._nChan1_mC);
-					sampleSeries->Points->AddXY(thermRec._nTimeTag_ms, thermRec._nChan2_mC);
-					topSeries->Points->AddXY(thermRec._nTimeTag_ms, thermRec._nChan3_mC);
-					currentSeries->Points->AddXY(thermRec._nTimeTag_ms, thermRec._nCurrent_mA);
+					int	nTimeTag = AD_GetCachedThermalRecTimeTag(i);
+					blockSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan1(i));
+					sampleSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan2(i));
+					topSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan3(i));
+					currentSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecCurrent(i));
 
 					if (_thermalDataFile != nullptr)
 					{
-						_thermalDataFile->WriteLine(thermRec._nTimeTag_ms.ToString() + "," +
-							thermRec._nChan1_mC.ToString() + "," +
-							thermRec._nChan2_mC.ToString() + "," +
-							thermRec._nChan3_mC.ToString() + "," +
-							thermRec._nChan4_mC.ToString() + "," +
-							thermRec._nCurrent_mA.ToString());
+						_thermalDataFile->WriteLine(nTimeTag.ToString() + "," +
+							(AD_GetCachedThermalRecChan1(i)).ToString() + "," +
+							(AD_GetCachedThermalRecChan2(i)).ToString() + "," +
+							(AD_GetCachedThermalRecChan3(i)).ToString() + "," +
+							(AD_GetCachedThermalRecChan4(i)).ToString() + "," +
+							(AD_GetCachedThermalRecCurrent(i)).ToString());
 					}
 				}
 			}
 
-			if (siteStatus.GetRunningFlg() == false)
+			if (AD_GetCachedRunningFlg() == false)
 			{
 				if (_opticalDataFile != nullptr)
 					delete (IDisposable^)(_opticalDataFile);

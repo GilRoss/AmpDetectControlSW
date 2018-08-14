@@ -33,9 +33,6 @@
     <ClInclude Include="..\..\Shared\CommMessages\HostMessages.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Shared\CommMessages\HostMsgFactory.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Shared\CommMessages\PcrProtocol.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -48,12 +45,15 @@
     <ClInclude Include="DeviceCommDriver.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Shared\CommMessages\Common.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc">
       <Filter>Ressourcendateien</Filter>
     </ResourceCompile>
-    <ResourceCompile Include="GizmoSW.rc">
+    <ResourceCompile Include="AmpDetectControlSW.rc">
       <Filter>Ressourcendateien</Filter>
     </ResourceCompile>
   </ItemGroup>

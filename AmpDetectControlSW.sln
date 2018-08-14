@@ -11,6 +11,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AmpDetectControlSW", "AmpDe
 	EndProjectSection
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AmpDetectControlSWInstaller", "AmpDetectControlSWInstaller\AmpDetectControlSWInstaller.vdproj", "{9EC48160-5546-448E-B046-5A6DCDC5894F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D89AB9D7-8745-4A97-B4AC-D0906F89E522} = {D89AB9D7-8745-4A97-B4AC-D0906F89E522}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,24 +27,24 @@ Global
 		{D89AB9D7-8745-4A97-B4AC-D0906F89E522}.Debug|x64.Build.0 = Debug|x64
 		{D89AB9D7-8745-4A97-B4AC-D0906F89E522}.Debug|x86.ActiveCfg = Debug|Win32
 		{D89AB9D7-8745-4A97-B4AC-D0906F89E522}.Debug|x86.Build.0 = Debug|Win32
-		{D89AB9D7-8745-4A97-B4AC-D0906F89E522}.Release|x64.ActiveCfg = Debug|x64
-		{D89AB9D7-8745-4A97-B4AC-D0906F89E522}.Release|x64.Build.0 = Debug|x64
+		{D89AB9D7-8745-4A97-B4AC-D0906F89E522}.Release|x64.ActiveCfg = Release|x64
+		{D89AB9D7-8745-4A97-B4AC-D0906F89E522}.Release|x64.Build.0 = Release|x64
 		{D89AB9D7-8745-4A97-B4AC-D0906F89E522}.Release|x86.ActiveCfg = Release|Win32
 		{D89AB9D7-8745-4A97-B4AC-D0906F89E522}.Release|x86.Build.0 = Release|Win32
 		{5BBE4A19-C4CB-4DFC-93BB-372D2F248D48}.Debug|x64.ActiveCfg = Debug|x64
 		{5BBE4A19-C4CB-4DFC-93BB-372D2F248D48}.Debug|x64.Build.0 = Debug|x64
 		{5BBE4A19-C4CB-4DFC-93BB-372D2F248D48}.Debug|x86.ActiveCfg = Debug|Win32
 		{5BBE4A19-C4CB-4DFC-93BB-372D2F248D48}.Debug|x86.Build.0 = Debug|Win32
-		{5BBE4A19-C4CB-4DFC-93BB-372D2F248D48}.Release|x64.ActiveCfg = Debug|x64
-		{5BBE4A19-C4CB-4DFC-93BB-372D2F248D48}.Release|x64.Build.0 = Debug|x64
+		{5BBE4A19-C4CB-4DFC-93BB-372D2F248D48}.Release|x64.ActiveCfg = Release|x64
+		{5BBE4A19-C4CB-4DFC-93BB-372D2F248D48}.Release|x64.Build.0 = Release|x64
 		{5BBE4A19-C4CB-4DFC-93BB-372D2F248D48}.Release|x86.ActiveCfg = Release|Win32
 		{5BBE4A19-C4CB-4DFC-93BB-372D2F248D48}.Release|x86.Build.0 = Release|Win32
 		{9EC48160-5546-448E-B046-5A6DCDC5894F}.Debug|x64.ActiveCfg = Debug
 		{9EC48160-5546-448E-B046-5A6DCDC5894F}.Debug|x64.Build.0 = Debug
 		{9EC48160-5546-448E-B046-5A6DCDC5894F}.Debug|x86.ActiveCfg = Debug
 		{9EC48160-5546-448E-B046-5A6DCDC5894F}.Debug|x86.Build.0 = Debug
-		{9EC48160-5546-448E-B046-5A6DCDC5894F}.Release|x64.ActiveCfg = Debug
-		{9EC48160-5546-448E-B046-5A6DCDC5894F}.Release|x64.Build.0 = Debug
+		{9EC48160-5546-448E-B046-5A6DCDC5894F}.Release|x64.ActiveCfg = Release
+		{9EC48160-5546-448E-B046-5A6DCDC5894F}.Release|x64.Build.0 = Release
 		{9EC48160-5546-448E-B046-5A6DCDC5894F}.Release|x86.ActiveCfg = Release
 		{9EC48160-5546-448E-B046-5A6DCDC5894F}.Release|x86.Build.0 = Release
 	EndGlobalSection
