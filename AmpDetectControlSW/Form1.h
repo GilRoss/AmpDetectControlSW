@@ -1599,14 +1599,14 @@ namespace CppCLR_WinformsProjekt {
 			}
 
 			RunStatusGrid[0, nSiteIdx]->Value = Convert::ToString(nSiteIdx + 1);
-			RunStatusGrid[1, nSiteIdx]->Value = AD_GetCachedRunningFlg() ? "Y" : "N";
-			if (AD_GetCachedRunningFlg() == true)
+			RunStatusGrid[1, nSiteIdx]->Value = AD_GetCachedRunningFlg(nSiteIdx) ? "Y" : "N";
+			if (AD_GetCachedRunningFlg(nSiteIdx) == true)
 			{
-				RunStatusGrid[2, nSiteIdx]->Value = Convert::ToString(AD_GetCachedSegmentIdx() + 1);
-				RunStatusGrid[3, nSiteIdx]->Value = Convert::ToString(AD_GetCachedCycleNum() + 1);
-				RunStatusGrid[4, nSiteIdx]->Value = Convert::ToString(AD_GetCachedStepIdx() + 1);
-				RunStatusGrid[5, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedHoldTimer() / 1000);
-				RunStatusGrid[6, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedTemperature() / 1000);
+				RunStatusGrid[2, nSiteIdx]->Value = Convert::ToString(AD_GetCachedSegmentIdx(nSiteIdx) + 1);
+				RunStatusGrid[3, nSiteIdx]->Value = Convert::ToString(AD_GetCachedCycleNum(nSiteIdx));
+				RunStatusGrid[4, nSiteIdx]->Value = Convert::ToString(AD_GetCachedStepIdx(nSiteIdx) + 1);
+				RunStatusGrid[5, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedHoldTimer(nSiteIdx) / 1000);
+				RunStatusGrid[6, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedTemperature(nSiteIdx) / 1000);
 			}
 			else
 			{
@@ -1622,38 +1622,38 @@ namespace CppCLR_WinformsProjekt {
 			Series^ shuttleTempSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[2];
 			Series^ refIlluminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[3];
 			Series^ refDarkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[4];
-			if (AD_GetCachedNumOpticsRecs() > (int)illuminatedSeries->Points->Count)
+			if (AD_GetCachedNumOpticsRecs(nSiteIdx) > (int)illuminatedSeries->Points->Count)
 			{
 				int nFirstRecToReadIdx = (uint32_t)illuminatedSeries->Points->Count;
-				int nMaxRecsToRead = AD_GetCachedNumOpticsRecs() - (int)illuminatedSeries->Points->Count;
+				int nMaxRecsToRead = AD_GetCachedNumOpticsRecs(nSiteIdx) - (int)illuminatedSeries->Points->Count;
 				int nNumRecsReturned = 0;
 				uint32_t nErrCode = AD_UpdateOpticalRecCache(0, nFirstRecToReadIdx, nMaxRecsToRead, &nNumRecsReturned);
 				if (nErrCode == ErrCode::kNoError)
 				{
 					for (int i = 0; i < nNumRecsReturned; i++)
 					{
-						int nCycleNum = AD_GetCachedOpticalRecCycleNum(i);
-						illuminatedSeries->Points->AddXY(nCycleNum, AD_GetCachedOpticalRecIlluminatedRead(i));
-						darkSeries->Points->AddXY(nCycleNum, AD_GetCachedOpticalRecDarkRead(i));
-						shuttleTempSeries->Points->AddXY(nCycleNum, 0);
-						refIlluminatedSeries->Points->AddXY(nCycleNum, AD_GetCachedOpticalRecRefIlluminatedRead(i));
-						refDarkSeries->Points->AddXY(nCycleNum, AD_GetCachedOpticalRecRefDarkRead(i));
+						int nCycleNum = AD_GetCachedOpticalRecCycleNum(nSiteIdx, i);
+						illuminatedSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecIlluminatedRead(nSiteIdx, i));
+						darkSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecDarkRead(nSiteIdx, i));
+						shuttleTempSeries->Points->AddXY(nCycleNum - 1, 0);
+						refIlluminatedSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecRefIlluminatedRead(nSiteIdx, i));
+						refDarkSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecRefDarkRead(nSiteIdx, i));
 
 						if (_opticalDataFile != nullptr)
 						{
-							_opticalDataFile->WriteLine(nCycleNum + "," +
-								(AD_GetCachedOpticalRecLedIdx(i)).ToString() + "," +
-								(AD_GetCachedOpticalRecDetectorIdx(i)).ToString() + "," +
-								(AD_GetCachedOpticalRecIlluminatedRead(i)).ToString() + "," +
-								(AD_GetCachedOpticalRecDarkRead(i)).ToString() + "," +
-								(AD_GetCachedOpticalRecRefIlluminatedRead(i)).ToString() + "," +
-								(AD_GetCachedOpticalRecRefDarkRead(i)).ToString());
+							_opticalDataFile->WriteLine((nCycleNum - 1) + "," +
+								(AD_GetCachedOpticalRecLedIdx(nSiteIdx, i)).ToString() + "," +
+								(AD_GetCachedOpticalRecDetectorIdx(nSiteIdx, i)).ToString() + "," +
+								(AD_GetCachedOpticalRecIlluminatedRead(nSiteIdx, i)).ToString() + "," +
+								(AD_GetCachedOpticalRecDarkRead(nSiteIdx, i)).ToString() + "," +
+								(AD_GetCachedOpticalRecRefIlluminatedRead(nSiteIdx, i)).ToString() + "," +
+								(AD_GetCachedOpticalRecRefDarkRead(nSiteIdx, i)).ToString());
 						}
 					}
 				}
 			}
 
-			if (AD_GetCachedNumThermalRecs() != 0)
+			if (AD_GetCachedNumThermalRecs(nSiteIdx) != 0)
 			{
 				Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
 				Series^ topSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[1];
@@ -1661,28 +1661,28 @@ namespace CppCLR_WinformsProjekt {
 				Series^ sampleSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[3];
 
 				int nNumRecsReturned = 0;
-				uint32_t nErrCode = AD_UpdateThermalRecCache(0, 0, AD_GetCachedNumThermalRecs(), &nNumRecsReturned);
-				for (int i = 0; i < AD_GetCachedNumThermalRecs(); i++)
+				uint32_t nErrCode = AD_UpdateThermalRecCache(0, 0, AD_GetCachedNumThermalRecs(nSiteIdx), &nNumRecsReturned);
+				for (int i = 0; i < AD_GetCachedNumThermalRecs(nSiteIdx); i++)
 				{
-					int	nTimeTag = AD_GetCachedThermalRecTimeTag(i);
-					blockSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan1(i));
-					sampleSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan2(i));
-					topSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan3(i));
-					currentSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecCurrent(i));
+					int	nTimeTag = AD_GetCachedThermalRecTimeTag(nSiteIdx, i);
+					blockSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan1(nSiteIdx, i));
+					sampleSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan2(nSiteIdx, i));
+					topSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan3(nSiteIdx, i));
+					currentSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecCurrent(nSiteIdx, i));
 
 					if (_thermalDataFile != nullptr)
 					{
 						_thermalDataFile->WriteLine(nTimeTag.ToString() + "," +
-							(AD_GetCachedThermalRecChan1(i)).ToString() + "," +
-							(AD_GetCachedThermalRecChan2(i)).ToString() + "," +
-							(AD_GetCachedThermalRecChan3(i)).ToString() + "," +
-							(AD_GetCachedThermalRecChan4(i)).ToString() + "," +
-							(AD_GetCachedThermalRecCurrent(i)).ToString());
+							(AD_GetCachedThermalRecChan1(nSiteIdx, i)).ToString() + "," +
+							(AD_GetCachedThermalRecChan2(nSiteIdx, i)).ToString() + "," +
+							(AD_GetCachedThermalRecChan3(nSiteIdx, i)).ToString() + "," +
+							(AD_GetCachedThermalRecChan4(nSiteIdx, i)).ToString() + "," +
+							(AD_GetCachedThermalRecCurrent(nSiteIdx, i)).ToString());
 					}
 				}
 			}
 
-			if (AD_GetCachedRunningFlg() == false)
+			if (AD_GetCachedRunningFlg(nSiteIdx) == false)
 			{
 				if (_opticalDataFile != nullptr)
 					delete (IDisposable^)(_opticalDataFile);
