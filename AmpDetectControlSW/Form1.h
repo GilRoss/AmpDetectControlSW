@@ -60,7 +60,7 @@ namespace CppCLR_WinformsProjekt {
 		Form1(void)
 		{
 			InitializeComponent();
-//			InitializeCamera();
+			//			InitializeCamera();
 
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
@@ -1560,7 +1560,7 @@ namespace CppCLR_WinformsProjekt {
 		String^ sTemp = CommPortSelection->Text;
 		sTemp = sTemp->Remove(0, 3); //To isolate the COM number, remove the "COM".
 		AD_Uninitialize();
-		AD_Initialize(1, Convert::ToUInt32(sTemp));
+		AD_Initialize(Convert::ToUInt32(sTemp), 1);
 	}
 
 			 /////////////////////////////////////////////////////////////////////////////////
@@ -1586,6 +1586,9 @@ namespace CppCLR_WinformsProjekt {
 			}
 			return;
 		}
+
+		if (AD_GetInitializedFlg() == false)
+			return;
 
 		for (int nSiteIdx = 0; nSiteIdx < (int)AD_GetNumExpectedSites(); nSiteIdx++)
 		{
