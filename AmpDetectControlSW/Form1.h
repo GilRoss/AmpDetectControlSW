@@ -1665,7 +1665,7 @@ namespace CppCLR_WinformsProjekt {
 
 				int nNumRecsReturned = 0;
 				uint32_t nErrCode = AD_UpdateThermalRecCache(0, 0, AD_GetCachedNumThermalRecs(nSiteIdx), &nNumRecsReturned);
-				for (int i = 0; i < AD_GetCachedNumThermalRecs(nSiteIdx); i++)
+				for (int i = 0; i < nNumRecsReturned; i++)
 				{
 					int	nTimeTag = AD_GetCachedThermalRecTimeTag(nSiteIdx, i);
 					blockSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan1(nSiteIdx, i));
