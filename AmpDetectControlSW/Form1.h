@@ -9,6 +9,7 @@
 
 #include "AmpDetectDLL.h"
 #include "PcrProtocol.h"
+HINSTANCE cameraDll;
 
 using namespace System::IO::Ports;
 using namespace msclr::interop;
@@ -36,10 +37,13 @@ using namespace System::Windows::Forms::DataVisualization::Charting;
 
 //bool GrabSucceddedStatus(void);
 typedef bool (WINAPI* GrabSucceededStatus)(void);
-//int CameraCapture(int cameraID, int exposure);
-typedef int (WINAPI* CameraCapture)(int cameraID, int exposure, int ledIntensity);
+//void CameraCapture(int cameraID, int exposure);
+typedef void (WINAPI* CameraCapture)(int cameraID, int exposure, int ledIntensity);
+// int GetCameraCaptureError(void);
+typedef int (WINAPI* GetCameraCaptureError)(void);
 GrabSucceededStatus imageCaptureStatus;
 CameraCapture captureImage;
+GetCameraCaptureError cameraError;
 bool dllFuncValid = false;
 
 namespace CppCLR_WinformsProjekt {
@@ -60,7 +64,7 @@ namespace CppCLR_WinformsProjekt {
 		Form1(void)
 		{
 			InitializeComponent();
-			//			InitializeCamera();
+			InitializeCamera();
 
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
@@ -1569,6 +1573,75 @@ namespace CppCLR_WinformsProjekt {
 		UpdateGUI();
 	}
 
+	private: System::Void InitializeCamera(void)
+	{
+		cameraDll = LoadLibrary(TEXT("BaslerMultiCamera.dll"));
+		if (cameraDll != NULL)
+		{
+			imageCaptureStatus = (GrabSucceededStatus)GetProcAddress(cameraDll, "GrabSucceededStatus");
+			captureImage = (CameraCapture)GetProcAddress(cameraDll, "CameraCapture");
+			cameraError = (GetCameraCaptureError)GetProcAddress(cameraDll, "GetCameraCaptureError");
+			if ((NULL != imageCaptureStatus) && (NULL != captureImage) && (NULL != cameraError))
+			{
+				dllFuncValid = true;
+			}
+		}
+	}
+
+			 /////////////////////////////////////////////////////////////////////////////////
+	private: System::Void CameraControl(int nSiteIdx)
+	{
+		int nError = 0;
+		static uint32_t camCaptureStarted = 0;
+		static bool camCaptureDone = false;
+		int cameraCaptureError = 0;
+		uint32_t testFlag = 0;
+
+		// By default place nSiteIdx to 0, since there will be one site per Ampdetect unit
+		if (dllFuncValid)
+		{
+			camCaptureDone = imageCaptureStatus();
+		}
+
+		// Check if camera capture has not started
+		if (!camCaptureStarted)
+		{
+			// Is Paused flag set in firmware
+			if (AD_GetCachedPausedFlg(nSiteIdx))
+			{
+				// Is software ready to take image?
+				if (AD_GetCachedCaptureCameraImageFlg(nSiteIdx))
+				{
+					// If camera is free, initiate image capture - check camera status using camera ID
+					if (camCaptureDone)
+					{
+						if (dllFuncValid)
+						{
+							camCaptureStarted = 1;
+							// Send command to dll to capture image
+							captureImage(AD_GetCachedCameraIdx(nSiteIdx), AD_GetCachedOpticsDetectorExposureTime(nSiteIdx), AD_GetCachedLedIntensity(nSiteIdx));
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			// Camera is done grabbing image
+			if (camCaptureDone)
+			{
+				//Send "Pause" command to instrument.
+				camCaptureStarted = 0;
+				cameraCaptureError = cameraError();
+				if (cameraCaptureError != 0)
+				{
+					MessageBox::Show("Could not find specified camera");
+				}
+				uint32_t nErrCode = AD_PauseRun(0);
+			}
+		}
+	}
+
 			 /////////////////////////////////////////////////////////////////////////////////
 	private: System::Void UpdateGUI()
 	{
@@ -1594,6 +1667,7 @@ namespace CppCLR_WinformsProjekt {
 		{
 			//Update DLLs system status cache object. This data comes from the specified site.
 			AD_UpdateSysStatusCache(nSiteIdx);
+			CameraControl(nSiteIdx);
 
 			if (nSiteIdx >= RunStatusGrid->RowCount)
 			{
