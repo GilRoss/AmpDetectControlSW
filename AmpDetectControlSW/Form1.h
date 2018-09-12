@@ -1637,7 +1637,7 @@ namespace CppCLR_WinformsProjekt {
 				{
 					MessageBox::Show("Could not find specified camera");
 				}
-				uint32_t nErrCode = AD_PauseRun(0);
+				uint32_t nErrCode = AD_PauseRun(nSiteIdx);
 			}
 		}
 	}
