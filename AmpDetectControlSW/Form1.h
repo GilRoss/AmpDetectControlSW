@@ -1691,7 +1691,7 @@ namespace CppCLR_WinformsProjekt {
 				RunStatusGrid[3, nSiteIdx]->Value = "";
 				RunStatusGrid[4, nSiteIdx]->Value = "";
 				RunStatusGrid[5, nSiteIdx]->Value = "";
-				RunStatusGrid[6, nSiteIdx]->Value = "";
+				RunStatusGrid[6, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedTemperature(nSiteIdx) / 1000);
 			}
 
 			Series^ illuminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[0];
