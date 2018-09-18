@@ -1746,7 +1746,7 @@ namespace CppCLR_WinformsProjekt {
 					blockSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan1(nSiteIdx, i));
 					sampleSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan2(nSiteIdx, i));
 					topSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan3(nSiteIdx, i));
-					currentSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecCurrent(nSiteIdx, i));
+					currentSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecCurrent(nSiteIdx, i) * 10);
 
 					if (_thermalDataFile != nullptr)
 					{
@@ -1755,7 +1755,7 @@ namespace CppCLR_WinformsProjekt {
 							(AD_GetCachedThermalRecChan2(nSiteIdx, i)).ToString() + "," +
 							(AD_GetCachedThermalRecChan3(nSiteIdx, i)).ToString() + "," +
 							(AD_GetCachedThermalRecChan4(nSiteIdx, i)).ToString() + "," +
-							(AD_GetCachedThermalRecCurrent(nSiteIdx, i)).ToString());
+							(AD_GetCachedThermalRecCurrent(nSiteIdx, i) * 10).ToString());
 					}
 				}
 			}

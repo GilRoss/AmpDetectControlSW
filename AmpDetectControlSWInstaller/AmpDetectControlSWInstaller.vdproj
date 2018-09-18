@@ -170,15 +170,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AmpDetectControlSWInstaller"
-        "ProductCode" = "8:{073D1001-BF58-4F97-B7D3-9EEDA0250D88}"
-        "PackageCode" = "8:{9B65EF35-462E-4873-A1CB-ABF4A6125C90}"
+        "ProductCode" = "8:{90878F40-11C9-4DBC-B8DA-550B3E29CDB5}"
+        "PackageCode" = "8:{26D9D155-125C-4396-B32B-B7046D1523A3}"
         "UpgradeCode" = "8:{67EE22AE-38FC-4203-978B-C50001925AA3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.1"
+        "ProductVersion" = "8:1.0.2"
         "Manufacturer" = "8:Licence Owner"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -692,7 +692,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6F67BA6E828F4DD3B52BA926D517EDDD"
             {
-            "SourcePath" = "8:..\\x64\\Debug\\AmpDetectControlSW.exe"
+            "SourcePath" = "8:..\\Win32\\Release\\AmpDetectControlSW.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_8801ADA16F984EC5AD750EADF9D79302"
