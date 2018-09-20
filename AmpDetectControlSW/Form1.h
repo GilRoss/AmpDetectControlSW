@@ -1492,20 +1492,20 @@ namespace CppCLR_WinformsProjekt {
 			MessageBox::Show("First, select a port.");
 		else
 		{
-			int nKp, nKi, nKd, nSlope, nYIntercept;
+			float nKp, nKi, nKd, nSlope, nYIntercept;
 
-			nKp = (uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kTemperature]->Value) * 1000);
-			nKi = (uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kTemperature]->Value) * 1000);
-			nKd = (uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kTemperature]->Value) * 1000);
-			nSlope = (int32_t)(Convert::ToDouble(PidGrid[4, PidType::kTemperature]->Value) * 1000);
-			nYIntercept = (int32_t)(Convert::ToDouble(PidGrid[5, PidType::kTemperature]->Value) * 1000);
+			nKp = (float)Convert::ToDouble(PidGrid[1, PidType::kTemperature]->Value);
+			nKi = (float)Convert::ToDouble(PidGrid[2, PidType::kTemperature]->Value);
+			nKd = (float)Convert::ToDouble(PidGrid[3, PidType::kTemperature]->Value);
+			nSlope = (float)Convert::ToDouble(PidGrid[4, PidType::kTemperature]->Value);
+			nYIntercept = (float)Convert::ToDouble(PidGrid[5, PidType::kTemperature]->Value);
 			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kTemperature, nKp, nKi, nKd, nSlope, nYIntercept);
 
-			nKp = (uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kCurrent]->Value) * 1000);
-			nKi = (uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kCurrent]->Value) * 1000);
-			nKd = (uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kCurrent]->Value) * 1000);
-			nSlope = (int32_t)(Convert::ToDouble(PidGrid[4, PidType::kCurrent]->Value) * 1000);
-			nYIntercept = (int32_t)(Convert::ToDouble(PidGrid[5, PidType::kCurrent]->Value) * 1000);
+			nKp = (float)Convert::ToDouble(PidGrid[1, PidType::kCurrent]->Value);
+			nKi = (float)Convert::ToDouble(PidGrid[2, PidType::kCurrent]->Value);
+			nKd = (float)Convert::ToDouble(PidGrid[3, PidType::kCurrent]->Value);
+			nSlope = (float)Convert::ToDouble(PidGrid[4, PidType::kCurrent]->Value);
+			nYIntercept = (float)Convert::ToDouble(PidGrid[5, PidType::kCurrent]->Value);
 			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kCurrent, nKp, nKi, nKd, nSlope, nYIntercept);
 		}
 	}
@@ -1523,23 +1523,23 @@ namespace CppCLR_WinformsProjekt {
 				PidGrid->Rows->Add(gcnew DataGridViewRow);
 			}
 
-			int nKp, nKi, nKd, nSlope, nYIntercept;
+			float nKp, nKi, nKd, nSlope, nYIntercept;
 			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kTemperature, &nKp, &nKi, &nKd, &nSlope, &nYIntercept);
 
 			PidGrid[0, PidType::kTemperature]->Value = "Temperature";
-			PidGrid[1, PidType::kTemperature]->Value = Convert::ToString((float)nKp / 1000);
-			PidGrid[2, PidType::kTemperature]->Value = Convert::ToString((float)nKi / 1000);
-			PidGrid[3, PidType::kTemperature]->Value = Convert::ToString((float)nKd / 1000);
-			PidGrid[4, PidType::kTemperature]->Value = Convert::ToString((float)nSlope / 1000);
-			PidGrid[5, PidType::kTemperature]->Value = Convert::ToString((float)nYIntercept / 1000);
+			PidGrid[1, PidType::kTemperature]->Value = Convert::ToString(nKp);
+			PidGrid[2, PidType::kTemperature]->Value = Convert::ToString(nKi);
+			PidGrid[3, PidType::kTemperature]->Value = Convert::ToString(nKd);
+			PidGrid[4, PidType::kTemperature]->Value = Convert::ToString(nSlope);
+			PidGrid[5, PidType::kTemperature]->Value = Convert::ToString(nYIntercept);
 
 			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kCurrent, &nKp, &nKi, &nKd, &nSlope, &nYIntercept);
 			PidGrid[0, PidType::kCurrent]->Value = "Current";
-			PidGrid[1, PidType::kCurrent]->Value = Convert::ToString((float)nKp / 1000);
-			PidGrid[2, PidType::kCurrent]->Value = Convert::ToString((float)nKi / 1000);
-			PidGrid[3, PidType::kCurrent]->Value = Convert::ToString((float)nKd / 1000);
-			PidGrid[4, PidType::kCurrent]->Value = Convert::ToString((float)nSlope / 1000);
-			PidGrid[5, PidType::kCurrent]->Value = Convert::ToString((float)nYIntercept / 1000);
+			PidGrid[1, PidType::kCurrent]->Value = Convert::ToString(nKp);
+			PidGrid[2, PidType::kCurrent]->Value = Convert::ToString(nKi);
+			PidGrid[3, PidType::kCurrent]->Value = Convert::ToString(nKd);
+			PidGrid[4, PidType::kCurrent]->Value = Convert::ToString(nSlope);
+			PidGrid[5, PidType::kCurrent]->Value = Convert::ToString(nYIntercept);
 		}
 	}
 
