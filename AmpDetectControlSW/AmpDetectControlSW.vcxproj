@@ -164,9 +164,7 @@
     <ClInclude Include="..\..\Shared\CommMessages\PcrProtocol.h" />
     <ClInclude Include="..\..\Shared\CommMessages\StreamingObj.h" />
     <ClInclude Include="..\..\Shared\CommMessages\SysStatus.h" />
-    <ClInclude Include="Form1.h">
-      <FileType>CppHeader</FileType>
-    </ClInclude>
+    <ClInclude Include="Form1.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="stdafx.h" />
@@ -188,14 +186,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.h</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

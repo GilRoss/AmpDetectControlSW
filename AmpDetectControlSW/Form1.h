@@ -10,31 +10,16 @@
 
 #include "AmpDetectDLL.h"
 #include "PcrProtocol.h"
+#include "Common.h"
 HINSTANCE cameraDll;
 
 using namespace System::IO::Ports;
 using namespace msclr::interop;
-
-
-#define BUF_SIZE 256
-
-typedef struct {
-	uint8_t _nCameraIndex;
-	uint8_t _nCameraCaptureStart;
-	uint8_t _nCameraCaptureDone;
-}CameraStatus;
-
-typedef struct {
-	HANDLE hFileMap;
-	CameraStatus *camCaptureStatus;
-	char MapName[BUF_SIZE];
-	size_t size;
-}CameraStatusHeader;
+using namespace System::Windows::Forms::DataVisualization::Charting;
 
 CameraStatusHeader camStatusHdr;
 CameraStatus camStatus;
 
-using namespace System::Windows::Forms::DataVisualization::Charting;
 
 //bool GrabSucceddedStatus(void);
 typedef bool (WINAPI* GrabSucceededStatus)(void);
@@ -71,8 +56,6 @@ namespace CppCLR_WinformsProjekt {
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
 			_pPcrProtocol = new PcrProtocol();
-			//			_devCommDrv = gcnew DeviceCommDriver();
-			//			_devCommDrv->SetPortId("COM4");
 			PidSelection->SelectedIndex = 1;
 			OpticsTypeCombo->SelectedIndex = 0;
 			Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
