@@ -73,9 +73,4 @@
       <Filter>Ressourcendateien</Filter>
     </Image>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Form1.resx">
-      <Filter>Ressourcendateien</Filter>
-    </EmbeddedResource>
-  </ItemGroup>
 </Project>

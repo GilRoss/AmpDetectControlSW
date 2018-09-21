@@ -17,9 +17,21 @@ using namespace System::IO::Ports;
 using namespace msclr::interop;
 using namespace System::Windows::Forms::DataVisualization::Charting;
 
+typedef struct {
+	uint8_t _nCameraIndex;
+	uint8_t _nCameraCaptureStart;
+	uint8_t _nCameraCaptureDone;
+}CameraStatus;
+
+typedef struct {
+	HANDLE hFileMap;
+	CameraStatus *camCaptureStatus;
+	char MapName[256];
+	size_t size;
+}CameraStatusHeader;
+
 CameraStatusHeader camStatusHdr;
 CameraStatus camStatus;
-
 
 //bool GrabSucceddedStatus(void);
 typedef bool (WINAPI* GrabSucceededStatus)(void);
