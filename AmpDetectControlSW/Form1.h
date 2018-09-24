@@ -1429,6 +1429,13 @@ namespace CppCLR_WinformsProjekt {
 				{
 					DateTime^ today = DateTime::Now;
 					_opticalDataFile = gcnew System::IO::StreamWriter(SelectedDataFolder->Text + "\\" + today->ToString("yyyyMMddhhmmss") + "_optical.csv");
+					_opticalDataFile->WriteLine("Time (ms)" + "," +
+						"Led Index" + "," +
+						"Detector Index" + "," +
+						"Illum. Read" + "," +
+						"Dark Read" + "," +
+						"Ref. Illum. Read" + "," +
+						"Ref. Dark Read");
 					_thermalDataFile = gcnew System::IO::StreamWriter(SelectedDataFolder->Text + "\\" + today->ToString("yyyyMMddhhmmss") + "_thermal.csv");
 					_thermalDataFile->WriteLine("Time (ms)" + "," +
 						"Block (mC)" + "," +
