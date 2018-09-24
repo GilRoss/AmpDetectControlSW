@@ -5,17 +5,17 @@
 #include <conio.h>
 #include <tchar.h>
 #include <iostream>
+#include <fstream>
 #include <msclr\marshal.h>
 
 #include "AmpDetectDLL.h"
 #include "PcrProtocol.h"
+#include "Common.h"
 HINSTANCE cameraDll;
 
 using namespace System::IO::Ports;
 using namespace msclr::interop;
-
-
-#define BUF_SIZE 256
+using namespace System::Windows::Forms::DataVisualization::Charting;
 
 typedef struct {
 	uint8_t _nCameraIndex;
@@ -26,14 +26,12 @@ typedef struct {
 typedef struct {
 	HANDLE hFileMap;
 	CameraStatus *camCaptureStatus;
-	char MapName[BUF_SIZE];
+	char MapName[256];
 	size_t size;
 }CameraStatusHeader;
 
 CameraStatusHeader camStatusHdr;
 CameraStatus camStatus;
-
-using namespace System::Windows::Forms::DataVisualization::Charting;
 
 //bool GrabSucceddedStatus(void);
 typedef bool (WINAPI* GrabSucceededStatus)(void);
@@ -70,8 +68,6 @@ namespace CppCLR_WinformsProjekt {
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
 			_pPcrProtocol = new PcrProtocol();
-			//			_devCommDrv = gcnew DeviceCommDriver();
-			//			_devCommDrv->SetPortId("COM4");
 			PidSelection->SelectedIndex = 1;
 			OpticsTypeCombo->SelectedIndex = 0;
 			Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
@@ -205,10 +201,12 @@ namespace CppCLR_WinformsProjekt {
 	private: System::Windows::Forms::RichTextBox^  SelectedDataFolder;
 
 	private: System::Windows::Forms::FolderBrowserDialog^  SelectDataFolderDlg;
-	private: System::Windows::Forms::Button^  ActuateSetpoint;
+private: System::Windows::Forms::Button^  ActuateTemperature;
+
 
 	private: System::Windows::Forms::Label^  label5;
-	private: System::Windows::Forms::TextBox^  ManControlSetpoint;
+private: System::Windows::Forms::TextBox^  TemperatureSetpoint;
+
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  SiteCol;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  ActiveCol;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  SegmentCol;
@@ -274,12 +272,42 @@ namespace CppCLR_WinformsProjekt {
 
 
 	private: System::Windows::Forms::Button^  SetPidParams;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  TypeCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  PGainCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainICol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainDCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  SlopeCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  YInterceptCol;
+
+
+
+
+
+
+private: System::Windows::Forms::GroupBox^  groupBox3;
+private: System::Windows::Forms::Label^  label8;
+private: System::Windows::Forms::TextBox^  CurrentSetpoint;
+private: System::Windows::Forms::Button^  ActuateCurrent;
+private: System::Windows::Forms::Button^  DisableManControlBtn;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  TypeCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  PGainCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainICol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainDCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  SlopeCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  YInterceptCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTolerance;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -397,9 +425,14 @@ namespace CppCLR_WinformsProjekt {
 			this->AdvancedTab = (gcnew System::Windows::Forms::TabPage());
 			this->SetPidParams = (gcnew System::Windows::Forms::Button());
 			this->PidGrid = (gcnew System::Windows::Forms::DataGridView());
-			this->ActuateSetpoint = (gcnew System::Windows::Forms::Button());
+			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->DisableManControlBtn = (gcnew System::Windows::Forms::Button());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->CurrentSetpoint = (gcnew System::Windows::Forms::TextBox());
+			this->ActuateCurrent = (gcnew System::Windows::Forms::Button());
 			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->ManControlSetpoint = (gcnew System::Windows::Forms::TextBox());
+			this->TemperatureSetpoint = (gcnew System::Windows::Forms::TextBox());
+			this->ActuateTemperature = (gcnew System::Windows::Forms::Button());
 			this->openProtocolDlg = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->saveProtocolDlg = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->StatusTimer = (gcnew System::Windows::Forms::Timer(this->components));
@@ -410,6 +443,8 @@ namespace CppCLR_WinformsProjekt {
 			this->GainDCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->SlopeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->YInterceptCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->StabilizationTolerance = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->StabilizationTime = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->AmpDetectTabs->SuspendLayout();
 			this->AmpDetectTab->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->BeginInit();
@@ -421,6 +456,7 @@ namespace CppCLR_WinformsProjekt {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ProtocolDataGrid))->BeginInit();
 			this->AdvancedTab->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PidGrid))->BeginInit();
+			this->groupBox3->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// AmpDetectTabs
@@ -1052,9 +1088,7 @@ namespace CppCLR_WinformsProjekt {
 			// 
 			this->AdvancedTab->Controls->Add(this->SetPidParams);
 			this->AdvancedTab->Controls->Add(this->PidGrid);
-			this->AdvancedTab->Controls->Add(this->ActuateSetpoint);
-			this->AdvancedTab->Controls->Add(this->label5);
-			this->AdvancedTab->Controls->Add(this->ManControlSetpoint);
+			this->AdvancedTab->Controls->Add(this->groupBox3);
 			this->AdvancedTab->Location = System::Drawing::Point(4, 22);
 			this->AdvancedTab->Margin = System::Windows::Forms::Padding(2);
 			this->AdvancedTab->Name = L"AdvancedTab";
@@ -1066,7 +1100,7 @@ namespace CppCLR_WinformsProjekt {
 			// 
 			// SetPidParams
 			// 
-			this->SetPidParams->Location = System::Drawing::Point(673, 110);
+			this->SetPidParams->Location = System::Drawing::Point(700, 306);
 			this->SetPidParams->Margin = System::Windows::Forms::Padding(2);
 			this->SetPidParams->Name = L"SetPidParams";
 			this->SetPidParams->Size = System::Drawing::Size(56, 19);
@@ -1079,44 +1113,102 @@ namespace CppCLR_WinformsProjekt {
 			// 
 			this->PidGrid->AllowUserToAddRows = false;
 			this->PidGrid->AllowUserToDeleteRows = false;
+			this->PidGrid->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::ColumnHeader;
 			this->PidGrid->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->PidGrid->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(6) {
+			this->PidGrid->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(8) {
 				this->TypeCol, this->PGainCol,
-					this->GainICol, this->GainDCol, this->SlopeCol, this->YInterceptCol
+					this->GainICol, this->GainDCol, this->SlopeCol, this->YInterceptCol, this->StabilizationTolerance, this->StabilizationTime
 			});
-			this->PidGrid->Location = System::Drawing::Point(10, 110);
+			this->PidGrid->Location = System::Drawing::Point(37, 306);
 			this->PidGrid->Name = L"PidGrid";
 			this->PidGrid->Size = System::Drawing::Size(658, 164);
 			this->PidGrid->TabIndex = 3;
+			this->PidGrid->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Form1::PidGrid_CellContentClick);
 			// 
-			// ActuateSetpoint
+			// groupBox3
 			// 
-			this->ActuateSetpoint->Location = System::Drawing::Point(88, 41);
-			this->ActuateSetpoint->Margin = System::Windows::Forms::Padding(2);
-			this->ActuateSetpoint->Name = L"ActuateSetpoint";
-			this->ActuateSetpoint->Size = System::Drawing::Size(56, 19);
-			this->ActuateSetpoint->TabIndex = 2;
-			this->ActuateSetpoint->Text = L"Actuate";
-			this->ActuateSetpoint->UseVisualStyleBackColor = true;
-			this->ActuateSetpoint->Click += gcnew System::EventHandler(this, &Form1::ActuateSetpoint_Click);
+			this->groupBox3->Controls->Add(this->DisableManControlBtn);
+			this->groupBox3->Controls->Add(this->label8);
+			this->groupBox3->Controls->Add(this->CurrentSetpoint);
+			this->groupBox3->Controls->Add(this->ActuateCurrent);
+			this->groupBox3->Controls->Add(this->label5);
+			this->groupBox3->Controls->Add(this->TemperatureSetpoint);
+			this->groupBox3->Controls->Add(this->ActuateTemperature);
+			this->groupBox3->Location = System::Drawing::Point(3, 3);
+			this->groupBox3->Name = L"groupBox3";
+			this->groupBox3->Size = System::Drawing::Size(876, 225);
+			this->groupBox3->TabIndex = 5;
+			this->groupBox3->TabStop = false;
+			this->groupBox3->Text = L"Manual Control";
+			// 
+			// DisableManControlBtn
+			// 
+			this->DisableManControlBtn->Location = System::Drawing::Point(351, 184);
+			this->DisableManControlBtn->Margin = System::Windows::Forms::Padding(2);
+			this->DisableManControlBtn->Name = L"DisableManControlBtn";
+			this->DisableManControlBtn->Size = System::Drawing::Size(175, 19);
+			this->DisableManControlBtn->TabIndex = 6;
+			this->DisableManControlBtn->Text = L"Disable Manual Control";
+			this->DisableManControlBtn->UseVisualStyleBackColor = true;
+			this->DisableManControlBtn->Click += gcnew System::EventHandler(this, &Form1::DisableManControlBtn_Click);
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Location = System::Drawing::Point(5, 57);
+			this->label8->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(57, 13);
+			this->label8->TabIndex = 4;
+			this->label8->Text = L"Curent (A):";
+			// 
+			// CurrentSetpoint
+			// 
+			this->CurrentSetpoint->Location = System::Drawing::Point(133, 54);
+			this->CurrentSetpoint->Margin = System::Windows::Forms::Padding(2);
+			this->CurrentSetpoint->Name = L"CurrentSetpoint";
+			this->CurrentSetpoint->Size = System::Drawing::Size(56, 20);
+			this->CurrentSetpoint->TabIndex = 3;
+			// 
+			// ActuateCurrent
+			// 
+			this->ActuateCurrent->Location = System::Drawing::Point(202, 54);
+			this->ActuateCurrent->Margin = System::Windows::Forms::Padding(2);
+			this->ActuateCurrent->Name = L"ActuateCurrent";
+			this->ActuateCurrent->Size = System::Drawing::Size(56, 19);
+			this->ActuateCurrent->TabIndex = 5;
+			this->ActuateCurrent->Text = L"Actuate";
+			this->ActuateCurrent->UseVisualStyleBackColor = true;
+			this->ActuateCurrent->Click += gcnew System::EventHandler(this, &Form1::ActuateCurrent_Click);
 			// 
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(2, 25);
+			this->label5->Location = System::Drawing::Point(5, 33);
 			this->label5->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(46, 13);
+			this->label5->Size = System::Drawing::Size(120, 13);
 			this->label5->TabIndex = 1;
-			this->label5->Text = L"Setpoint";
+			this->label5->Text = L"Block Temperature (*C):";
 			// 
-			// ManControlSetpoint
+			// TemperatureSetpoint
 			// 
-			this->ManControlSetpoint->Location = System::Drawing::Point(2, 41);
-			this->ManControlSetpoint->Margin = System::Windows::Forms::Padding(2);
-			this->ManControlSetpoint->Name = L"ManControlSetpoint";
-			this->ManControlSetpoint->Size = System::Drawing::Size(72, 20);
-			this->ManControlSetpoint->TabIndex = 0;
+			this->TemperatureSetpoint->Location = System::Drawing::Point(133, 30);
+			this->TemperatureSetpoint->Margin = System::Windows::Forms::Padding(2);
+			this->TemperatureSetpoint->Name = L"TemperatureSetpoint";
+			this->TemperatureSetpoint->Size = System::Drawing::Size(56, 20);
+			this->TemperatureSetpoint->TabIndex = 0;
+			// 
+			// ActuateTemperature
+			// 
+			this->ActuateTemperature->Location = System::Drawing::Point(202, 30);
+			this->ActuateTemperature->Margin = System::Windows::Forms::Padding(2);
+			this->ActuateTemperature->Name = L"ActuateTemperature";
+			this->ActuateTemperature->Size = System::Drawing::Size(56, 19);
+			this->ActuateTemperature->TabIndex = 2;
+			this->ActuateTemperature->Text = L"Actuate";
+			this->ActuateTemperature->UseVisualStyleBackColor = true;
+			this->ActuateTemperature->Click += gcnew System::EventHandler(this, &Form1::ActuateTemperature_Click);
 			// 
 			// StatusTimer
 			// 
@@ -1125,35 +1217,60 @@ namespace CppCLR_WinformsProjekt {
 			// 
 			// TypeCol
 			// 
+			this->TypeCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
 			this->TypeCol->HeaderText = L"Type";
 			this->TypeCol->Name = L"TypeCol";
 			this->TypeCol->ReadOnly = true;
+			this->TypeCol->Width = 56;
 			// 
 			// PGainCol
 			// 
+			this->PGainCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
 			this->PGainCol->HeaderText = L"Kp";
 			this->PGainCol->Name = L"PGainCol";
+			this->PGainCol->Width = 45;
 			// 
 			// GainICol
 			// 
+			this->GainICol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
 			this->GainICol->HeaderText = L"Ki";
 			this->GainICol->Name = L"GainICol";
+			this->GainICol->Width = 41;
 			// 
 			// GainDCol
 			// 
+			this->GainDCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
 			this->GainDCol->HeaderText = L"Kd";
 			this->GainDCol->Name = L"GainDCol";
+			this->GainDCol->Width = 45;
 			// 
 			// SlopeCol
 			// 
+			this->SlopeCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
 			this->SlopeCol->HeaderText = L"Slope";
 			this->SlopeCol->Name = L"SlopeCol";
+			this->SlopeCol->Width = 59;
 			// 
 			// YInterceptCol
 			// 
-			this->YInterceptCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
+			this->YInterceptCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
 			this->YInterceptCol->HeaderText = L"Y Intercept";
 			this->YInterceptCol->Name = L"YInterceptCol";
+			this->YInterceptCol->Width = 84;
+			// 
+			// StabilizationTolerance
+			// 
+			this->StabilizationTolerance->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->StabilizationTolerance->HeaderText = L"Stabilization Tolerance (*C)";
+			this->StabilizationTolerance->Name = L"StabilizationTolerance";
+			this->StabilizationTolerance->Width = 130;
+			// 
+			// StabilizationTime
+			// 
+			this->StabilizationTime->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->StabilizationTime->HeaderText = L"Stabilization Time (s)";
+			this->StabilizationTime->Name = L"StabilizationTime";
+			this->StabilizationTime->Width = 107;
 			// 
 			// Form1
 			// 
@@ -1175,8 +1292,9 @@ namespace CppCLR_WinformsProjekt {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalReadsGrid))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ProtocolDataGrid))->EndInit();
 			this->AdvancedTab->ResumeLayout(false);
-			this->AdvancedTab->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PidGrid))->EndInit();
+			this->groupBox3->ResumeLayout(false);
+			this->groupBox3->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
@@ -1498,21 +1616,25 @@ namespace CppCLR_WinformsProjekt {
 			MessageBox::Show("First, select a port.");
 		else
 		{
-			int nKp, nKi, nKd, nSlope, nYIntercept;
+			float nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s;
 
-			nKp = (uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kTemperature]->Value) * 1000);
-			nKi = (uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kTemperature]->Value) * 1000);
-			nKd = (uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kTemperature]->Value) * 1000);
-			nSlope = (int32_t)(Convert::ToDouble(PidGrid[4, PidType::kTemperature]->Value) * 1000);
-			nYIntercept = (int32_t)(Convert::ToDouble(PidGrid[5, PidType::kTemperature]->Value) * 1000);
-			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kTemperature, nKp, nKi, nKd, nSlope, nYIntercept);
+			nKp = (float)Convert::ToDouble(PidGrid[1, PidType::kTemperature]->Value);
+			nKi = (float)Convert::ToDouble(PidGrid[2, PidType::kTemperature]->Value);
+			nKd = (float)Convert::ToDouble(PidGrid[3, PidType::kTemperature]->Value);
+			nSlope = (float)Convert::ToDouble(PidGrid[4, PidType::kTemperature]->Value);
+			nYIntercept = (float)Convert::ToDouble(PidGrid[5, PidType::kTemperature]->Value);
+			nStabilizationTolerance_C = (float)Convert::ToDouble(PidGrid[6, PidType::kTemperature]->Value);
+			nStabilizationTime_s = (float)Convert::ToDouble(PidGrid[7, PidType::kTemperature]->Value);
+			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kTemperature, nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s);
 
-			nKp = (uint32_t)(Convert::ToDouble(PidGrid[1, PidType::kCurrent]->Value) * 1000);
-			nKi = (uint32_t)(Convert::ToDouble(PidGrid[2, PidType::kCurrent]->Value) * 1000);
-			nKd = (uint32_t)(Convert::ToDouble(PidGrid[3, PidType::kCurrent]->Value) * 1000);
-			nSlope = (int32_t)(Convert::ToDouble(PidGrid[4, PidType::kCurrent]->Value) * 1000);
-			nYIntercept = (int32_t)(Convert::ToDouble(PidGrid[5, PidType::kCurrent]->Value) * 1000);
-			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kCurrent, nKp, nKi, nKd, nSlope, nYIntercept);
+			nKp = (float)Convert::ToDouble(PidGrid[1, PidType::kCurrent]->Value);
+			nKi = (float)Convert::ToDouble(PidGrid[2, PidType::kCurrent]->Value);
+			nKd = (float)Convert::ToDouble(PidGrid[3, PidType::kCurrent]->Value);
+			nSlope = (float)Convert::ToDouble(PidGrid[4, PidType::kCurrent]->Value);
+			nYIntercept = (float)Convert::ToDouble(PidGrid[5, PidType::kCurrent]->Value);
+			nStabilizationTolerance_C = (float)Convert::ToDouble(PidGrid[6, PidType::kCurrent]->Value);
+			nStabilizationTime_s = (float)Convert::ToDouble(PidGrid[7, PidType::kCurrent]->Value);
+			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kCurrent, nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s);
 		}
 	}
 
@@ -1529,30 +1651,49 @@ namespace CppCLR_WinformsProjekt {
 				PidGrid->Rows->Add(gcnew DataGridViewRow);
 			}
 
-			int nKp, nKi, nKd, nSlope, nYIntercept;
-			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kTemperature, &nKp, &nKi, &nKd, &nSlope, &nYIntercept);
-
+			float nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s;
+			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kTemperature, &nKp, &nKi, &nKd, &nSlope, &nYIntercept, &nStabilizationTolerance_C, &nStabilizationTime_s);
 			PidGrid[0, PidType::kTemperature]->Value = "Temperature";
-			PidGrid[1, PidType::kTemperature]->Value = Convert::ToString((float)nKp / 1000);
-			PidGrid[2, PidType::kTemperature]->Value = Convert::ToString((float)nKi / 1000);
-			PidGrid[3, PidType::kTemperature]->Value = Convert::ToString((float)nKd / 1000);
-			PidGrid[4, PidType::kTemperature]->Value = Convert::ToString((float)nSlope / 1000);
-			PidGrid[5, PidType::kTemperature]->Value = Convert::ToString((float)nYIntercept / 1000);
+			PidGrid[1, PidType::kTemperature]->Value = Convert::ToString(nKp);
+			PidGrid[2, PidType::kTemperature]->Value = Convert::ToString(nKi);
+			PidGrid[3, PidType::kTemperature]->Value = Convert::ToString(nKd);
+			PidGrid[4, PidType::kTemperature]->Value = Convert::ToString(nSlope);
+			PidGrid[5, PidType::kTemperature]->Value = Convert::ToString(nYIntercept);
+			PidGrid[6, PidType::kTemperature]->Value = Convert::ToString(nStabilizationTolerance_C);
+			PidGrid[7, PidType::kTemperature]->Value = Convert::ToString(nStabilizationTime_s);
 
-			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kCurrent, &nKp, &nKi, &nKd, &nSlope, &nYIntercept);
+			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kCurrent, &nKp, &nKi, &nKd, &nSlope, &nYIntercept, &nStabilizationTolerance_C, &nStabilizationTime_s);
 			PidGrid[0, PidType::kCurrent]->Value = "Current";
-			PidGrid[1, PidType::kCurrent]->Value = Convert::ToString((float)nKp / 1000);
-			PidGrid[2, PidType::kCurrent]->Value = Convert::ToString((float)nKi / 1000);
-			PidGrid[3, PidType::kCurrent]->Value = Convert::ToString((float)nKd / 1000);
-			PidGrid[4, PidType::kCurrent]->Value = Convert::ToString((float)nSlope / 1000);
-			PidGrid[5, PidType::kCurrent]->Value = Convert::ToString((float)nYIntercept / 1000);
+			PidGrid[1, PidType::kCurrent]->Value = Convert::ToString(nKp);
+			PidGrid[2, PidType::kCurrent]->Value = Convert::ToString(nKi);
+			PidGrid[3, PidType::kCurrent]->Value = Convert::ToString(nKd);
+			PidGrid[4, PidType::kCurrent]->Value = Convert::ToString(nSlope);
+			PidGrid[5, PidType::kCurrent]->Value = Convert::ToString(nYIntercept);
+			PidGrid[6, PidType::kCurrent]->Value = Convert::ToString(nStabilizationTolerance_C);
+			PidGrid[7, PidType::kCurrent]->Value = Convert::ToString(nStabilizationTime_s);
 		}
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
-	private: System::Void ActuateSetpoint_Click(System::Object^  sender, System::EventArgs^  e)
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void DisableManControlBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		ErrCode nErrCode = (ErrCode)AD_SetTemperatureSetpoint(0, (int)(Convert::ToDouble(ManControlSetpoint->Text) * 1000));
+		ErrCode nErrCode = (ErrCode)AD_DisableManualControl(0);
+		if (nErrCode != ErrCode::kNoError)
+			MessageBox::Show("Could not start manual control.");
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void ActuateTemperature_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		ErrCode nErrCode = (ErrCode)AD_SetTemperatureSetpoint(0, (int)(Convert::ToDouble(TemperatureSetpoint->Text)));
+		if (nErrCode != ErrCode::kNoError)
+			MessageBox::Show("Could not start manual control.");
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void ActuateCurrent_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		ErrCode nErrCode = (ErrCode)AD_SetCurrentSetpoint(0, (int)(Convert::ToDouble(CurrentSetpoint->Text)));
 		if (nErrCode != ErrCode::kNoError)
 			MessageBox::Show("Could not start manual control.");
 	}
@@ -1698,7 +1839,7 @@ namespace CppCLR_WinformsProjekt {
 				RunStatusGrid[3, nSiteIdx]->Value = "";
 				RunStatusGrid[4, nSiteIdx]->Value = "";
 				RunStatusGrid[5, nSiteIdx]->Value = "";
-				RunStatusGrid[6, nSiteIdx]->Value = "";
+				RunStatusGrid[6, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedTemperature(nSiteIdx) / 1000);
 			}
 
 			Series^ illuminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[0];
@@ -1752,7 +1893,7 @@ namespace CppCLR_WinformsProjekt {
 					blockSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan1(nSiteIdx, i));
 					sampleSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan2(nSiteIdx, i));
 					topSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan3(nSiteIdx, i));
-					currentSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecCurrent(nSiteIdx, i));
+					currentSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecCurrent(nSiteIdx, i) * 10);
 
 					if (_thermalDataFile != nullptr)
 					{
@@ -1761,7 +1902,7 @@ namespace CppCLR_WinformsProjekt {
 							(AD_GetCachedThermalRecChan2(nSiteIdx, i)).ToString() + "," +
 							(AD_GetCachedThermalRecChan3(nSiteIdx, i)).ToString() + "," +
 							(AD_GetCachedThermalRecChan4(nSiteIdx, i)).ToString() + "," +
-							(AD_GetCachedThermalRecCurrent(nSiteIdx, i)).ToString());
+							(AD_GetCachedThermalRecCurrent(nSiteIdx, i) * 10).ToString());
 					}
 				}
 			}
@@ -1785,5 +1926,7 @@ namespace CppCLR_WinformsProjekt {
 	}
 	private: System::Void OpticalReadsGrid_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
 	}
-	};
+private: System::Void PidGrid_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
+}
+};
 }

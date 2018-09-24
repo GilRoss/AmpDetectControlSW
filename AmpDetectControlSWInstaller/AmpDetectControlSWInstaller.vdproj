@@ -19,6 +19,12 @@
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_C548061B8EDC42DAA5AC6DC2FD5726D4"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -114,6 +120,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C548061B8EDC42DAA5AC6DC2FD5726D4"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\AmpDetectDLL.dll"
+            "TargetName" = "8:AmpDetectDLL.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_8801ADA16F984EC5AD750EADF9D79302"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -170,23 +196,23 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AmpDetectControlSWInstaller"
-        "ProductCode" = "8:{073D1001-BF58-4F97-B7D3-9EEDA0250D88}"
-        "PackageCode" = "8:{9B65EF35-462E-4873-A1CB-ABF4A6125C90}"
+        "ProductCode" = "8:{A3855AF1-DF67-4F56-AFF6-3A74FE536E88}"
+        "PackageCode" = "8:{E2D9A9F1-EC6C-4D31-9FA5-E4D8173ABA98}"
         "UpgradeCode" = "8:{67EE22AE-38FC-4203-978B-C50001925AA3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
-        "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.1"
-        "Manufacturer" = "8:Licence Owner"
+        "InstallAllUsers" = "11:TRUE"
+        "ProductVersion" = "8:1.0.5"
+        "Manufacturer" = "8:Siemens"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:AmpDetectControlSWInstaller"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Licence Owner"
+        "ARPCONTACT" = "8:Siemens"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:"
+        "ARPCOMMENTS" = "8:MDX Control Software"
         "ARPURLINFOABOUT" = "8:"
         "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
@@ -692,7 +718,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6F67BA6E828F4DD3B52BA926D517EDDD"
             {
-            "SourcePath" = "8:..\\x64\\Debug\\AmpDetectControlSW.exe"
+            "SourcePath" = "8:..\\x64\\Release\\AmpDetectControlSW.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_8801ADA16F984EC5AD750EADF9D79302"
