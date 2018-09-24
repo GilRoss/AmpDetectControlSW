@@ -272,17 +272,41 @@ private: System::Windows::Forms::TextBox^  TemperatureSetpoint;
 
 
 	private: System::Windows::Forms::Button^  SetPidParams;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  TypeCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  PGainCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainICol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainDCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  SlopeCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  YInterceptCol;
+
+
+
+
+
+
 private: System::Windows::Forms::GroupBox^  groupBox3;
 private: System::Windows::Forms::Label^  label8;
 private: System::Windows::Forms::TextBox^  CurrentSetpoint;
 private: System::Windows::Forms::Button^  ActuateCurrent;
 private: System::Windows::Forms::Button^  DisableManControlBtn;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  TypeCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  PGainCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainICol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  GainDCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  SlopeCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  YInterceptCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTolerance;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -333,19 +357,19 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea3 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series10 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series11 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series12 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series13 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea4 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series14 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series15 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series16 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series17 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series18 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series5 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series6 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series7 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series8 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series9 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->AmpDetectTabs = (gcnew System::Windows::Forms::TabControl());
 			this->AmpDetectTab = (gcnew System::Windows::Forms::TabPage());
 			this->SelectDataFolderButton = (gcnew System::Windows::Forms::Button());
@@ -401,13 +425,8 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 			this->AdvancedTab = (gcnew System::Windows::Forms::TabPage());
 			this->SetPidParams = (gcnew System::Windows::Forms::Button());
 			this->PidGrid = (gcnew System::Windows::Forms::DataGridView());
-			this->TypeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->PGainCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->GainICol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->GainDCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->SlopeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->YInterceptCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
+			this->DisableManControlBtn = (gcnew System::Windows::Forms::Button());
 			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->CurrentSetpoint = (gcnew System::Windows::Forms::TextBox());
 			this->ActuateCurrent = (gcnew System::Windows::Forms::Button());
@@ -418,7 +437,14 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 			this->saveProtocolDlg = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->StatusTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->SelectDataFolderDlg = (gcnew System::Windows::Forms::FolderBrowserDialog());
-			this->DisableManControlBtn = (gcnew System::Windows::Forms::Button());
+			this->TypeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->PGainCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->GainICol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->GainDCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->SlopeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->YInterceptCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->StabilizationTolerance = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->StabilizationTime = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->AmpDetectTabs->SuspendLayout();
 			this->AmpDetectTab->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->BeginInit();
@@ -512,35 +538,35 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 			this->ThermalGraph->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->ThermalGraph->BorderlineColor = System::Drawing::Color::Black;
-			chartArea3->AxisY->Maximum = 100000;
-			chartArea3->AxisY->Minimum = 50000;
-			chartArea3->Name = L"ChartArea1";
-			this->ThermalGraph->ChartAreas->Add(chartArea3);
-			legend3->Name = L"Legend1";
-			this->ThermalGraph->Legends->Add(legend3);
+			chartArea1->AxisY->Maximum = 100000;
+			chartArea1->AxisY->Minimum = 50000;
+			chartArea1->Name = L"ChartArea1";
+			this->ThermalGraph->ChartAreas->Add(chartArea1);
+			legend1->Name = L"Legend1";
+			this->ThermalGraph->Legends->Add(legend1);
 			this->ThermalGraph->Location = System::Drawing::Point(7, 418);
 			this->ThermalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->ThermalGraph->Name = L"ThermalGraph";
-			series10->ChartArea = L"ChartArea1";
-			series10->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series10->Legend = L"Legend1";
-			series10->Name = L"Block";
-			series11->ChartArea = L"ChartArea1";
-			series11->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series11->Legend = L"Legend1";
-			series11->Name = L"Top Heater";
-			series12->ChartArea = L"ChartArea1";
-			series12->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series12->Legend = L"Legend1";
-			series12->Name = L"Current";
-			series13->ChartArea = L"ChartArea1";
-			series13->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series13->Legend = L"Legend1";
-			series13->Name = L"Sample";
-			this->ThermalGraph->Series->Add(series10);
-			this->ThermalGraph->Series->Add(series11);
-			this->ThermalGraph->Series->Add(series12);
-			this->ThermalGraph->Series->Add(series13);
+			series1->ChartArea = L"ChartArea1";
+			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series1->Legend = L"Legend1";
+			series1->Name = L"Block";
+			series2->ChartArea = L"ChartArea1";
+			series2->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series2->Legend = L"Legend1";
+			series2->Name = L"Top Heater";
+			series3->ChartArea = L"ChartArea1";
+			series3->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series3->Legend = L"Legend1";
+			series3->Name = L"Current";
+			series4->ChartArea = L"ChartArea1";
+			series4->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series4->Legend = L"Legend1";
+			series4->Name = L"Sample";
+			this->ThermalGraph->Series->Add(series1);
+			this->ThermalGraph->Series->Add(series2);
+			this->ThermalGraph->Series->Add(series3);
+			this->ThermalGraph->Series->Add(series4);
 			this->ThermalGraph->Size = System::Drawing::Size(857, 159);
 			this->ThermalGraph->TabIndex = 11;
 			this->ThermalGraph->Text = L"Thermal Data";
@@ -550,38 +576,38 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 			this->OpticalGraph->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			chartArea4->Name = L"ChartArea1";
-			this->OpticalGraph->ChartAreas->Add(chartArea4);
-			legend4->Name = L"Legend1";
-			this->OpticalGraph->Legends->Add(legend4);
+			chartArea2->Name = L"ChartArea1";
+			this->OpticalGraph->ChartAreas->Add(chartArea2);
+			legend2->Name = L"Legend1";
+			this->OpticalGraph->Legends->Add(legend2);
 			this->OpticalGraph->Location = System::Drawing::Point(7, 240);
 			this->OpticalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->OpticalGraph->Name = L"OpticalGraph";
-			series14->ChartArea = L"ChartArea1";
-			series14->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series14->Legend = L"Legend1";
-			series14->Name = L"Illuminated";
-			series15->ChartArea = L"ChartArea1";
-			series15->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series15->Legend = L"Legend1";
-			series15->Name = L"Dark";
-			series16->ChartArea = L"ChartArea1";
-			series16->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series16->Legend = L"Legend1";
-			series16->Name = L"Temperature";
-			series17->ChartArea = L"ChartArea1";
-			series17->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series17->Legend = L"Legend1";
-			series17->Name = L"RefIlluminated";
-			series18->ChartArea = L"ChartArea1";
-			series18->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series18->Legend = L"Legend1";
-			series18->Name = L"RefDark";
-			this->OpticalGraph->Series->Add(series14);
-			this->OpticalGraph->Series->Add(series15);
-			this->OpticalGraph->Series->Add(series16);
-			this->OpticalGraph->Series->Add(series17);
-			this->OpticalGraph->Series->Add(series18);
+			series5->ChartArea = L"ChartArea1";
+			series5->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series5->Legend = L"Legend1";
+			series5->Name = L"Illuminated";
+			series6->ChartArea = L"ChartArea1";
+			series6->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series6->Legend = L"Legend1";
+			series6->Name = L"Dark";
+			series7->ChartArea = L"ChartArea1";
+			series7->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series7->Legend = L"Legend1";
+			series7->Name = L"Temperature";
+			series8->ChartArea = L"ChartArea1";
+			series8->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series8->Legend = L"Legend1";
+			series8->Name = L"RefIlluminated";
+			series9->ChartArea = L"ChartArea1";
+			series9->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series9->Legend = L"Legend1";
+			series9->Name = L"RefDark";
+			this->OpticalGraph->Series->Add(series5);
+			this->OpticalGraph->Series->Add(series6);
+			this->OpticalGraph->Series->Add(series7);
+			this->OpticalGraph->Series->Add(series8);
+			this->OpticalGraph->Series->Add(series9);
 			this->OpticalGraph->Size = System::Drawing::Size(857, 149);
 			this->OpticalGraph->TabIndex = 10;
 			this->OpticalGraph->Text = L"Optical Data";
@@ -1087,47 +1113,17 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 			// 
 			this->PidGrid->AllowUserToAddRows = false;
 			this->PidGrid->AllowUserToDeleteRows = false;
+			this->PidGrid->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::ColumnHeader;
 			this->PidGrid->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->PidGrid->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(6) {
+			this->PidGrid->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(8) {
 				this->TypeCol, this->PGainCol,
-					this->GainICol, this->GainDCol, this->SlopeCol, this->YInterceptCol
+					this->GainICol, this->GainDCol, this->SlopeCol, this->YInterceptCol, this->StabilizationTolerance, this->StabilizationTime
 			});
 			this->PidGrid->Location = System::Drawing::Point(37, 306);
 			this->PidGrid->Name = L"PidGrid";
 			this->PidGrid->Size = System::Drawing::Size(658, 164);
 			this->PidGrid->TabIndex = 3;
-			// 
-			// TypeCol
-			// 
-			this->TypeCol->HeaderText = L"Type";
-			this->TypeCol->Name = L"TypeCol";
-			this->TypeCol->ReadOnly = true;
-			// 
-			// PGainCol
-			// 
-			this->PGainCol->HeaderText = L"Kp";
-			this->PGainCol->Name = L"PGainCol";
-			// 
-			// GainICol
-			// 
-			this->GainICol->HeaderText = L"Ki";
-			this->GainICol->Name = L"GainICol";
-			// 
-			// GainDCol
-			// 
-			this->GainDCol->HeaderText = L"Kd";
-			this->GainDCol->Name = L"GainDCol";
-			// 
-			// SlopeCol
-			// 
-			this->SlopeCol->HeaderText = L"Slope";
-			this->SlopeCol->Name = L"SlopeCol";
-			// 
-			// YInterceptCol
-			// 
-			this->YInterceptCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
-			this->YInterceptCol->HeaderText = L"Y Intercept";
-			this->YInterceptCol->Name = L"YInterceptCol";
+			this->PidGrid->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Form1::PidGrid_CellContentClick);
 			// 
 			// groupBox3
 			// 
@@ -1145,19 +1141,30 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 			this->groupBox3->TabStop = false;
 			this->groupBox3->Text = L"Manual Control";
 			// 
+			// DisableManControlBtn
+			// 
+			this->DisableManControlBtn->Location = System::Drawing::Point(351, 184);
+			this->DisableManControlBtn->Margin = System::Windows::Forms::Padding(2);
+			this->DisableManControlBtn->Name = L"DisableManControlBtn";
+			this->DisableManControlBtn->Size = System::Drawing::Size(175, 19);
+			this->DisableManControlBtn->TabIndex = 6;
+			this->DisableManControlBtn->Text = L"Disable Manual Control";
+			this->DisableManControlBtn->UseVisualStyleBackColor = true;
+			this->DisableManControlBtn->Click += gcnew System::EventHandler(this, &Form1::DisableManControlBtn_Click);
+			// 
 			// label8
 			// 
 			this->label8->AutoSize = true;
 			this->label8->Location = System::Drawing::Point(5, 57);
 			this->label8->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(41, 13);
+			this->label8->Size = System::Drawing::Size(57, 13);
 			this->label8->TabIndex = 4;
-			this->label8->Text = L"Curent:";
+			this->label8->Text = L"Curent (A):";
 			// 
 			// CurrentSetpoint
 			// 
-			this->CurrentSetpoint->Location = System::Drawing::Point(109, 54);
+			this->CurrentSetpoint->Location = System::Drawing::Point(133, 54);
 			this->CurrentSetpoint->Margin = System::Windows::Forms::Padding(2);
 			this->CurrentSetpoint->Name = L"CurrentSetpoint";
 			this->CurrentSetpoint->Size = System::Drawing::Size(56, 20);
@@ -1165,7 +1172,7 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 			// 
 			// ActuateCurrent
 			// 
-			this->ActuateCurrent->Location = System::Drawing::Point(178, 54);
+			this->ActuateCurrent->Location = System::Drawing::Point(202, 54);
 			this->ActuateCurrent->Margin = System::Windows::Forms::Padding(2);
 			this->ActuateCurrent->Name = L"ActuateCurrent";
 			this->ActuateCurrent->Size = System::Drawing::Size(56, 19);
@@ -1180,13 +1187,13 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 			this->label5->Location = System::Drawing::Point(5, 33);
 			this->label5->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(100, 13);
+			this->label5->Size = System::Drawing::Size(120, 13);
 			this->label5->TabIndex = 1;
-			this->label5->Text = L"Block Temperature:";
+			this->label5->Text = L"Block Temperature (*C):";
 			// 
 			// TemperatureSetpoint
 			// 
-			this->TemperatureSetpoint->Location = System::Drawing::Point(109, 30);
+			this->TemperatureSetpoint->Location = System::Drawing::Point(133, 30);
 			this->TemperatureSetpoint->Margin = System::Windows::Forms::Padding(2);
 			this->TemperatureSetpoint->Name = L"TemperatureSetpoint";
 			this->TemperatureSetpoint->Size = System::Drawing::Size(56, 20);
@@ -1194,7 +1201,7 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 			// 
 			// ActuateTemperature
 			// 
-			this->ActuateTemperature->Location = System::Drawing::Point(178, 30);
+			this->ActuateTemperature->Location = System::Drawing::Point(202, 30);
 			this->ActuateTemperature->Margin = System::Windows::Forms::Padding(2);
 			this->ActuateTemperature->Name = L"ActuateTemperature";
 			this->ActuateTemperature->Size = System::Drawing::Size(56, 19);
@@ -1208,16 +1215,62 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 			this->StatusTimer->Enabled = true;
 			this->StatusTimer->Tick += gcnew System::EventHandler(this, &Form1::StatusTimer_Tick);
 			// 
-			// DisableManControlBtn
+			// TypeCol
 			// 
-			this->DisableManControlBtn->Location = System::Drawing::Point(351, 184);
-			this->DisableManControlBtn->Margin = System::Windows::Forms::Padding(2);
-			this->DisableManControlBtn->Name = L"DisableManControlBtn";
-			this->DisableManControlBtn->Size = System::Drawing::Size(175, 19);
-			this->DisableManControlBtn->TabIndex = 6;
-			this->DisableManControlBtn->Text = L"Disable Manual Control";
-			this->DisableManControlBtn->UseVisualStyleBackColor = true;
-			this->DisableManControlBtn->Click += gcnew System::EventHandler(this, &Form1::DisableManControlBtn_Click);
+			this->TypeCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->TypeCol->HeaderText = L"Type";
+			this->TypeCol->Name = L"TypeCol";
+			this->TypeCol->ReadOnly = true;
+			this->TypeCol->Width = 56;
+			// 
+			// PGainCol
+			// 
+			this->PGainCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->PGainCol->HeaderText = L"Kp";
+			this->PGainCol->Name = L"PGainCol";
+			this->PGainCol->Width = 45;
+			// 
+			// GainICol
+			// 
+			this->GainICol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->GainICol->HeaderText = L"Ki";
+			this->GainICol->Name = L"GainICol";
+			this->GainICol->Width = 41;
+			// 
+			// GainDCol
+			// 
+			this->GainDCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->GainDCol->HeaderText = L"Kd";
+			this->GainDCol->Name = L"GainDCol";
+			this->GainDCol->Width = 45;
+			// 
+			// SlopeCol
+			// 
+			this->SlopeCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->SlopeCol->HeaderText = L"Slope";
+			this->SlopeCol->Name = L"SlopeCol";
+			this->SlopeCol->Width = 59;
+			// 
+			// YInterceptCol
+			// 
+			this->YInterceptCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->YInterceptCol->HeaderText = L"Y Intercept";
+			this->YInterceptCol->Name = L"YInterceptCol";
+			this->YInterceptCol->Width = 84;
+			// 
+			// StabilizationTolerance
+			// 
+			this->StabilizationTolerance->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->StabilizationTolerance->HeaderText = L"Stabilization Tolerance (*C)";
+			this->StabilizationTolerance->Name = L"StabilizationTolerance";
+			this->StabilizationTolerance->Width = 130;
+			// 
+			// StabilizationTime
+			// 
+			this->StabilizationTime->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->StabilizationTime->HeaderText = L"Stabilization Time (s)";
+			this->StabilizationTime->Name = L"StabilizationTime";
+			this->StabilizationTime->Width = 107;
 			// 
 			// Form1
 			// 
@@ -1556,21 +1609,25 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 			MessageBox::Show("First, select a port.");
 		else
 		{
-			float nKp, nKi, nKd, nSlope, nYIntercept;
+			float nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s;
 
 			nKp = (float)Convert::ToDouble(PidGrid[1, PidType::kTemperature]->Value);
 			nKi = (float)Convert::ToDouble(PidGrid[2, PidType::kTemperature]->Value);
 			nKd = (float)Convert::ToDouble(PidGrid[3, PidType::kTemperature]->Value);
 			nSlope = (float)Convert::ToDouble(PidGrid[4, PidType::kTemperature]->Value);
 			nYIntercept = (float)Convert::ToDouble(PidGrid[5, PidType::kTemperature]->Value);
-			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kTemperature, nKp, nKi, nKd, nSlope, nYIntercept);
+			nStabilizationTolerance_C = (float)Convert::ToDouble(PidGrid[6, PidType::kTemperature]->Value);
+			nStabilizationTime_s = (float)Convert::ToDouble(PidGrid[7, PidType::kTemperature]->Value);
+			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kTemperature, nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s);
 
 			nKp = (float)Convert::ToDouble(PidGrid[1, PidType::kCurrent]->Value);
 			nKi = (float)Convert::ToDouble(PidGrid[2, PidType::kCurrent]->Value);
 			nKd = (float)Convert::ToDouble(PidGrid[3, PidType::kCurrent]->Value);
 			nSlope = (float)Convert::ToDouble(PidGrid[4, PidType::kCurrent]->Value);
 			nYIntercept = (float)Convert::ToDouble(PidGrid[5, PidType::kCurrent]->Value);
-			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kCurrent, nKp, nKi, nKd, nSlope, nYIntercept);
+			nStabilizationTolerance_C = (float)Convert::ToDouble(PidGrid[6, PidType::kCurrent]->Value);
+			nStabilizationTime_s = (float)Convert::ToDouble(PidGrid[7, PidType::kCurrent]->Value);
+			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kCurrent, nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s);
 		}
 	}
 
@@ -1587,23 +1644,26 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 				PidGrid->Rows->Add(gcnew DataGridViewRow);
 			}
 
-			float nKp, nKi, nKd, nSlope, nYIntercept;
-			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kTemperature, &nKp, &nKi, &nKd, &nSlope, &nYIntercept);
-
+			float nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s;
+			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kTemperature, &nKp, &nKi, &nKd, &nSlope, &nYIntercept, &nStabilizationTolerance_C, &nStabilizationTime_s);
 			PidGrid[0, PidType::kTemperature]->Value = "Temperature";
 			PidGrid[1, PidType::kTemperature]->Value = Convert::ToString(nKp);
 			PidGrid[2, PidType::kTemperature]->Value = Convert::ToString(nKi);
 			PidGrid[3, PidType::kTemperature]->Value = Convert::ToString(nKd);
 			PidGrid[4, PidType::kTemperature]->Value = Convert::ToString(nSlope);
 			PidGrid[5, PidType::kTemperature]->Value = Convert::ToString(nYIntercept);
+			PidGrid[6, PidType::kTemperature]->Value = Convert::ToString(nStabilizationTolerance_C);
+			PidGrid[7, PidType::kTemperature]->Value = Convert::ToString(nStabilizationTime_s);
 
-			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kCurrent, &nKp, &nKi, &nKd, &nSlope, &nYIntercept);
+			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kCurrent, &nKp, &nKi, &nKd, &nSlope, &nYIntercept, &nStabilizationTolerance_C, &nStabilizationTime_s);
 			PidGrid[0, PidType::kCurrent]->Value = "Current";
 			PidGrid[1, PidType::kCurrent]->Value = Convert::ToString(nKp);
 			PidGrid[2, PidType::kCurrent]->Value = Convert::ToString(nKi);
 			PidGrid[3, PidType::kCurrent]->Value = Convert::ToString(nKd);
 			PidGrid[4, PidType::kCurrent]->Value = Convert::ToString(nSlope);
 			PidGrid[5, PidType::kCurrent]->Value = Convert::ToString(nYIntercept);
+			PidGrid[6, PidType::kCurrent]->Value = Convert::ToString(nStabilizationTolerance_C);
+			PidGrid[7, PidType::kCurrent]->Value = Convert::ToString(nStabilizationTime_s);
 		}
 	}
 
@@ -1618,7 +1678,7 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void ActuateTemperature_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		ErrCode nErrCode = (ErrCode)AD_SetTemperatureSetpoint(0, (int)(Convert::ToDouble(TemperatureSetpoint->Text) * 1000));
+		ErrCode nErrCode = (ErrCode)AD_SetTemperatureSetpoint(0, (int)(Convert::ToDouble(TemperatureSetpoint->Text)));
 		if (nErrCode != ErrCode::kNoError)
 			MessageBox::Show("Could not start manual control.");
 	}
@@ -1626,7 +1686,7 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void ActuateCurrent_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		ErrCode nErrCode = (ErrCode)AD_SetCurrentSetpoint(0, (int)(Convert::ToDouble(CurrentSetpoint->Text) * 1000));
+		ErrCode nErrCode = (ErrCode)AD_SetCurrentSetpoint(0, (int)(Convert::ToDouble(CurrentSetpoint->Text)));
 		if (nErrCode != ErrCode::kNoError)
 			MessageBox::Show("Could not start manual control.");
 	}
@@ -1859,5 +1919,7 @@ private: System::Windows::Forms::Button^  DisableManControlBtn;
 	}
 	private: System::Void OpticalReadsGrid_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
 	}
+private: System::Void PidGrid_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
+}
 };
 }
