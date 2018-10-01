@@ -425,6 +425,14 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->AdvancedTab = (gcnew System::Windows::Forms::TabPage());
 			this->SetPidParams = (gcnew System::Windows::Forms::Button());
 			this->PidGrid = (gcnew System::Windows::Forms::DataGridView());
+			this->TypeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->PGainCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->GainICol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->GainDCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->SlopeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->YInterceptCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->StabilizationTolerance = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->StabilizationTime = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
 			this->DisableManControlBtn = (gcnew System::Windows::Forms::Button());
 			this->label8 = (gcnew System::Windows::Forms::Label());
@@ -437,14 +445,6 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->saveProtocolDlg = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->StatusTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->SelectDataFolderDlg = (gcnew System::Windows::Forms::FolderBrowserDialog());
-			this->TypeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->PGainCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->GainICol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->GainDCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->SlopeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->YInterceptCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->StabilizationTolerance = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->StabilizationTime = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->AmpDetectTabs->SuspendLayout();
 			this->AmpDetectTab->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->BeginInit();
@@ -538,13 +538,13 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->ThermalGraph->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->ThermalGraph->BorderlineColor = System::Drawing::Color::Black;
-			chartArea1->AxisY->Maximum = 100000;
-			chartArea1->AxisY->Minimum = 50000;
+			chartArea1->AxisY->Maximum = 120000;
+			chartArea1->AxisY->Minimum = -120000;
 			chartArea1->Name = L"ChartArea1";
 			this->ThermalGraph->ChartAreas->Add(chartArea1);
 			legend1->Name = L"Legend1";
 			this->ThermalGraph->Legends->Add(legend1);
-			this->ThermalGraph->Location = System::Drawing::Point(7, 418);
+			this->ThermalGraph->Location = System::Drawing::Point(7, 222);
 			this->ThermalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->ThermalGraph->Name = L"ThermalGraph";
 			series1->ChartArea = L"ChartArea1";
@@ -567,7 +567,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->ThermalGraph->Series->Add(series2);
 			this->ThermalGraph->Series->Add(series3);
 			this->ThermalGraph->Series->Add(series4);
-			this->ThermalGraph->Size = System::Drawing::Size(857, 159);
+			this->ThermalGraph->Size = System::Drawing::Size(857, 355);
 			this->ThermalGraph->TabIndex = 11;
 			this->ThermalGraph->Text = L"Thermal Data";
 			// 
@@ -1125,6 +1125,63 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->PidGrid->TabIndex = 3;
 			this->PidGrid->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Form1::PidGrid_CellContentClick);
 			// 
+			// TypeCol
+			// 
+			this->TypeCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->TypeCol->HeaderText = L"Type";
+			this->TypeCol->Name = L"TypeCol";
+			this->TypeCol->ReadOnly = true;
+			this->TypeCol->Width = 56;
+			// 
+			// PGainCol
+			// 
+			this->PGainCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->PGainCol->HeaderText = L"Kp";
+			this->PGainCol->Name = L"PGainCol";
+			this->PGainCol->Width = 45;
+			// 
+			// GainICol
+			// 
+			this->GainICol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->GainICol->HeaderText = L"Ki";
+			this->GainICol->Name = L"GainICol";
+			this->GainICol->Width = 41;
+			// 
+			// GainDCol
+			// 
+			this->GainDCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->GainDCol->HeaderText = L"Kd";
+			this->GainDCol->Name = L"GainDCol";
+			this->GainDCol->Width = 45;
+			// 
+			// SlopeCol
+			// 
+			this->SlopeCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->SlopeCol->HeaderText = L"Slope";
+			this->SlopeCol->Name = L"SlopeCol";
+			this->SlopeCol->Width = 59;
+			// 
+			// YInterceptCol
+			// 
+			this->YInterceptCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->YInterceptCol->HeaderText = L"Y Intercept";
+			this->YInterceptCol->Name = L"YInterceptCol";
+			this->YInterceptCol->Width = 78;
+			// 
+			// StabilizationTolerance
+			// 
+			this->StabilizationTolerance->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->StabilizationTolerance->HeaderText = L"Stabilization Tolerance (*C)";
+			this->StabilizationTolerance->Name = L"StabilizationTolerance";
+			this->StabilizationTolerance->Width = 130;
+			// 
+			// StabilizationTime
+			// 
+			this->StabilizationTime->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->StabilizationTime->HeaderText = L"Stabilization Time (s)";
+			this->StabilizationTime->Name = L"StabilizationTime";
+			this->StabilizationTime->Width = 107;
+			// 
 			// groupBox3
 			// 
 			this->groupBox3->Controls->Add(this->DisableManControlBtn);
@@ -1214,63 +1271,6 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			// 
 			this->StatusTimer->Enabled = true;
 			this->StatusTimer->Tick += gcnew System::EventHandler(this, &Form1::StatusTimer_Tick);
-			// 
-			// TypeCol
-			// 
-			this->TypeCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
-			this->TypeCol->HeaderText = L"Type";
-			this->TypeCol->Name = L"TypeCol";
-			this->TypeCol->ReadOnly = true;
-			this->TypeCol->Width = 56;
-			// 
-			// PGainCol
-			// 
-			this->PGainCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
-			this->PGainCol->HeaderText = L"Kp";
-			this->PGainCol->Name = L"PGainCol";
-			this->PGainCol->Width = 45;
-			// 
-			// GainICol
-			// 
-			this->GainICol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
-			this->GainICol->HeaderText = L"Ki";
-			this->GainICol->Name = L"GainICol";
-			this->GainICol->Width = 41;
-			// 
-			// GainDCol
-			// 
-			this->GainDCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
-			this->GainDCol->HeaderText = L"Kd";
-			this->GainDCol->Name = L"GainDCol";
-			this->GainDCol->Width = 45;
-			// 
-			// SlopeCol
-			// 
-			this->SlopeCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
-			this->SlopeCol->HeaderText = L"Slope";
-			this->SlopeCol->Name = L"SlopeCol";
-			this->SlopeCol->Width = 59;
-			// 
-			// YInterceptCol
-			// 
-			this->YInterceptCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
-			this->YInterceptCol->HeaderText = L"Y Intercept";
-			this->YInterceptCol->Name = L"YInterceptCol";
-			this->YInterceptCol->Width = 84;
-			// 
-			// StabilizationTolerance
-			// 
-			this->StabilizationTolerance->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
-			this->StabilizationTolerance->HeaderText = L"Stabilization Tolerance (*C)";
-			this->StabilizationTolerance->Name = L"StabilizationTolerance";
-			this->StabilizationTolerance->Width = 130;
-			// 
-			// StabilizationTime
-			// 
-			this->StabilizationTime->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
-			this->StabilizationTime->HeaderText = L"Stabilization Time (s)";
-			this->StabilizationTime->Name = L"StabilizationTime";
-			this->StabilizationTime->Width = 107;
 			// 
 			// Form1
 			// 
@@ -1582,7 +1582,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			 /////////////////////////////////////////////////////////////////////////////////
 	private: System::Void StopPcrBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		if (CommPortSelection->SelectedItem == nullptr)
+		if (SelectedProtocol->Text == "")
 		{
 			MessageBox::Show("First, select a port.");
 		}
@@ -1892,8 +1892,8 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 					{
 						_thermalDataFile->WriteLine(nTimeTag.ToString() + "," +
 							(AD_GetCachedThermalRecChan1(nSiteIdx, i)).ToString() + "," +
-							(AD_GetCachedThermalRecChan2(nSiteIdx, i)).ToString() + "," +
-							(AD_GetCachedThermalRecChan3(nSiteIdx, i)).ToString() + "," +
+							(110000).ToString() + "," +
+							(50000).ToString() + "," +
 							(AD_GetCachedThermalRecChan4(nSiteIdx, i)).ToString() + "," +
 							(AD_GetCachedThermalRecCurrent(nSiteIdx, i) * 10).ToString());
 					}
