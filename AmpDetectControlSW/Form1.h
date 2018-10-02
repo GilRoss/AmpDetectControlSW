@@ -544,7 +544,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->ThermalGraph->ChartAreas->Add(chartArea1);
 			legend1->Name = L"Legend1";
 			this->ThermalGraph->Legends->Add(legend1);
-			this->ThermalGraph->Location = System::Drawing::Point(7, 222);
+			this->ThermalGraph->Location = System::Drawing::Point(7, 393);
 			this->ThermalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->ThermalGraph->Name = L"ThermalGraph";
 			series1->ChartArea = L"ChartArea1";
@@ -567,7 +567,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->ThermalGraph->Series->Add(series2);
 			this->ThermalGraph->Series->Add(series3);
 			this->ThermalGraph->Series->Add(series4);
-			this->ThermalGraph->Size = System::Drawing::Size(857, 355);
+			this->ThermalGraph->Size = System::Drawing::Size(857, 184);
 			this->ThermalGraph->TabIndex = 11;
 			this->ThermalGraph->Text = L"Thermal Data";
 			// 
