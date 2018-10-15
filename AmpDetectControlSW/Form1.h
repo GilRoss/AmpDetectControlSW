@@ -10,7 +10,6 @@
 
 #include "AmpDetectDLL.h"
 #include "PcrProtocol.h"
-#include "Common.h"
 HINSTANCE cameraDll;
 
 using namespace System::IO::Ports;
@@ -53,6 +52,19 @@ namespace CppCLR_WinformsProjekt {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
+	enum StatusGridColIdx
+	{
+		kSiteNumIdx,
+		kStateIdx,
+		kSelectedProtocolIdx,
+		kSelProtocolBtnIdx,
+		kSegmentIdx,
+		kCycleIdx,
+		kStepIdx,
+		kTimeIdx,
+		kTemperatureIdx
+	};
+
 	/// <summary>
 	/// Zusammenfassung für Form1
 	/// </summary>
@@ -67,8 +79,6 @@ namespace CppCLR_WinformsProjekt {
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
-			_pPcrProtocol = new PcrProtocol();
-			PidSelection->SelectedIndex = 1;
 			OpticsTypeCombo->SelectedIndex = 0;
 			Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
 			blockSeries->Points->AddXY(0, 0);
@@ -88,8 +98,6 @@ namespace CppCLR_WinformsProjekt {
 			{
 				delete components;
 			}
-
-			delete _pPcrProtocol;
 		}
 	private: System::Windows::Forms::TabControl^  AmpDetectTabs;
 	private: System::Windows::Forms::TabPage^  AmpDetectTab;
@@ -107,7 +115,6 @@ namespace CppCLR_WinformsProjekt {
 	private: System::Windows::Forms::Button^  SaveProtocol;
 	private: System::Windows::Forms::DataGridView^  ProtocolDataGrid;
 	private: System::Windows::Forms::RichTextBox^  ProtocolName;
-	private: PcrProtocol * _pPcrProtocol;
 			 //	private: DeviceCommDriver ^ _devCommDrv;
 
 
@@ -158,10 +165,10 @@ namespace CppCLR_WinformsProjekt {
 
 	private: System::Windows::Forms::Button^  DeleteStep;
 	private: System::Windows::Forms::SaveFileDialog^  saveProtocolDlg;
-	private: System::Windows::Forms::Button^  SelectProtocolBtn;
-	private: System::Windows::Forms::RichTextBox^  SelectedProtocol;
 
-	private: System::Windows::Forms::Label^  label1;
+
+
+
 	private: System::Windows::Forms::Button^  StopPcrBtn;
 	private: System::Windows::Forms::Button^  RunPcrBtn;
 	private: System::Windows::Forms::TabPage^  AdvancedTab;
@@ -184,8 +191,8 @@ namespace CppCLR_WinformsProjekt {
 
 	private: System::Windows::Forms::ComboBox^  CommPortSelection;
 	private: System::Windows::Forms::Label^  label2;
-	private: System::Windows::Forms::ComboBox^  PidSelection;
-	private: System::Windows::Forms::Label^  label3;
+
+
 
 
 
@@ -207,13 +214,13 @@ private: System::Windows::Forms::Button^  ActuateTemperature;
 	private: System::Windows::Forms::Label^  label5;
 private: System::Windows::Forms::TextBox^  TemperatureSetpoint;
 
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  SiteCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  ActiveCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  SegmentCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  CycleCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepTimeCol;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
+
+
+
+
+
+
+
 
 
 
@@ -300,6 +307,45 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 
 
 
+private: System::Windows::Forms::Label^  label1;
+private: System::Windows::Forms::NumericUpDown^  DeviceCount;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  SiteCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  ActiveCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  PcrProtocolCol;
+private: System::Windows::Forms::DataGridViewButtonColumn^  SelectPcrProtocol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  SegmentCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  CycleCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  StepTimeCol;
+private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -372,28 +418,8 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			System::Windows::Forms::DataVisualization::Charting::Series^  series9 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->AmpDetectTabs = (gcnew System::Windows::Forms::TabControl());
 			this->AmpDetectTab = (gcnew System::Windows::Forms::TabPage());
-			this->SelectDataFolderButton = (gcnew System::Windows::Forms::Button());
-			this->SelectedDataFolder = (gcnew System::Windows::Forms::RichTextBox());
-			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->ThermalGraph = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->OpticalGraph = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
-			this->PidSelection = (gcnew System::Windows::Forms::ComboBox());
-			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->CommPortSelection = (gcnew System::Windows::Forms::ComboBox());
-			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->RunStatusGrid = (gcnew System::Windows::Forms::DataGridView());
-			this->SiteCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->ActiveCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->SegmentCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->CycleCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->StepCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->StepTimeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->TemperatureCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-			this->SelectProtocolBtn = (gcnew System::Windows::Forms::Button());
-			this->SelectedProtocol = (gcnew System::Windows::Forms::RichTextBox());
-			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->StopPcrBtn = (gcnew System::Windows::Forms::Button());
-			this->RunPcrBtn = (gcnew System::Windows::Forms::Button());
 			this->ProtocolsTab = (gcnew System::Windows::Forms::TabPage());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->DelOptReadBtn = (gcnew System::Windows::Forms::Button());
@@ -441,15 +467,33 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->TemperatureSetpoint = (gcnew System::Windows::Forms::TextBox());
 			this->ActuateTemperature = (gcnew System::Windows::Forms::Button());
+			this->SelectDataFolderButton = (gcnew System::Windows::Forms::Button());
+			this->SelectedDataFolder = (gcnew System::Windows::Forms::RichTextBox());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->CommPortSelection = (gcnew System::Windows::Forms::ComboBox());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->RunStatusGrid = (gcnew System::Windows::Forms::DataGridView());
+			this->SiteCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->ActiveCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->PcrProtocolCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->SelectPcrProtocol = (gcnew System::Windows::Forms::DataGridViewButtonColumn());
+			this->SegmentCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->CycleCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->StepCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->StepTimeCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->TemperatureCol = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->StopPcrBtn = (gcnew System::Windows::Forms::Button());
+			this->RunPcrBtn = (gcnew System::Windows::Forms::Button());
 			this->openProtocolDlg = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->saveProtocolDlg = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->StatusTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->SelectDataFolderDlg = (gcnew System::Windows::Forms::FolderBrowserDialog());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->DeviceCount = (gcnew System::Windows::Forms::NumericUpDown());
 			this->AmpDetectTabs->SuspendLayout();
 			this->AmpDetectTab->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalGraph))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->RunStatusGrid))->BeginInit();
 			this->ProtocolsTab->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalReadsGrid))->BeginInit();
@@ -457,6 +501,8 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->AdvancedTab->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PidGrid))->BeginInit();
 			this->groupBox3->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->RunStatusGrid))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->DeviceCount))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// AmpDetectTabs
@@ -467,71 +513,26 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->AmpDetectTabs->Controls->Add(this->AmpDetectTab);
 			this->AmpDetectTabs->Controls->Add(this->ProtocolsTab);
 			this->AmpDetectTabs->Controls->Add(this->AdvancedTab);
-			this->AmpDetectTabs->Location = System::Drawing::Point(9, 10);
+			this->AmpDetectTabs->Location = System::Drawing::Point(9, 290);
 			this->AmpDetectTabs->Margin = System::Windows::Forms::Padding(2);
 			this->AmpDetectTabs->Name = L"AmpDetectTabs";
 			this->AmpDetectTabs->SelectedIndex = 0;
-			this->AmpDetectTabs->Size = System::Drawing::Size(886, 606);
+			this->AmpDetectTabs->Size = System::Drawing::Size(886, 326);
 			this->AmpDetectTabs->TabIndex = 0;
 			// 
 			// AmpDetectTab
 			// 
-			this->AmpDetectTab->Controls->Add(this->SelectDataFolderButton);
-			this->AmpDetectTab->Controls->Add(this->SelectedDataFolder);
-			this->AmpDetectTab->Controls->Add(this->label4);
 			this->AmpDetectTab->Controls->Add(this->ThermalGraph);
 			this->AmpDetectTab->Controls->Add(this->OpticalGraph);
-			this->AmpDetectTab->Controls->Add(this->PidSelection);
-			this->AmpDetectTab->Controls->Add(this->label3);
-			this->AmpDetectTab->Controls->Add(this->CommPortSelection);
-			this->AmpDetectTab->Controls->Add(this->label2);
-			this->AmpDetectTab->Controls->Add(this->RunStatusGrid);
-			this->AmpDetectTab->Controls->Add(this->SelectProtocolBtn);
-			this->AmpDetectTab->Controls->Add(this->SelectedProtocol);
-			this->AmpDetectTab->Controls->Add(this->label1);
-			this->AmpDetectTab->Controls->Add(this->StopPcrBtn);
-			this->AmpDetectTab->Controls->Add(this->RunPcrBtn);
 			this->AmpDetectTab->Location = System::Drawing::Point(4, 22);
 			this->AmpDetectTab->Margin = System::Windows::Forms::Padding(2);
 			this->AmpDetectTab->Name = L"AmpDetectTab";
 			this->AmpDetectTab->Padding = System::Windows::Forms::Padding(2);
-			this->AmpDetectTab->Size = System::Drawing::Size(878, 580);
+			this->AmpDetectTab->Size = System::Drawing::Size(878, 300);
 			this->AmpDetectTab->TabIndex = 0;
 			this->AmpDetectTab->Text = L"AmpDetect";
 			this->AmpDetectTab->UseVisualStyleBackColor = true;
 			this->AmpDetectTab->Enter += gcnew System::EventHandler(this, &Form1::AmpDetectTab_Enter);
-			// 
-			// SelectDataFolderButton
-			// 
-			this->SelectDataFolderButton->Location = System::Drawing::Point(390, 50);
-			this->SelectDataFolderButton->Margin = System::Windows::Forms::Padding(2);
-			this->SelectDataFolderButton->Name = L"SelectDataFolderButton";
-			this->SelectDataFolderButton->Size = System::Drawing::Size(32, 26);
-			this->SelectDataFolderButton->TabIndex = 14;
-			this->SelectDataFolderButton->Text = L"...";
-			this->SelectDataFolderButton->UseVisualStyleBackColor = true;
-			this->SelectDataFolderButton->Click += gcnew System::EventHandler(this, &Form1::SelectDataFolderButton_Click);
-			// 
-			// SelectedDataFolder
-			// 
-			this->SelectedDataFolder->Location = System::Drawing::Point(81, 50);
-			this->SelectedDataFolder->Margin = System::Windows::Forms::Padding(2);
-			this->SelectedDataFolder->Multiline = false;
-			this->SelectedDataFolder->Name = L"SelectedDataFolder";
-			this->SelectedDataFolder->ReadOnly = true;
-			this->SelectedDataFolder->Size = System::Drawing::Size(306, 27);
-			this->SelectedDataFolder->TabIndex = 13;
-			this->SelectedDataFolder->Text = L"";
-			// 
-			// label4
-			// 
-			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(4, 52);
-			this->label4->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
-			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(65, 13);
-			this->label4->TabIndex = 12;
-			this->label4->Text = L"Data Folder:";
 			// 
 			// ThermalGraph
 			// 
@@ -544,7 +545,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->ThermalGraph->ChartAreas->Add(chartArea1);
 			legend1->Name = L"Legend1";
 			this->ThermalGraph->Legends->Add(legend1);
-			this->ThermalGraph->Location = System::Drawing::Point(7, 393);
+			this->ThermalGraph->Location = System::Drawing::Point(7, 156);
 			this->ThermalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->ThermalGraph->Name = L"ThermalGraph";
 			series1->ChartArea = L"ChartArea1";
@@ -567,20 +568,18 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->ThermalGraph->Series->Add(series2);
 			this->ThermalGraph->Series->Add(series3);
 			this->ThermalGraph->Series->Add(series4);
-			this->ThermalGraph->Size = System::Drawing::Size(857, 184);
+			this->ThermalGraph->Size = System::Drawing::Size(857, 140);
 			this->ThermalGraph->TabIndex = 11;
 			this->ThermalGraph->Text = L"Thermal Data";
 			// 
 			// OpticalGraph
 			// 
-			this->OpticalGraph->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
+			this->OpticalGraph->Anchor = System::Windows::Forms::AnchorStyles::None;
 			chartArea2->Name = L"ChartArea1";
 			this->OpticalGraph->ChartAreas->Add(chartArea2);
 			legend2->Name = L"Legend1";
 			this->OpticalGraph->Legends->Add(legend2);
-			this->OpticalGraph->Location = System::Drawing::Point(7, 240);
+			this->OpticalGraph->Location = System::Drawing::Point(7, 18);
 			this->OpticalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->OpticalGraph->Name = L"OpticalGraph";
 			series5->ChartArea = L"ChartArea1";
@@ -608,197 +607,10 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->OpticalGraph->Series->Add(series7);
 			this->OpticalGraph->Series->Add(series8);
 			this->OpticalGraph->Series->Add(series9);
-			this->OpticalGraph->Size = System::Drawing::Size(857, 149);
+			this->OpticalGraph->Size = System::Drawing::Size(857, 134);
 			this->OpticalGraph->TabIndex = 10;
 			this->OpticalGraph->Text = L"Optical Data";
 			this->OpticalGraph->Click += gcnew System::EventHandler(this, &Form1::OpticalGraph_Click);
-			// 
-			// PidSelection
-			// 
-			this->PidSelection->AllowDrop = true;
-			this->PidSelection->FormattingEnabled = true;
-			this->PidSelection->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Meerstetter", L"Homegrown" });
-			this->PidSelection->Location = System::Drawing::Point(268, 115);
-			this->PidSelection->Margin = System::Windows::Forms::Padding(2);
-			this->PidSelection->Name = L"PidSelection";
-			this->PidSelection->Size = System::Drawing::Size(119, 21);
-			this->PidSelection->TabIndex = 9;
-			// 
-			// label3
-			// 
-			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(238, 118);
-			this->label3->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(28, 13);
-			this->label3->TabIndex = 8;
-			this->label3->Text = L"PID:";
-			// 
-			// CommPortSelection
-			// 
-			this->CommPortSelection->AllowDrop = true;
-			this->CommPortSelection->FormattingEnabled = true;
-			this->CommPortSelection->Location = System::Drawing::Point(81, 115);
-			this->CommPortSelection->Margin = System::Windows::Forms::Padding(2);
-			this->CommPortSelection->Name = L"CommPortSelection";
-			this->CommPortSelection->Size = System::Drawing::Size(119, 21);
-			this->CommPortSelection->TabIndex = 7;
-			this->CommPortSelection->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::CommPortSelection_SelectedIndexChanged);
-			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(4, 118);
-			this->label2->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(61, 13);
-			this->label2->TabIndex = 6;
-			this->label2->Text = L"Comm Port:";
-			// 
-			// RunStatusGrid
-			// 
-			this->RunStatusGrid->AllowUserToAddRows = false;
-			this->RunStatusGrid->AllowUserToDeleteRows = false;
-			this->RunStatusGrid->AllowUserToResizeColumns = false;
-			this->RunStatusGrid->AllowUserToResizeRows = false;
-			this->RunStatusGrid->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->RunStatusGrid->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->RunStatusGrid->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(7) {
-				this->SiteCol,
-					this->ActiveCol, this->SegmentCol, this->CycleCol, this->StepCol, this->StepTimeCol, this->TemperatureCol
-			});
-			this->RunStatusGrid->Location = System::Drawing::Point(450, 7);
-			this->RunStatusGrid->Margin = System::Windows::Forms::Padding(2);
-			this->RunStatusGrid->MultiSelect = false;
-			this->RunStatusGrid->Name = L"RunStatusGrid";
-			this->RunStatusGrid->ReadOnly = true;
-			this->RunStatusGrid->RowHeadersVisible = false;
-			this->RunStatusGrid->RowTemplate->Height = 24;
-			this->RunStatusGrid->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->RunStatusGrid->Size = System::Drawing::Size(414, 199);
-			this->RunStatusGrid->TabIndex = 5;
-			// 
-			// SiteCol
-			// 
-			this->SiteCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
-			this->SiteCol->HeaderText = L"Site";
-			this->SiteCol->Name = L"SiteCol";
-			this->SiteCol->ReadOnly = true;
-			this->SiteCol->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->SiteCol->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
-			this->SiteCol->Width = 31;
-			// 
-			// ActiveCol
-			// 
-			this->ActiveCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCellsExceptHeader;
-			this->ActiveCol->HeaderText = L"";
-			this->ActiveCol->MinimumWidth = 20;
-			this->ActiveCol->Name = L"ActiveCol";
-			this->ActiveCol->ReadOnly = true;
-			this->ActiveCol->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->ActiveCol->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
-			this->ActiveCol->Width = 20;
-			// 
-			// SegmentCol
-			// 
-			this->SegmentCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->SegmentCol->HeaderText = L"Segment";
-			this->SegmentCol->Name = L"SegmentCol";
-			this->SegmentCol->ReadOnly = true;
-			this->SegmentCol->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->SegmentCol->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
-			this->SegmentCol->Width = 55;
-			// 
-			// CycleCol
-			// 
-			this->CycleCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->CycleCol->HeaderText = L"Cycle";
-			this->CycleCol->Name = L"CycleCol";
-			this->CycleCol->ReadOnly = true;
-			this->CycleCol->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->CycleCol->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
-			this->CycleCol->Width = 39;
-			// 
-			// StepCol
-			// 
-			this->StepCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->StepCol->HeaderText = L"Step";
-			this->StepCol->Name = L"StepCol";
-			this->StepCol->ReadOnly = true;
-			this->StepCol->Resizable = System::Windows::Forms::DataGridViewTriState::False;
-			this->StepCol->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Programmatic;
-			this->StepCol->Width = 54;
-			// 
-			// StepTimeCol
-			// 
-			this->StepTimeCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
-			this->StepTimeCol->HeaderText = L"Time";
-			this->StepTimeCol->Name = L"StepTimeCol";
-			this->StepTimeCol->ReadOnly = true;
-			this->StepTimeCol->Width = 55;
-			// 
-			// TemperatureCol
-			// 
-			this->TemperatureCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
-			this->TemperatureCol->HeaderText = L"*C";
-			this->TemperatureCol->Name = L"TemperatureCol";
-			this->TemperatureCol->ReadOnly = true;
-			this->TemperatureCol->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
-			// 
-			// SelectProtocolBtn
-			// 
-			this->SelectProtocolBtn->Location = System::Drawing::Point(390, 7);
-			this->SelectProtocolBtn->Margin = System::Windows::Forms::Padding(2);
-			this->SelectProtocolBtn->Name = L"SelectProtocolBtn";
-			this->SelectProtocolBtn->Size = System::Drawing::Size(32, 26);
-			this->SelectProtocolBtn->TabIndex = 4;
-			this->SelectProtocolBtn->Text = L"...";
-			this->SelectProtocolBtn->UseVisualStyleBackColor = true;
-			this->SelectProtocolBtn->Click += gcnew System::EventHandler(this, &Form1::SelectProtocolBtn_Click);
-			// 
-			// SelectedProtocol
-			// 
-			this->SelectedProtocol->Location = System::Drawing::Point(81, 7);
-			this->SelectedProtocol->Margin = System::Windows::Forms::Padding(2);
-			this->SelectedProtocol->Multiline = false;
-			this->SelectedProtocol->Name = L"SelectedProtocol";
-			this->SelectedProtocol->ReadOnly = true;
-			this->SelectedProtocol->Size = System::Drawing::Size(306, 27);
-			this->SelectedProtocol->TabIndex = 3;
-			this->SelectedProtocol->Text = L"";
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(4, 14);
-			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(74, 13);
-			this->label1->TabIndex = 2;
-			this->label1->Text = L"PCR Protocol:";
-			// 
-			// StopPcrBtn
-			// 
-			this->StopPcrBtn->Location = System::Drawing::Point(240, 180);
-			this->StopPcrBtn->Margin = System::Windows::Forms::Padding(2);
-			this->StopPcrBtn->Name = L"StopPcrBtn";
-			this->StopPcrBtn->Size = System::Drawing::Size(56, 26);
-			this->StopPcrBtn->TabIndex = 1;
-			this->StopPcrBtn->Text = L"Stop";
-			this->StopPcrBtn->UseVisualStyleBackColor = true;
-			this->StopPcrBtn->Click += gcnew System::EventHandler(this, &Form1::StopPcrBtn_Click);
-			// 
-			// RunPcrBtn
-			// 
-			this->RunPcrBtn->Location = System::Drawing::Point(22, 180);
-			this->RunPcrBtn->Margin = System::Windows::Forms::Padding(2);
-			this->RunPcrBtn->Name = L"RunPcrBtn";
-			this->RunPcrBtn->Size = System::Drawing::Size(56, 26);
-			this->RunPcrBtn->TabIndex = 0;
-			this->RunPcrBtn->Text = L"Run";
-			this->RunPcrBtn->UseVisualStyleBackColor = true;
-			this->RunPcrBtn->Click += gcnew System::EventHandler(this, &Form1::RunPcrBtn_Click);
 			// 
 			// ProtocolsTab
 			// 
@@ -814,7 +626,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->ProtocolsTab->Margin = System::Windows::Forms::Padding(2);
 			this->ProtocolsTab->Name = L"ProtocolsTab";
 			this->ProtocolsTab->Padding = System::Windows::Forms::Padding(2);
-			this->ProtocolsTab->Size = System::Drawing::Size(878, 580);
+			this->ProtocolsTab->Size = System::Drawing::Size(878, 300);
 			this->ProtocolsTab->TabIndex = 1;
 			this->ProtocolsTab->Text = L"Protocols";
 			this->ProtocolsTab->UseVisualStyleBackColor = true;
@@ -999,9 +811,6 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->ProtocolDataGrid->AllowUserToDeleteRows = false;
 			this->ProtocolDataGrid->AllowUserToResizeColumns = false;
 			this->ProtocolDataGrid->AllowUserToResizeRows = false;
-			this->ProtocolDataGrid->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
 			this->ProtocolDataGrid->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->ProtocolDataGrid->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(7) {
 				this->Cycles,
@@ -1092,7 +901,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->AdvancedTab->Location = System::Drawing::Point(4, 22);
 			this->AdvancedTab->Margin = System::Windows::Forms::Padding(2);
 			this->AdvancedTab->Name = L"AdvancedTab";
-			this->AdvancedTab->Size = System::Drawing::Size(878, 580);
+			this->AdvancedTab->Size = System::Drawing::Size(878, 300);
 			this->AdvancedTab->TabIndex = 2;
 			this->AdvancedTab->Text = L"Advanced";
 			this->AdvancedTab->UseVisualStyleBackColor = true;
@@ -1267,25 +1076,234 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			this->ActuateTemperature->UseVisualStyleBackColor = true;
 			this->ActuateTemperature->Click += gcnew System::EventHandler(this, &Form1::ActuateTemperature_Click);
 			// 
+			// SelectDataFolderButton
+			// 
+			this->SelectDataFolderButton->Location = System::Drawing::Point(397, 7);
+			this->SelectDataFolderButton->Margin = System::Windows::Forms::Padding(2);
+			this->SelectDataFolderButton->Name = L"SelectDataFolderButton";
+			this->SelectDataFolderButton->Size = System::Drawing::Size(32, 26);
+			this->SelectDataFolderButton->TabIndex = 14;
+			this->SelectDataFolderButton->Text = L"...";
+			this->SelectDataFolderButton->UseVisualStyleBackColor = true;
+			this->SelectDataFolderButton->Click += gcnew System::EventHandler(this, &Form1::SelectDataFolderButton_Click);
+			// 
+			// SelectedDataFolder
+			// 
+			this->SelectedDataFolder->Location = System::Drawing::Point(88, 7);
+			this->SelectedDataFolder->Margin = System::Windows::Forms::Padding(2);
+			this->SelectedDataFolder->Multiline = false;
+			this->SelectedDataFolder->Name = L"SelectedDataFolder";
+			this->SelectedDataFolder->ReadOnly = true;
+			this->SelectedDataFolder->Size = System::Drawing::Size(306, 27);
+			this->SelectedDataFolder->TabIndex = 13;
+			this->SelectedDataFolder->Text = L"";
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Location = System::Drawing::Point(11, 7);
+			this->label4->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(65, 13);
+			this->label4->TabIndex = 12;
+			this->label4->Text = L"Data Folder:";
+			// 
+			// CommPortSelection
+			// 
+			this->CommPortSelection->AllowDrop = true;
+			this->CommPortSelection->FormattingEnabled = true;
+			this->CommPortSelection->Location = System::Drawing::Point(789, 4);
+			this->CommPortSelection->Margin = System::Windows::Forms::Padding(2);
+			this->CommPortSelection->Name = L"CommPortSelection";
+			this->CommPortSelection->Size = System::Drawing::Size(107, 21);
+			this->CommPortSelection->TabIndex = 7;
+			this->CommPortSelection->SelectedIndexChanged += gcnew System::EventHandler(this, &Form1::CommPortSelection_SelectedIndexChanged);
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(709, 7);
+			this->label2->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(75, 13);
+			this->label2->TabIndex = 6;
+			this->label2->Text = L"1st Device ID:";
+			// 
+			// RunStatusGrid
+			// 
+			this->RunStatusGrid->AllowUserToAddRows = false;
+			this->RunStatusGrid->AllowUserToDeleteRows = false;
+			this->RunStatusGrid->AllowUserToResizeColumns = false;
+			this->RunStatusGrid->AllowUserToResizeRows = false;
+			this->RunStatusGrid->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->RunStatusGrid->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->RunStatusGrid->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(9) {
+				this->SiteCol,
+					this->ActiveCol, this->PcrProtocolCol, this->SelectPcrProtocol, this->SegmentCol, this->CycleCol, this->StepCol, this->StepTimeCol,
+					this->TemperatureCol
+			});
+			this->RunStatusGrid->Location = System::Drawing::Point(88, 75);
+			this->RunStatusGrid->Margin = System::Windows::Forms::Padding(2);
+			this->RunStatusGrid->Name = L"RunStatusGrid";
+			this->RunStatusGrid->ReadOnly = true;
+			this->RunStatusGrid->RowHeadersVisible = false;
+			this->RunStatusGrid->RowTemplate->Height = 24;
+			this->RunStatusGrid->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
+			this->RunStatusGrid->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::FullRowSelect;
+			this->RunStatusGrid->Size = System::Drawing::Size(807, 195);
+			this->RunStatusGrid->TabIndex = 5;
+			this->RunStatusGrid->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Form1::RunStatusGrid_CellContentClick);
+			// 
+			// SiteCol
+			// 
+			this->SiteCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
+			this->SiteCol->HeaderText = L"Site";
+			this->SiteCol->Name = L"SiteCol";
+			this->SiteCol->ReadOnly = true;
+			this->SiteCol->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->SiteCol->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
+			this->SiteCol->Width = 31;
+			// 
+			// ActiveCol
+			// 
+			this->ActiveCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCellsExceptHeader;
+			this->ActiveCol->HeaderText = L"";
+			this->ActiveCol->MinimumWidth = 60;
+			this->ActiveCol->Name = L"ActiveCol";
+			this->ActiveCol->ReadOnly = true;
+			this->ActiveCol->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->ActiveCol->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
+			this->ActiveCol->Width = 60;
+			// 
+			// PcrProtocolCol
+			// 
+			this->PcrProtocolCol->HeaderText = L"Protocol";
+			this->PcrProtocolCol->Name = L"PcrProtocolCol";
+			this->PcrProtocolCol->ReadOnly = true;
+			this->PcrProtocolCol->Width = 300;
+			// 
+			// SelectPcrProtocol
+			// 
+			this->SelectPcrProtocol->HeaderText = L"";
+			this->SelectPcrProtocol->Name = L"SelectPcrProtocol";
+			this->SelectPcrProtocol->ReadOnly = true;
+			this->SelectPcrProtocol->Width = 25;
+			// 
+			// SegmentCol
+			// 
+			this->SegmentCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+			this->SegmentCol->HeaderText = L"Segment";
+			this->SegmentCol->Name = L"SegmentCol";
+			this->SegmentCol->ReadOnly = true;
+			this->SegmentCol->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->SegmentCol->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
+			this->SegmentCol->Width = 55;
+			// 
+			// CycleCol
+			// 
+			this->CycleCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+			this->CycleCol->HeaderText = L"Cycle";
+			this->CycleCol->Name = L"CycleCol";
+			this->CycleCol->ReadOnly = true;
+			this->CycleCol->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->CycleCol->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
+			this->CycleCol->Width = 39;
+			// 
+			// StepCol
+			// 
+			this->StepCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+			this->StepCol->HeaderText = L"Step";
+			this->StepCol->Name = L"StepCol";
+			this->StepCol->ReadOnly = true;
+			this->StepCol->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+			this->StepCol->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Programmatic;
+			this->StepCol->Width = 54;
+			// 
+			// StepTimeCol
+			// 
+			this->StepTimeCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+			this->StepTimeCol->HeaderText = L"Time";
+			this->StepTimeCol->Name = L"StepTimeCol";
+			this->StepTimeCol->ReadOnly = true;
+			this->StepTimeCol->Width = 55;
+			// 
+			// TemperatureCol
+			// 
+			this->TemperatureCol->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
+			this->TemperatureCol->HeaderText = L"*C";
+			this->TemperatureCol->Name = L"TemperatureCol";
+			this->TemperatureCol->ReadOnly = true;
+			this->TemperatureCol->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
+			// 
+			// StopPcrBtn
+			// 
+			this->StopPcrBtn->Location = System::Drawing::Point(9, 157);
+			this->StopPcrBtn->Margin = System::Windows::Forms::Padding(2);
+			this->StopPcrBtn->Name = L"StopPcrBtn";
+			this->StopPcrBtn->Size = System::Drawing::Size(56, 26);
+			this->StopPcrBtn->TabIndex = 1;
+			this->StopPcrBtn->Text = L"Stop";
+			this->StopPcrBtn->UseVisualStyleBackColor = true;
+			this->StopPcrBtn->Click += gcnew System::EventHandler(this, &Form1::StopPcrBtn_Click);
+			// 
+			// RunPcrBtn
+			// 
+			this->RunPcrBtn->Location = System::Drawing::Point(9, 75);
+			this->RunPcrBtn->Margin = System::Windows::Forms::Padding(2);
+			this->RunPcrBtn->Name = L"RunPcrBtn";
+			this->RunPcrBtn->Size = System::Drawing::Size(56, 26);
+			this->RunPcrBtn->TabIndex = 0;
+			this->RunPcrBtn->Text = L"Start";
+			this->RunPcrBtn->UseVisualStyleBackColor = true;
+			this->RunPcrBtn->Click += gcnew System::EventHandler(this, &Form1::StartPcrBtn_Click);
+			// 
 			// StatusTimer
 			// 
 			this->StatusTimer->Enabled = true;
 			this->StatusTimer->Tick += gcnew System::EventHandler(this, &Form1::StatusTimer_Tick);
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Location = System::Drawing::Point(709, 37);
+			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(75, 13);
+			this->label1->TabIndex = 15;
+			this->label1->Text = L"Device Count:";
+			// 
+			// DeviceCount
+			// 
+			this->DeviceCount->Location = System::Drawing::Point(789, 35);
+			this->DeviceCount->Name = L"DeviceCount";
+			this->DeviceCount->Size = System::Drawing::Size(105, 20);
+			this->DeviceCount->TabIndex = 16;
+			this->DeviceCount->ValueChanged += gcnew System::EventHandler(this, &Form1::DeviceCount_ValueChanged);
 			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(904, 626);
+			this->Controls->Add(this->DeviceCount);
+			this->Controls->Add(this->label1);
+			this->Controls->Add(this->SelectDataFolderButton);
 			this->Controls->Add(this->AmpDetectTabs);
+			this->Controls->Add(this->RunPcrBtn);
+			this->Controls->Add(this->StopPcrBtn);
+			this->Controls->Add(this->SelectedDataFolder);
+			this->Controls->Add(this->label4);
+			this->Controls->Add(this->CommPortSelection);
+			this->Controls->Add(this->label2);
+			this->Controls->Add(this->RunStatusGrid);
 			this->Name = L"Form1";
 			this->Text = L"AmpDetect";
+			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
 			this->AmpDetectTabs->ResumeLayout(false);
 			this->AmpDetectTab->ResumeLayout(false);
-			this->AmpDetectTab->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalGraph))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->RunStatusGrid))->EndInit();
 			this->ProtocolsTab->ResumeLayout(false);
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
@@ -1295,12 +1313,15 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PidGrid))->EndInit();
 			this->groupBox3->ResumeLayout(false);
 			this->groupBox3->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->RunStatusGrid))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->DeviceCount))->EndInit();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
 
-		/////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void OpenProtocol_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		openProtocolDlg->FileName = ProtocolName->Text;
@@ -1318,13 +1339,14 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			for (int i = 0; i < (int)binFile->BaseStream->Length; i++)
 				arTemp[i] = protocolBuf[i];
 
-			*_pPcrProtocol << arTemp;
-			WritePcrProtocolToGui();
+			PcrProtocol pcrProtocol;
+			pcrProtocol << arTemp;
+			WritePcrProtocolToGui(pcrProtocol);
 			binFile->Close();
 		}
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void SaveProtocol_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		saveProtocolDlg->FileName = ProtocolName->Text;
@@ -1332,40 +1354,41 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 		saveProtocolDlg->OverwritePrompt = true;
 		saveProtocolDlg->Filter = "pcr protocols (*.qpcr)|*.qpcr|All files (*.*)|*.*";
 
+		PcrProtocol	pcrProtocol;
+		ReadPcrProtocolFromGui(&pcrProtocol);
 		if (saveProtocolDlg->ShowDialog() == System::Windows::Forms::DialogResult::OK)
 		{
-			ReadPcrProtocolFromGui();
 			ProtocolName->Text = saveProtocolDlg->FileName;
 			System::IO::StreamWriter^ file = gcnew System::IO::StreamWriter(ProtocolName->Text);
 			System::IO::BinaryWriter^ binFile = gcnew System::IO::BinaryWriter(file->BaseStream);
 
 			uint8_t arTemp[5 * 1024];
-			*_pPcrProtocol >> arTemp;
-			array<uint8_t>^ protocolBuf = gcnew array<uint8_t>(_pPcrProtocol->GetStreamSize());
-			for (int i = 0; i < (int)_pPcrProtocol->GetStreamSize(); i++)
+			pcrProtocol >> arTemp;
+			array<uint8_t>^ protocolBuf = gcnew array<uint8_t>(pcrProtocol.GetStreamSize());
+			for (int i = 0; i < (int)pcrProtocol.GetStreamSize(); i++)
 				protocolBuf[i] = arTemp[i];
 
 			binFile->BaseStream->SetLength(0);
 			binFile->Write(protocolBuf);
 			binFile->Close();
 		}
-		WritePcrProtocolToGui();
+		WritePcrProtocolToGui(pcrProtocol);
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
-	private: System::Void WritePcrProtocolToGui()
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void WritePcrProtocolToGui(PcrProtocol& pcrProtocol)
 	{
 		ProtocolDataGrid->Rows->Clear();
 		OpticalReadsGrid->Rows->Clear();
 
 		//Iterate through all optical reads in this protocol.
-		OpticsTypeCombo->SelectedIndex = _pPcrProtocol->GetFluorDetectorType();
-		for (int i = 0; i < (int)_pPcrProtocol->GetNumOpticalReads(); i++)
+		OpticsTypeCombo->SelectedIndex = pcrProtocol.GetFluorDetectorType();
+		for (int i = 0; i < (int)pcrProtocol.GetNumOpticalReads(); i++)
 		{
 			DataGridViewRow^ row = gcnew DataGridViewRow;
 			OpticalReadsGrid->Rows->Add(row);
 			int nRowIdx = OpticalReadsGrid->RowCount - 1;
-			OpticalRead optRead = _pPcrProtocol->GetOpticalRead(i);
+			OpticalRead optRead = pcrProtocol.GetOpticalRead(i);
 
 			OpticalReadsGrid[0, nRowIdx]->Value = optRead.GetLedIdx();
 			OpticalReadsGrid[1, nRowIdx]->Value = optRead.GetLedIntensity();
@@ -1376,9 +1399,9 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 		}
 
 		//Iterate through all segments in this protocol.
-		for (int nSegIdx = 0; nSegIdx < (int)_pPcrProtocol->GetNumSegs(); nSegIdx++)
+		for (int nSegIdx = 0; nSegIdx < (int)pcrProtocol.GetNumSegs(); nSegIdx++)
 		{
-			Segment seg = _pPcrProtocol->GetSegment(nSegIdx);
+			Segment seg = pcrProtocol.GetSegment(nSegIdx);
 
 			//Iterate through all steps in this segment.
 			for (int nStepIdx = 0; nStepIdx < (int)seg.GetNumSteps(); nStepIdx++)
@@ -1406,13 +1429,13 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 		}
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
-	private: System::Void ReadPcrProtocolFromGui()
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void ReadPcrProtocolFromGui(PcrProtocol* pPcrProtocol)
 	{
-		_pPcrProtocol->Clear();
+		pPcrProtocol->Clear();
 
 		OpticalRead optRead;
-		_pPcrProtocol->SetFluorDetectorType((FluorDetectorType)OpticsTypeCombo->SelectedIndex);
+		pPcrProtocol->SetFluorDetectorType((FluorDetectorType)OpticsTypeCombo->SelectedIndex);
 		for (int nRowIdx = 0; nRowIdx < OpticalReadsGrid->Rows->Count; nRowIdx++)
 		{
 			optRead.SetLedIdx(Convert::ToInt32(OpticalReadsGrid[0, nRowIdx]->Value));
@@ -1421,7 +1444,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			optRead.SetDetectorIdx(Convert::ToInt32(OpticalReadsGrid[3, nRowIdx]->Value));
 			optRead.SetReferenceIdx(Convert::ToInt32(OpticalReadsGrid[4, nRowIdx]->Value));
 			optRead.SetDetectorIntegrationTime(Convert::ToInt32(OpticalReadsGrid[5, nRowIdx]->Value));
-			_pPcrProtocol->AddOpticalRead(optRead);
+			pPcrProtocol->AddOpticalRead(optRead);
 		}
 
 		Segment seg;
@@ -1446,18 +1469,18 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			seg.AddStep(step);
 
 			if ((nRowIdx >= ProtocolDataGrid->Rows->Count - 1) || (Convert::ToInt32(ProtocolDataGrid[0, nRowIdx + 1]->Value) > 0))
-				_pPcrProtocol->AddSegment(seg);
+				pPcrProtocol->AddSegment(seg);
 		}
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void NewStep_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		DataGridViewRow^ row = gcnew DataGridViewRow;
 		ProtocolDataGrid->Rows->Add(row);
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void DeleteStep_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		for (int nRowIdx = ProtocolDataGrid->Rows->Count - 1; nRowIdx >= 0; nRowIdx--)
@@ -1467,14 +1490,14 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 		}
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void AddOptReadBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		DataGridViewRow^ row = gcnew DataGridViewRow;
 		OpticalReadsGrid->Rows->Add(row);
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void DelOptReadBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		for (int nRowIdx = OpticalReadsGrid->Rows->Count - 1; nRowIdx >= 0; nRowIdx--)
@@ -1484,18 +1507,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 		}
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
-	private: System::Void SelectProtocolBtn_Click(System::Object^  sender, System::EventArgs^  e)
-	{
-		openProtocolDlg->FileName = ProtocolName->Text;
-		openProtocolDlg->AddExtension = true;
-		openProtocolDlg->Filter = "pcr protocols (*.qpcr)|*.qpcr|All files (*.*)|*.*";
-
-		if (openProtocolDlg->ShowDialog() == System::Windows::Forms::DialogResult::OK)
-			SelectedProtocol->Text = openProtocolDlg->FileName;
-	}
-
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void SelectDataFolderButton_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		SelectDataFolderDlg->SelectedPath = SelectedDataFolder->Text;
@@ -1504,33 +1516,67 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			SelectedDataFolder->Text = SelectDataFolderDlg->SelectedPath;
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
-	private: System::Void RunPcrBtn_Click(System::Object^  sender, System::EventArgs^  e)
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void RunStatusGrid_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e)
 	{
-		if (SelectedProtocol->Text == "")
+		if (e->ColumnIndex == kSelProtocolBtnIdx)
 		{
-			MessageBox::Show("First, select a protocol.");
+			//If this site has been selected and is connected.
+			int nSiteIdx = e->RowIndex;
+			if (((RunStatusGrid->Rows[nSiteIdx])->Selected) && (AD_IsConnected(nSiteIdx)))
+			{
+				openProtocolDlg->FileName = ProtocolName->Text;
+				openProtocolDlg->AddExtension = true;
+				openProtocolDlg->Filter = "pcr protocols (*.qpcr)|*.qpcr|All files (*.*)|*.*";
+
+				if (openProtocolDlg->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+				{
+						//Get the selected site.
+						RunStatusGrid[kSelectedProtocolIdx, nSiteIdx]->Value = openProtocolDlg->FileName;
+				}
+			}
 		}
-		else if (CommPortSelection->Text == "")
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void StartPcrBtn_Click(System::Object^  sender, System::EventArgs^  e)
+	{
+		if (SelectedDataFolder->Text == "")
 		{
-			MessageBox::Show("First, select a port.");
+			MessageBox::Show("Before starting, make sure a data folder is selected.");
+			return;
 		}
-		else if (SelectedDataFolder->Text == "")
+
+		//Make sure at least one selected site is connected and has a protocol specified.
+		bool bAtLeastOneSiteReady = false;
+		for (int nSiteIdx = 0; nSiteIdx < RunStatusGrid->RowCount; nSiteIdx++)
 		{
-			MessageBox::Show("First, select a data folder.");
+			//If this site has been selected and is connected.
+			if (((RunStatusGrid->Rows[nSiteIdx])->Selected) && (AD_IsConnected(nSiteIdx)))
+			{
+				//If this site has a protocol specified.
+				if (RunStatusGrid[kSelectedProtocolIdx, nSiteIdx]->Value != nullptr)
+				{
+					String^ sSelProtocol = RunStatusGrid[kSelectedProtocolIdx, nSiteIdx]->Value->ToString();
+					if (sSelProtocol != "")
+						bAtLeastOneSiteReady = true;
+				}
+			}
 		}
-		else if (PidSelection->SelectedItem == nullptr)
+
+		if (bAtLeastOneSiteReady == false)
 		{
-			MessageBox::Show("First, select a PID.");
+			MessageBox::Show("Before starting, make sure at least one selected site is connected and has a specified protocol.");
+			return;
 		}
-		else if (_nHostDevCommErrCode != ErrCode::kNoError)
+
+		//Do this for all selected sites.
+		for (int nSiteIdx = 0; nSiteIdx < RunStatusGrid->RowCount; nSiteIdx++)
 		{
-			MessageBox::Show("Not connected to device.");
-		}
-		else
-		{
+			String^ sSelProtocol = RunStatusGrid[kSelectedProtocolIdx, nSiteIdx]->Value->ToString();
+
 			marshal_context mc;
-			uint32_t nErrCode = AD_SetPcrProtocol(0, mc.marshal_as<LPCSTR>(SelectedProtocol->Text));
+			uint32_t nErrCode = AD_SetPcrProtocol(0, mc.marshal_as<LPCSTR>(sSelProtocol));
 			if (nErrCode != ErrCode::kNoError)
 			{
 				MessageBox::Show("Could not load PCR protocol.");
@@ -1538,7 +1584,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			else
 			{
 				//Send "Start" command to instrument.
-				ErrCode nErrCode = (ErrCode)AD_StartRun(0);
+				ErrCode nErrCode = (ErrCode)AD_StartRun(nSiteIdx);
 				if (nErrCode != ErrCode::kNoError)
 				{
 					MessageBox::Show("Could not start the PCR protocol.");
@@ -1586,30 +1632,21 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 		}
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void StopPcrBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		if (SelectedProtocol->Text == "")
+		if (MessageBox::Show("Stop selected PCR protocols?", "Confirm Stop", System::Windows::Forms::MessageBoxButtons::OKCancel) == System::Windows::Forms::DialogResult::OK)
 		{
-			MessageBox::Show("First, select a port.");
-		}
-		else if (_nHostDevCommErrCode != ErrCode::kNoError)
-		{
-			MessageBox::Show("Not connected to device.");
-		}
-		else
-		{
-			if (MessageBox::Show("Stop PCR protocol?", "Confirm Stop", System::Windows::Forms::MessageBoxButtons::OKCancel) == System::Windows::Forms::DialogResult::OK)
+			//Send stop command to all selected sites.
+			for (int nSiteIdx = 0; nSiteIdx < RunStatusGrid->RowCount; nSiteIdx++)
 			{
-				//Send "Stop" command to instrument.
-				uint32_t nErrCode = AD_StopRun(0);
-				if (nErrCode != ErrCode::kNoError)
-					MessageBox::Show("Could not stop the PCR protocol.");
+				if ((RunStatusGrid->Rows[nSiteIdx])->Selected)
+					AD_StopRun(nSiteIdx);
 			}
 		}
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void SetPidParams_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		if (CommPortSelection->Text == "")
@@ -1638,40 +1675,35 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 		}
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void AdvancedTab_Enter(System::Object^  sender, System::EventArgs^  e)
 	{
-		if (CommPortSelection->Text == "")
-			MessageBox::Show("First, select a port.");
-		else
+		if (PidGrid->RowCount == 0)
 		{
-			if (PidGrid->RowCount == 0)
-			{
-				PidGrid->Rows->Add(gcnew DataGridViewRow);
-				PidGrid->Rows->Add(gcnew DataGridViewRow);
-			}
-
-			float nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s;
-			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kTemperature, &nKp, &nKi, &nKd, &nSlope, &nYIntercept, &nStabilizationTolerance_C, &nStabilizationTime_s);
-			PidGrid[0, PidType::kTemperature]->Value = "Temperature";
-			PidGrid[1, PidType::kTemperature]->Value = Convert::ToString(nKp);
-			PidGrid[2, PidType::kTemperature]->Value = Convert::ToString(nKi);
-			PidGrid[3, PidType::kTemperature]->Value = Convert::ToString(nKd);
-			PidGrid[4, PidType::kTemperature]->Value = Convert::ToString(nSlope);
-			PidGrid[5, PidType::kTemperature]->Value = Convert::ToString(nYIntercept);
-			PidGrid[6, PidType::kTemperature]->Value = Convert::ToString(nStabilizationTolerance_C);
-			PidGrid[7, PidType::kTemperature]->Value = Convert::ToString(nStabilizationTime_s);
-
-			_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kCurrent, &nKp, &nKi, &nKd, &nSlope, &nYIntercept, &nStabilizationTolerance_C, &nStabilizationTime_s);
-			PidGrid[0, PidType::kCurrent]->Value = "Current";
-			PidGrid[1, PidType::kCurrent]->Value = Convert::ToString(nKp);
-			PidGrid[2, PidType::kCurrent]->Value = Convert::ToString(nKi);
-			PidGrid[3, PidType::kCurrent]->Value = Convert::ToString(nKd);
-			PidGrid[4, PidType::kCurrent]->Value = Convert::ToString(nSlope);
-			PidGrid[5, PidType::kCurrent]->Value = Convert::ToString(nYIntercept);
-			PidGrid[6, PidType::kCurrent]->Value = Convert::ToString(nStabilizationTolerance_C);
-			PidGrid[7, PidType::kCurrent]->Value = Convert::ToString(nStabilizationTime_s);
+			PidGrid->Rows->Add(gcnew DataGridViewRow);
+			PidGrid->Rows->Add(gcnew DataGridViewRow);
 		}
+
+		float nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s;
+		_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kTemperature, &nKp, &nKi, &nKd, &nSlope, &nYIntercept, &nStabilizationTolerance_C, &nStabilizationTime_s);
+		PidGrid[0, PidType::kTemperature]->Value = "Temperature";
+		PidGrid[1, PidType::kTemperature]->Value = Convert::ToString(nKp);
+		PidGrid[2, PidType::kTemperature]->Value = Convert::ToString(nKi);
+		PidGrid[3, PidType::kTemperature]->Value = Convert::ToString(nKd);
+		PidGrid[4, PidType::kTemperature]->Value = Convert::ToString(nSlope);
+		PidGrid[5, PidType::kTemperature]->Value = Convert::ToString(nYIntercept);
+		PidGrid[6, PidType::kTemperature]->Value = Convert::ToString(nStabilizationTolerance_C);
+		PidGrid[7, PidType::kTemperature]->Value = Convert::ToString(nStabilizationTime_s);
+
+		_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kCurrent, &nKp, &nKi, &nKd, &nSlope, &nYIntercept, &nStabilizationTolerance_C, &nStabilizationTime_s);
+		PidGrid[0, PidType::kCurrent]->Value = "Current";
+		PidGrid[1, PidType::kCurrent]->Value = Convert::ToString(nKp);
+		PidGrid[2, PidType::kCurrent]->Value = Convert::ToString(nKi);
+		PidGrid[3, PidType::kCurrent]->Value = Convert::ToString(nKd);
+		PidGrid[4, PidType::kCurrent]->Value = Convert::ToString(nSlope);
+		PidGrid[5, PidType::kCurrent]->Value = Convert::ToString(nYIntercept);
+		PidGrid[6, PidType::kCurrent]->Value = Convert::ToString(nStabilizationTolerance_C);
+		PidGrid[7, PidType::kCurrent]->Value = Convert::ToString(nStabilizationTime_s);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
@@ -1679,7 +1711,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 	{
 		ErrCode nErrCode = (ErrCode)AD_DisableManualControl(0);
 		if (nErrCode != ErrCode::kNoError)
-			MessageBox::Show("Could not start manual control.");
+			MessageBox::Show("Could not stop manual control.");
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
@@ -1698,7 +1730,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 			MessageBox::Show("Could not start manual control.");
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void AmpDetectTab_Enter(System::Object^  sender, System::EventArgs^  e)
 	{
 		CommPortSelection->Items->Clear();
@@ -1706,21 +1738,39 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 		CommPortSelection->Items->AddRange(arPortNames);
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void CommPortSelection_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e)
 	{
 		String^ sTemp = CommPortSelection->Text;
-		sTemp = sTemp->Remove(0, 3); //To isolate the COM number, remove the "COM".
-		AD_Uninitialize();
-		AD_Initialize(Convert::ToUInt32(sTemp), 1);
+		int nDeviceCount = (int)DeviceCount->Value;
+		if ((sTemp != "") && (nDeviceCount > 0) && (nDeviceCount <= 20))
+		{
+			sTemp = sTemp->Remove(0, 3); //To isolate the COM number, remove the "COM".
+			AD_Uninitialize();
+			AD_Initialize(Convert::ToUInt32(sTemp), nDeviceCount);
+		}
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void DeviceCount_ValueChanged(System::Object^  sender, System::EventArgs^  e)
+	{
+		String^ sTemp = CommPortSelection->Text;
+		int nDeviceCount = (int)DeviceCount->Value;
+		if ((sTemp != "") && (nDeviceCount > 0) && (nDeviceCount <= 20))
+		{
+			sTemp = sTemp->Remove(0, 3); //To isolate the COM number, remove the "COM".
+			AD_Uninitialize();
+			AD_Initialize(Convert::ToUInt32(sTemp), nDeviceCount);
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void StatusTimer_Tick(System::Object^  sender, System::EventArgs^  e)
 	{
 		UpdateGUI();
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void InitializeCamera(void)
 	{
 		cameraDll = LoadLibrary(TEXT("BaslerMultiCamera.dll"));
@@ -1736,7 +1786,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 		}
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void CameraControl(int nSiteIdx)
 	{
 		int nError = 0;
@@ -1790,7 +1840,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 		}
 	}
 
-			 /////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void UpdateGUI()
 	{
 		if (_nHostDevCommErrCode != ErrCode::kNoError)
@@ -1823,23 +1873,36 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 				RunStatusGrid->Rows->Add(row);
 			}
 
-			RunStatusGrid[0, nSiteIdx]->Value = Convert::ToString(nSiteIdx + 1);
-			RunStatusGrid[1, nSiteIdx]->Value = AD_GetCachedRunningFlg(nSiteIdx) ? "Y" : "N";
-			if (AD_GetCachedRunningFlg(nSiteIdx) == true)
+			//Put in the site number.
+			RunStatusGrid[kSiteNumIdx, nSiteIdx]->Value = Convert::ToString(nSiteIdx + 1);
+
+			//If this site is not connected.
+			if (!AD_IsConnected(nSiteIdx))
 			{
-				RunStatusGrid[2, nSiteIdx]->Value = Convert::ToString(AD_GetCachedSegmentIdx(nSiteIdx) + 1);
-				RunStatusGrid[3, nSiteIdx]->Value = Convert::ToString(AD_GetCachedCycleNum(nSiteIdx));
-				RunStatusGrid[4, nSiteIdx]->Value = Convert::ToString(AD_GetCachedStepIdx(nSiteIdx) + 1);
-				RunStatusGrid[5, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedHoldTimer(nSiteIdx) / 1000);
-				RunStatusGrid[6, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedTemperature(nSiteIdx) / 1000);
+				RunStatusGrid[kStateIdx, nSiteIdx]->Value = "Not Connected";
+				RunStatusGrid[kSegmentIdx, nSiteIdx]->Value = "";
+				RunStatusGrid[kCycleIdx, nSiteIdx]->Value = "";
+				RunStatusGrid[kStepIdx, nSiteIdx]->Value = "";
+				RunStatusGrid[kTimeIdx, nSiteIdx]->Value = "";
+				RunStatusGrid[kTemperatureIdx, nSiteIdx]->Value = "";
 			}
-			else
+			else if (AD_GetCachedRunningFlg(nSiteIdx) == true) //Connected and running.
 			{
-				RunStatusGrid[2, nSiteIdx]->Value = "";
-				RunStatusGrid[3, nSiteIdx]->Value = "";
-				RunStatusGrid[4, nSiteIdx]->Value = "";
-				RunStatusGrid[5, nSiteIdx]->Value = "";
-				RunStatusGrid[6, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedTemperature(nSiteIdx) / 1000);
+				RunStatusGrid[kStateIdx, nSiteIdx]->Value = "Running";
+				RunStatusGrid[kSegmentIdx, nSiteIdx]->Value = Convert::ToString(AD_GetCachedSegmentIdx(nSiteIdx) + 1);
+				RunStatusGrid[kCycleIdx, nSiteIdx]->Value = Convert::ToString(AD_GetCachedCycleNum(nSiteIdx));
+				RunStatusGrid[kStepIdx, nSiteIdx]->Value = Convert::ToString(AD_GetCachedStepIdx(nSiteIdx) + 1);
+				RunStatusGrid[kTimeIdx, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedHoldTimer(nSiteIdx) / 1000);
+				RunStatusGrid[kTemperatureIdx, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedTemperature(nSiteIdx) / 1000);
+			}
+			else //Connected and idle.
+			{
+				RunStatusGrid[kStateIdx, nSiteIdx]->Value = "Ready";
+				RunStatusGrid[kSegmentIdx, nSiteIdx]->Value = "";
+				RunStatusGrid[kCycleIdx, nSiteIdx]->Value = "";
+				RunStatusGrid[kStepIdx, nSiteIdx]->Value = "";
+				RunStatusGrid[kTimeIdx, nSiteIdx]->Value = "";
+				RunStatusGrid[kTemperatureIdx, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedTemperature(nSiteIdx) / 1000);
 			}
 
 			Series^ illuminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[0];
@@ -1926,7 +1989,9 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  StabilizationTime;
 	}
 	private: System::Void OpticalReadsGrid_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
 	}
-private: System::Void PidGrid_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
-}
+	private: System::Void PidGrid_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
+	}
+	private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
+	}
 };
 }
