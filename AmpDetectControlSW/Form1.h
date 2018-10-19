@@ -85,6 +85,11 @@ namespace CppCLR_WinformsProjekt {
 			Series^ illuminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[0];
 			illuminatedSeries->Points->AddXY(0, 45000);
 
+			for (int i = 0; i < 40; i++)
+			{
+				_arOpticalDataFiles.Add(nullptr);
+				_arThermalDataFiles.Add(nullptr);
+			}
 			this->Text = this->Text + " (" + Application::ProductVersion + ")";
 		}
 
@@ -100,11 +105,12 @@ namespace CppCLR_WinformsProjekt {
 			}
 		}
 	private: System::Windows::Forms::TabControl^  AmpDetectTabs;
-	private: System::Windows::Forms::TabPage^  AmpDetectTab;
+	private: System::Windows::Forms::TabPage^  GraphsTab;
+
 	private: System::Windows::Forms::TabPage^  ProtocolsTab;
 	private: System::UInt32				_nHostDevCommErrCode = ErrCode::kNoError;
-	private: System::IO::StreamWriter^			_opticalDataFile;
-	private: System::IO::StreamWriter^			_thermalDataFile;
+	private: System::Collections::Generic::List<System::IO::StreamWriter^>	_arOpticalDataFiles;
+	private: System::Collections::Generic::List<System::IO::StreamWriter^>	_arThermalDataFiles;
 	protected:
 
 	protected:
@@ -417,7 +423,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			System::Windows::Forms::DataVisualization::Charting::Series^  series8 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			System::Windows::Forms::DataVisualization::Charting::Series^  series9 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->AmpDetectTabs = (gcnew System::Windows::Forms::TabControl());
-			this->AmpDetectTab = (gcnew System::Windows::Forms::TabPage());
+			this->GraphsTab = (gcnew System::Windows::Forms::TabPage());
 			this->ThermalGraph = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->OpticalGraph = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->ProtocolsTab = (gcnew System::Windows::Forms::TabPage());
@@ -491,7 +497,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->DeviceCount = (gcnew System::Windows::Forms::NumericUpDown());
 			this->AmpDetectTabs->SuspendLayout();
-			this->AmpDetectTab->SuspendLayout();
+			this->GraphsTab->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalGraph))->BeginInit();
 			this->ProtocolsTab->SuspendLayout();
@@ -510,7 +516,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->AmpDetectTabs->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->AmpDetectTabs->Controls->Add(this->AmpDetectTab);
+			this->AmpDetectTabs->Controls->Add(this->GraphsTab);
 			this->AmpDetectTabs->Controls->Add(this->ProtocolsTab);
 			this->AmpDetectTabs->Controls->Add(this->AdvancedTab);
 			this->AmpDetectTabs->Location = System::Drawing::Point(9, 290);
@@ -520,19 +526,19 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->AmpDetectTabs->Size = System::Drawing::Size(886, 326);
 			this->AmpDetectTabs->TabIndex = 0;
 			// 
-			// AmpDetectTab
+			// GraphsTab
 			// 
-			this->AmpDetectTab->Controls->Add(this->ThermalGraph);
-			this->AmpDetectTab->Controls->Add(this->OpticalGraph);
-			this->AmpDetectTab->Location = System::Drawing::Point(4, 22);
-			this->AmpDetectTab->Margin = System::Windows::Forms::Padding(2);
-			this->AmpDetectTab->Name = L"AmpDetectTab";
-			this->AmpDetectTab->Padding = System::Windows::Forms::Padding(2);
-			this->AmpDetectTab->Size = System::Drawing::Size(878, 300);
-			this->AmpDetectTab->TabIndex = 0;
-			this->AmpDetectTab->Text = L"AmpDetect";
-			this->AmpDetectTab->UseVisualStyleBackColor = true;
-			this->AmpDetectTab->Enter += gcnew System::EventHandler(this, &Form1::AmpDetectTab_Enter);
+			this->GraphsTab->Controls->Add(this->ThermalGraph);
+			this->GraphsTab->Controls->Add(this->OpticalGraph);
+			this->GraphsTab->Location = System::Drawing::Point(4, 22);
+			this->GraphsTab->Margin = System::Windows::Forms::Padding(2);
+			this->GraphsTab->Name = L"GraphsTab";
+			this->GraphsTab->Padding = System::Windows::Forms::Padding(2);
+			this->GraphsTab->Size = System::Drawing::Size(878, 300);
+			this->GraphsTab->TabIndex = 0;
+			this->GraphsTab->Text = L"Graphs (no selection)";
+			this->GraphsTab->UseVisualStyleBackColor = true;
+			this->GraphsTab->Enter += gcnew System::EventHandler(this, &Form1::AmpDetectTab_Enter);
 			// 
 			// ThermalGraph
 			// 
@@ -610,7 +616,6 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->OpticalGraph->Size = System::Drawing::Size(857, 134);
 			this->OpticalGraph->TabIndex = 10;
 			this->OpticalGraph->Text = L"Optical Data";
-			this->OpticalGraph->Click += gcnew System::EventHandler(this, &Form1::OpticalGraph_Click);
 			// 
 			// ProtocolsTab
 			// 
@@ -688,7 +693,6 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->OpticalReadsGrid->RowTemplate->Height = 24;
 			this->OpticalReadsGrid->Size = System::Drawing::Size(577, 151);
 			this->OpticalReadsGrid->TabIndex = 3;
-			this->OpticalReadsGrid->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Form1::OpticalReadsGrid_CellContentClick);
 			// 
 			// LEDIndex
 			// 
@@ -932,7 +936,6 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->PidGrid->Name = L"PidGrid";
 			this->PidGrid->Size = System::Drawing::Size(658, 164);
 			this->PidGrid->TabIndex = 3;
-			this->PidGrid->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Form1::PidGrid_CellContentClick);
 			// 
 			// TypeCol
 			// 
@@ -1299,9 +1302,8 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->Controls->Add(this->RunStatusGrid);
 			this->Name = L"Form1";
 			this->Text = L"AmpDetect";
-			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
 			this->AmpDetectTabs->ResumeLayout(false);
-			this->AmpDetectTab->ResumeLayout(false);
+			this->GraphsTab->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalGraph))->EndInit();
 			this->ProtocolsTab->ResumeLayout(false);
@@ -1573,60 +1575,63 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 		//Do this for all selected sites.
 		for (int nSiteIdx = 0; nSiteIdx < RunStatusGrid->RowCount; nSiteIdx++)
 		{
-			String^ sSelProtocol = RunStatusGrid[kSelectedProtocolIdx, nSiteIdx]->Value->ToString();
+			if (RunStatusGrid->Rows[nSiteIdx]->Selected)
+			{
+				String^ sSelProtocol = RunStatusGrid[kSelectedProtocolIdx, nSiteIdx]->Value->ToString();
 
-			marshal_context mc;
-			uint32_t nErrCode = AD_SetPcrProtocol(0, mc.marshal_as<LPCSTR>(sSelProtocol));
-			if (nErrCode != ErrCode::kNoError)
-			{
-				MessageBox::Show("Could not load PCR protocol.");
-			}
-			else
-			{
-				//Send "Start" command to instrument.
-				ErrCode nErrCode = (ErrCode)AD_StartRun(nSiteIdx);
+				marshal_context mc;
+				uint32_t nErrCode = AD_SetPcrProtocol(nSiteIdx, mc.marshal_as<LPCSTR>(sSelProtocol));
 				if (nErrCode != ErrCode::kNoError)
 				{
-					MessageBox::Show("Could not start the PCR protocol.");
+					MessageBox::Show("Could not load PCR protocol.");
 				}
 				else
 				{
-					DateTime^ today = DateTime::Now;
-					_opticalDataFile = gcnew System::IO::StreamWriter(SelectedDataFolder->Text + "\\" + today->ToString("yyyyMMddhhmmss") + "_optical.csv");
-					_opticalDataFile->WriteLine("Time (ms)" + "," +
-						"Led Index" + "," +
-						"Detector Index" + "," +
-						"Illum. Read" + "," +
-						"Dark Read" + "," +
-						"Ref. Illum. Read" + "," +
-						"Ref. Dark Read");
-					_thermalDataFile = gcnew System::IO::StreamWriter(SelectedDataFolder->Text + "\\" + today->ToString("yyyyMMddhhmmss") + "_thermal.csv");
-					_thermalDataFile->WriteLine("Time (ms)" + "," +
-						"Block (mC)" + "," +
-						"Sample (mC)" + "," +
-						"unused" + "," +
-						"unused" + "," +
-						"Current (mA)");
+					//Send "Start" command to instrument.
+					ErrCode nErrCode = (ErrCode)AD_StartRun(nSiteIdx);
+					if (nErrCode != ErrCode::kNoError)
+					{
+						MessageBox::Show("Could not start the PCR protocol.");
+					}
+					else
+					{
+						DateTime^ today = DateTime::Now;
+						_arOpticalDataFiles[nSiteIdx] = gcnew System::IO::StreamWriter(SelectedDataFolder->Text + "\\" + today->ToString("yyyyMMddhhmmss") + "_optical.csv");
+						_arOpticalDataFiles[nSiteIdx]->WriteLine("Time (ms)" + "," +
+							"Led Index" + "," +
+							"Detector Index" + "," +
+							"Illum. Read" + "," +
+							"Dark Read" + "," +
+							"Ref. Illum. Read" + "," +
+							"Ref. Dark Read");
+						_arThermalDataFiles[nSiteIdx] = gcnew System::IO::StreamWriter(SelectedDataFolder->Text + "\\" + today->ToString("yyyyMMddhhmmss") + "_thermal.csv");
+						_arThermalDataFiles[nSiteIdx]->WriteLine("Time (ms)" + "," +
+							"Block (mC)" + "," +
+							"Sample (mC)" + "," +
+							"unused" + "," +
+							"unused" + "," +
+							"Current (mA)");
 
-					Series^ illuminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[0];
-					Series^ darkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[1];
-					Series^ shuttleTempSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[2];
-					Series^ refIlluminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[3];
-					Series^ refDarkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[4];
-					illuminatedSeries->Points->Clear();
-					darkSeries->Points->Clear();
-					shuttleTempSeries->Points->Clear();
-					refIlluminatedSeries->Points->Clear();
-					refDarkSeries->Points->Clear();
+						Series^ illuminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[0];
+						Series^ darkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[1];
+						Series^ shuttleTempSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[2];
+						Series^ refIlluminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[3];
+						Series^ refDarkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[4];
+						illuminatedSeries->Points->Clear();
+						darkSeries->Points->Clear();
+						shuttleTempSeries->Points->Clear();
+						refIlluminatedSeries->Points->Clear();
+						refDarkSeries->Points->Clear();
 
-					Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
-					Series^ topSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[1];
-					Series^ currentSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[2];
-					Series^ sampleSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[3];
-					blockSeries->Points->Clear();
-					topSeries->Points->Clear();
-					sampleSeries->Points->Clear();
-					currentSeries->Points->Clear();
+						Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
+						Series^ topSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[1];
+						Series^ currentSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[2];
+						Series^ sampleSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[3];
+						blockSeries->Points->Clear();
+						topSeries->Points->Clear();
+						sampleSeries->Points->Clear();
+						currentSeries->Points->Clear();
+					}
 				}
 			}
 		}
@@ -1843,24 +1848,10 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void UpdateGUI()
 	{
-		if (_nHostDevCommErrCode != ErrCode::kNoError)
-		{
-			if (_opticalDataFile != nullptr)
-			{
-				delete (IDisposable^)(_opticalDataFile);
-				_opticalDataFile = nullptr;
-			}
-			if (_thermalDataFile != nullptr)
-			{
-				delete (IDisposable^)(_thermalDataFile);
-				_thermalDataFile = nullptr;
-			}
-			return;
-		}
-
 		if (AD_GetInitializedFlg() == false)
 			return;
 
+		bool bGraphsUpdated = false;
 		for (int nSiteIdx = 0; nSiteIdx < (int)AD_GetNumExpectedSites(); nSiteIdx++)
 		{
 			//Update DLLs system status cache object. This data comes from the specified site.
@@ -1910,88 +1901,105 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			Series^ shuttleTempSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[2];
 			Series^ refIlluminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[3];
 			Series^ refDarkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[4];
-			if (AD_GetCachedNumOpticsRecs(nSiteIdx) > (int)illuminatedSeries->Points->Count)
-			{
-				int nFirstRecToReadIdx = (uint32_t)illuminatedSeries->Points->Count;
-				int nMaxRecsToRead = AD_GetCachedNumOpticsRecs(nSiteIdx) - (int)illuminatedSeries->Points->Count;
-				int nNumRecsReturned = 0;
-				uint32_t nErrCode = AD_UpdateOpticalRecCache(0, nFirstRecToReadIdx, nMaxRecsToRead, &nNumRecsReturned);
-				if (nErrCode == ErrCode::kNoError)
-				{
-					for (int i = 0; i < nNumRecsReturned; i++)
-					{
-						int nCycleNum = AD_GetCachedOpticalRecCycleNum(nSiteIdx, i);
-						illuminatedSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecIlluminatedRead(nSiteIdx, i));
-						darkSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecDarkRead(nSiteIdx, i));
-						shuttleTempSeries->Points->AddXY(nCycleNum - 1, 0);
-						refIlluminatedSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecRefIlluminatedRead(nSiteIdx, i));
-						refDarkSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecRefDarkRead(nSiteIdx, i));
+			Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
+			Series^ topSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[1];
+			Series^ currentSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[2];
+			Series^ sampleSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[3];
 
-						if (_opticalDataFile != nullptr)
+			if (((RunStatusGrid->Rows[nSiteIdx])->Selected) && (bGraphsUpdated == false))
+			{
+				bGraphsUpdated = true;
+
+				//Indicate selected site.
+				String^ sTemp = (GraphsTab->Text)->Remove(GraphsTab->Text->IndexOf("(")) + "(site " + (nSiteIdx + 1) + ")";
+				if (sTemp != GraphsTab->Text)
+				{
+					GraphsTab->Text = sTemp;
+					illuminatedSeries->Points->Clear();
+					darkSeries->Points->Clear();
+					shuttleTempSeries->Points->Clear();
+					refIlluminatedSeries->Points->Clear();
+					refDarkSeries->Points->Clear();
+					blockSeries->Points->Clear();
+					topSeries->Points->Clear();
+					sampleSeries->Points->Clear();
+					currentSeries->Points->Clear();
+				}
+
+				if (AD_GetCachedNumOpticsRecs(nSiteIdx) > (int)illuminatedSeries->Points->Count)
+				{
+					int nFirstRecToReadIdx = (uint32_t)illuminatedSeries->Points->Count;
+					int nMaxRecsToRead = AD_GetCachedNumOpticsRecs(nSiteIdx) - (int)illuminatedSeries->Points->Count;
+					int nNumRecsReturned = 0;
+					uint32_t nErrCode = AD_UpdateOpticalRecCache(0, nFirstRecToReadIdx, nMaxRecsToRead, &nNumRecsReturned);
+					if (nErrCode == ErrCode::kNoError)
+					{
+						for (int i = 0; i < nNumRecsReturned; i++)
 						{
-							_opticalDataFile->WriteLine((nCycleNum - 1) + "," +
-								(AD_GetCachedOpticalRecLedIdx(nSiteIdx, i)).ToString() + "," +
-								(AD_GetCachedOpticalRecDetectorIdx(nSiteIdx, i)).ToString() + "," +
-								(AD_GetCachedOpticalRecIlluminatedRead(nSiteIdx, i)).ToString() + "," +
-								(AD_GetCachedOpticalRecDarkRead(nSiteIdx, i)).ToString() + "," +
-								(AD_GetCachedOpticalRecRefIlluminatedRead(nSiteIdx, i)).ToString() + "," +
-								(AD_GetCachedOpticalRecRefDarkRead(nSiteIdx, i)).ToString());
+							int nCycleNum = AD_GetCachedOpticalRecCycleNum(nSiteIdx, i);
+							illuminatedSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecIlluminatedRead(nSiteIdx, i));
+							darkSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecDarkRead(nSiteIdx, i));
+							shuttleTempSeries->Points->AddXY(nCycleNum - 1, 0);
+							refIlluminatedSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecRefIlluminatedRead(nSiteIdx, i));
+							refDarkSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecRefDarkRead(nSiteIdx, i));
+
+							if (_arOpticalDataFiles[nSiteIdx] != nullptr)
+							{
+								_arOpticalDataFiles[nSiteIdx]->WriteLine((nCycleNum - 1) + "," +
+									(AD_GetCachedOpticalRecLedIdx(nSiteIdx, i)).ToString() + "," +
+									(AD_GetCachedOpticalRecDetectorIdx(nSiteIdx, i)).ToString() + "," +
+									(AD_GetCachedOpticalRecIlluminatedRead(nSiteIdx, i)).ToString() + "," +
+									(AD_GetCachedOpticalRecDarkRead(nSiteIdx, i)).ToString() + "," +
+									(AD_GetCachedOpticalRecRefIlluminatedRead(nSiteIdx, i)).ToString() + "," +
+									(AD_GetCachedOpticalRecRefDarkRead(nSiteIdx, i)).ToString());
+							}
 						}
 					}
 				}
-			}
 
-			if (AD_GetCachedNumThermalRecs(nSiteIdx) != 0)
-			{
-				Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
-				Series^ topSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[1];
-				Series^ currentSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[2];
-				Series^ sampleSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[3];
-
-				int nNumRecsReturned = 0;
-				uint32_t nErrCode = AD_UpdateThermalRecCache(0, 0, AD_GetCachedNumThermalRecs(nSiteIdx), &nNumRecsReturned);
-				for (int i = 0; i < nNumRecsReturned; i++)
+				if (AD_GetCachedNumThermalRecs(nSiteIdx) != 0)
 				{
-					int	nTimeTag = AD_GetCachedThermalRecTimeTag(nSiteIdx, i);
-					blockSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan1(nSiteIdx, i));
-					sampleSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan2(nSiteIdx, i));
-					topSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan3(nSiteIdx, i));
-					currentSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecCurrent(nSiteIdx, i) * 10);
-
-					if (_thermalDataFile != nullptr)
+					int nNumRecsReturned = 0;
+					uint32_t nErrCode = AD_UpdateThermalRecCache(nSiteIdx, 0, AD_GetCachedNumThermalRecs(nSiteIdx), &nNumRecsReturned);
+					for (int i = 0; i < nNumRecsReturned; i++)
 					{
-						_thermalDataFile->WriteLine(nTimeTag.ToString() + "," +
-							(AD_GetCachedThermalRecChan1(nSiteIdx, i)).ToString() + "," +
-							(110000).ToString() + "," +
-							(50000).ToString() + "," +
-							(AD_GetCachedThermalRecChan4(nSiteIdx, i)).ToString() + "," +
-							(AD_GetCachedThermalRecCurrent(nSiteIdx, i) * 10).ToString());
+						int	nTimeTag = AD_GetCachedThermalRecTimeTag(nSiteIdx, i);
+						blockSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan1(nSiteIdx, i));
+						sampleSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan2(nSiteIdx, i));
+						topSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan3(nSiteIdx, i));
+						currentSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecCurrent(nSiteIdx, i) * 10);
+
+						if (_arThermalDataFiles[nSiteIdx] != nullptr)
+						{
+							_arThermalDataFiles[nSiteIdx]->WriteLine(nTimeTag.ToString() + "," +
+								(AD_GetCachedThermalRecChan1(nSiteIdx, i)).ToString() + "," +
+								(110000).ToString() + "," +
+								(50000).ToString() + "," +
+								(AD_GetCachedThermalRecChan4(nSiteIdx, i)).ToString() + "," +
+								(AD_GetCachedThermalRecCurrent(nSiteIdx, i) * 10).ToString());
+						}
 					}
 				}
 			}
 
 			if (AD_GetCachedRunningFlg(nSiteIdx) == false)
 			{
-				if (_opticalDataFile != nullptr)
-					delete (IDisposable^)(_opticalDataFile);
+				if (_arOpticalDataFiles[nSiteIdx] != nullptr)
+					delete (IDisposable^)(_arOpticalDataFiles[nSiteIdx]);
 
-				if (_thermalDataFile != nullptr)
-					delete (IDisposable^)(_thermalDataFile);
+				if (_arThermalDataFiles[nSiteIdx] != nullptr)
+					delete (IDisposable^)(_arThermalDataFiles[nSiteIdx]);
 			}
 		}
-	}
 
-	private: System::Void saveProtocolDlg_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
-	}
-	private: System::Void SelectDataFolderDlg_HelpRequest(System::Object^  sender, System::EventArgs^  e) {
-	}
-	private: System::Void OpticalGraph_Click(System::Object^  sender, System::EventArgs^  e) {
-	}
-	private: System::Void OpticalReadsGrid_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
-	}
-	private: System::Void PidGrid_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
-	}
-	private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
+		//If there is no selection made.
+		if (bGraphsUpdated == false)
+		{
+			//Indicate no site is selected.
+			String^ sTemp = (GraphsTab->Text)->Remove(GraphsTab->Text->IndexOf("(")) + "(no selection)";
+			if (sTemp != GraphsTab->Text)
+				GraphsTab->Text = sTemp;
+		}
 	}
 };
 }
