@@ -410,6 +410,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::CustomLabel^  customLabel1 = (gcnew System::Windows::Forms::DataVisualization::Charting::CustomLabel());
 			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
 			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
@@ -545,8 +546,12 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->ThermalGraph->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->ThermalGraph->BorderlineColor = System::Drawing::Color::Black;
-			chartArea1->AxisY->Maximum = 120000;
-			chartArea1->AxisY->Minimum = -120000;
+			customLabel1->Text = L"*C";
+			chartArea1->AxisX->CustomLabels->Add(customLabel1);
+			chartArea1->AxisY->Maximum = 100;
+			chartArea1->AxisY->Minimum = 50;
+			chartArea1->AxisY2->Maximum = 20;
+			chartArea1->AxisY2->Minimum = -20;
 			chartArea1->Name = L"ChartArea1";
 			this->ThermalGraph->ChartAreas->Add(chartArea1);
 			legend1->Name = L"Legend1";
@@ -1963,11 +1968,12 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 					uint32_t nErrCode = AD_UpdateThermalRecCache(nSiteIdx, 0, AD_GetCachedNumThermalRecs(nSiteIdx), &nNumRecsReturned);
 					for (int i = 0; i < nNumRecsReturned; i++)
 					{
-						int	nTimeTag = AD_GetCachedThermalRecTimeTag(nSiteIdx, i);
-						blockSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan1(nSiteIdx, i));
-						sampleSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan2(nSiteIdx, i));
-						topSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecChan3(nSiteIdx, i));
-						currentSeries->Points->AddXY(nTimeTag, AD_GetCachedThermalRecCurrent(nSiteIdx, i) * 10);
+						double	nTimeTag = (double)AD_GetCachedThermalRecTimeTag(nSiteIdx, i) / 1000;
+						blockSeries->Points->AddXY(nTimeTag, (double)AD_GetCachedThermalRecChan1(nSiteIdx, i) / 1000);
+						sampleSeries->Points->AddXY(nTimeTag, (double)AD_GetCachedThermalRecChan2(nSiteIdx, i) / 1000);
+						topSeries->Points->AddXY(nTimeTag, (double)AD_GetCachedThermalRecChan3(nSiteIdx, i) / 1000);
+						currentSeries->YAxisType = DataVisualization::Charting::AxisType::Secondary;
+						currentSeries->Points->AddXY(nTimeTag, (double)AD_GetCachedThermalRecCurrent(nSiteIdx, i) / 1000);
 
 						if (_arThermalDataFiles[nSiteIdx] != nullptr)
 						{
@@ -1976,7 +1982,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 								(110000).ToString() + "," +
 								(50000).ToString() + "," +
 								(AD_GetCachedThermalRecChan4(nSiteIdx, i)).ToString() + "," +
-								(AD_GetCachedThermalRecCurrent(nSiteIdx, i) * 10).ToString());
+								(AD_GetCachedThermalRecCurrent(nSiteIdx, i)).ToString());
 						}
 					}
 				}
