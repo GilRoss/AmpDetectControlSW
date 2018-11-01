@@ -524,7 +524,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->AmpDetectTabs->Margin = System::Windows::Forms::Padding(2);
 			this->AmpDetectTabs->Name = L"AmpDetectTabs";
 			this->AmpDetectTabs->SelectedIndex = 0;
-			this->AmpDetectTabs->Size = System::Drawing::Size(886, 326);
+			this->AmpDetectTabs->Size = System::Drawing::Size(886, 348);
 			this->AmpDetectTabs->TabIndex = 0;
 			// 
 			// GraphsTab
@@ -535,7 +535,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->GraphsTab->Margin = System::Windows::Forms::Padding(2);
 			this->GraphsTab->Name = L"GraphsTab";
 			this->GraphsTab->Padding = System::Windows::Forms::Padding(2);
-			this->GraphsTab->Size = System::Drawing::Size(878, 300);
+			this->GraphsTab->Size = System::Drawing::Size(878, 322);
 			this->GraphsTab->TabIndex = 0;
 			this->GraphsTab->Text = L"Graphs (no selection)";
 			this->GraphsTab->UseVisualStyleBackColor = true;
@@ -556,7 +556,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->ThermalGraph->ChartAreas->Add(chartArea1);
 			legend1->Name = L"Legend1";
 			this->ThermalGraph->Legends->Add(legend1);
-			this->ThermalGraph->Location = System::Drawing::Point(7, 156);
+			this->ThermalGraph->Location = System::Drawing::Point(7, 178);
 			this->ThermalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->ThermalGraph->Name = L"ThermalGraph";
 			series1->ChartArea = L"ChartArea1";
@@ -590,7 +590,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->OpticalGraph->ChartAreas->Add(chartArea2);
 			legend2->Name = L"Legend1";
 			this->OpticalGraph->Legends->Add(legend2);
-			this->OpticalGraph->Location = System::Drawing::Point(7, 18);
+			this->OpticalGraph->Location = System::Drawing::Point(7, 29);
 			this->OpticalGraph->Margin = System::Windows::Forms::Padding(2);
 			this->OpticalGraph->Name = L"OpticalGraph";
 			series5->ChartArea = L"ChartArea1";
@@ -636,7 +636,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->ProtocolsTab->Margin = System::Windows::Forms::Padding(2);
 			this->ProtocolsTab->Name = L"ProtocolsTab";
 			this->ProtocolsTab->Padding = System::Windows::Forms::Padding(2);
-			this->ProtocolsTab->Size = System::Drawing::Size(878, 300);
+			this->ProtocolsTab->Size = System::Drawing::Size(878, 322);
 			this->ProtocolsTab->TabIndex = 1;
 			this->ProtocolsTab->Text = L"Protocols";
 			this->ProtocolsTab->UseVisualStyleBackColor = true;
@@ -910,15 +910,16 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->AdvancedTab->Location = System::Drawing::Point(4, 22);
 			this->AdvancedTab->Margin = System::Windows::Forms::Padding(2);
 			this->AdvancedTab->Name = L"AdvancedTab";
-			this->AdvancedTab->Size = System::Drawing::Size(878, 300);
+			this->AdvancedTab->Size = System::Drawing::Size(878, 322);
 			this->AdvancedTab->TabIndex = 2;
-			this->AdvancedTab->Text = L"Advanced";
+			this->AdvancedTab->Text = L"Advanced (no selection)";
 			this->AdvancedTab->UseVisualStyleBackColor = true;
+			this->AdvancedTab->TextChanged += gcnew System::EventHandler(this, &Form1::AdvancedTab_TextChanged);
 			this->AdvancedTab->Enter += gcnew System::EventHandler(this, &Form1::AdvancedTab_Enter);
 			// 
 			// SetPidParams
 			// 
-			this->SetPidParams->Location = System::Drawing::Point(700, 306);
+			this->SetPidParams->Location = System::Drawing::Point(818, 113);
 			this->SetPidParams->Margin = System::Windows::Forms::Padding(2);
 			this->SetPidParams->Name = L"SetPidParams";
 			this->SetPidParams->Size = System::Drawing::Size(56, 19);
@@ -937,9 +938,9 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 				this->TypeCol, this->PGainCol,
 					this->GainICol, this->GainDCol, this->SlopeCol, this->YInterceptCol, this->StabilizationTolerance, this->StabilizationTime
 			});
-			this->PidGrid->Location = System::Drawing::Point(37, 306);
+			this->PidGrid->Location = System::Drawing::Point(3, 113);
 			this->PidGrid->Name = L"PidGrid";
-			this->PidGrid->Size = System::Drawing::Size(658, 164);
+			this->PidGrid->Size = System::Drawing::Size(810, 157);
 			this->PidGrid->TabIndex = 3;
 			// 
 			// TypeCol
@@ -1010,14 +1011,14 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->groupBox3->Controls->Add(this->ActuateTemperature);
 			this->groupBox3->Location = System::Drawing::Point(3, 3);
 			this->groupBox3->Name = L"groupBox3";
-			this->groupBox3->Size = System::Drawing::Size(876, 225);
+			this->groupBox3->Size = System::Drawing::Size(876, 86);
 			this->groupBox3->TabIndex = 5;
 			this->groupBox3->TabStop = false;
 			this->groupBox3->Text = L"Manual Control";
 			// 
 			// DisableManControlBtn
 			// 
-			this->DisableManControlBtn->Location = System::Drawing::Point(351, 184);
+			this->DisableManControlBtn->Location = System::Drawing::Point(696, 18);
 			this->DisableManControlBtn->Margin = System::Windows::Forms::Padding(2);
 			this->DisableManControlBtn->Name = L"DisableManControlBtn";
 			this->DisableManControlBtn->Size = System::Drawing::Size(175, 19);
@@ -1032,9 +1033,9 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->label8->Location = System::Drawing::Point(5, 57);
 			this->label8->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(57, 13);
+			this->label8->Size = System::Drawing::Size(60, 13);
 			this->label8->TabIndex = 4;
-			this->label8->Text = L"Curent (A):";
+			this->label8->Text = L"Current (A):";
 			// 
 			// CurrentSetpoint
 			// 
@@ -1162,6 +1163,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->RunStatusGrid->Size = System::Drawing::Size(807, 195);
 			this->RunStatusGrid->TabIndex = 5;
 			this->RunStatusGrid->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Form1::RunStatusGrid_CellContentClick);
+			this->RunStatusGrid->SelectionChanged += gcnew System::EventHandler(this, &Form1::RunStatusGrid_SelectionChanged);
 			// 
 			// SiteCol
 			// 
@@ -1293,7 +1295,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(904, 626);
+			this->ClientSize = System::Drawing::Size(904, 648);
 			this->Controls->Add(this->DeviceCount);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->SelectDataFolderButton);
@@ -1546,6 +1548,52 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void RunStatusGrid_SelectionChanged(System::Object^  sender, System::EventArgs^  e)
+	{
+		bool bSelectedFound = false;
+		for (int nSiteIdx = 0; nSiteIdx < RunStatusGrid->Rows->Count; nSiteIdx++)
+		{
+			if (((RunStatusGrid->Rows[nSiteIdx])->Selected) && (!bSelectedFound))
+			{
+				bSelectedFound = true;
+
+				//Clear optical graph.
+				for (int i = 0; i < ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)->Count; i++)
+				{
+					Series^ series = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[i];
+					series->Points->Clear();
+				}
+
+				//Clear thermal graph.
+				for (int i = 0; i < ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)->Count; i++)
+				{
+					Series^ series = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[i];
+					series->Points->Clear();
+				}
+
+//				AdvancedTab->Refresh();
+
+				//Indicate selected site.
+				GraphsTab->Text = (GraphsTab->Text)->Remove(GraphsTab->Text->IndexOf("(")) + "(site " + (nSiteIdx + 1) + ")";
+				AdvancedTab->Text = (AdvancedTab->Text)->Remove(AdvancedTab->Text->IndexOf("(")) + "(site " + (nSiteIdx + 1) + ")";
+			}
+		}
+
+		if (!bSelectedFound)
+		{
+			//Indicate no site is selected.
+			GraphsTab->Text = (GraphsTab->Text)->Remove(GraphsTab->Text->IndexOf("(")) + "(no selection)";
+			AdvancedTab->Text = (AdvancedTab->Text)->Remove(AdvancedTab->Text->IndexOf("(")) + "(no selection)";
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////
+	private: System::Void AdvancedTab_TextChanged(System::Object^  sender, System::EventArgs^  e) 
+	{
+		AdvancedTab_Enter(sender, e);
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void StartPcrBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		if (SelectedDataFolder->Text == "")
@@ -1600,8 +1648,12 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 					}
 					else
 					{
+						String^ sSiteIdx = nSiteIdx.ToString();
+						if (nSiteIdx < 10)
+							sSiteIdx = "0" + nSiteIdx.ToString();
+
 						DateTime^ today = DateTime::Now;
-						_arOpticalDataFiles[nSiteIdx] = gcnew System::IO::StreamWriter(SelectedDataFolder->Text + "\\" + today->ToString("yyyyMMddhhmmss") + "_optical.csv");
+						_arOpticalDataFiles[nSiteIdx] = gcnew System::IO::StreamWriter(SelectedDataFolder->Text + "\\" + today->ToString("yyyyMMddhhmmss") + sSiteIdx + "_optical.csv");
 						_arOpticalDataFiles[nSiteIdx]->WriteLine("Time (ms)" + "," +
 							"Led Index" + "," +
 							"Detector Index" + "," +
@@ -1609,7 +1661,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 							"Dark Read" + "," +
 							"Ref. Illum. Read" + "," +
 							"Ref. Dark Read");
-						_arThermalDataFiles[nSiteIdx] = gcnew System::IO::StreamWriter(SelectedDataFolder->Text + "\\" + today->ToString("yyyyMMddhhmmss") + "_thermal.csv");
+						_arThermalDataFiles[nSiteIdx] = gcnew System::IO::StreamWriter(SelectedDataFolder->Text + "\\" + today->ToString("yyyyMMddhhmmss") + sSiteIdx + "_thermal.csv");
 						_arThermalDataFiles[nSiteIdx]->WriteLine("Time (ms)" + "," +
 							"Block (mC)" + "," +
 							"Sample (mC)" + "," +
@@ -1665,23 +1717,31 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 		{
 			float nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s;
 
-			nKp = (float)Convert::ToDouble(PidGrid[1, PidType::kTemperature]->Value);
-			nKi = (float)Convert::ToDouble(PidGrid[2, PidType::kTemperature]->Value);
-			nKd = (float)Convert::ToDouble(PidGrid[3, PidType::kTemperature]->Value);
-			nSlope = (float)Convert::ToDouble(PidGrid[4, PidType::kTemperature]->Value);
-			nYIntercept = (float)Convert::ToDouble(PidGrid[5, PidType::kTemperature]->Value);
-			nStabilizationTolerance_C = (float)Convert::ToDouble(PidGrid[6, PidType::kTemperature]->Value);
-			nStabilizationTime_s = (float)Convert::ToDouble(PidGrid[7, PidType::kTemperature]->Value);
-			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kTemperature, nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s);
+			bool bSelectedFound = false;
+			for (int nSiteIdx = 0; nSiteIdx < AD_GetNumExpectedSites(); nSiteIdx++)
+			{
+				if (((RunStatusGrid->Rows[nSiteIdx])->Selected) && (!bSelectedFound))
+				{
+					bSelectedFound = true;
+					nKp = (float)Convert::ToDouble(PidGrid[1, PidType::kTemperature]->Value);
+					nKi = (float)Convert::ToDouble(PidGrid[2, PidType::kTemperature]->Value);
+					nKd = (float)Convert::ToDouble(PidGrid[3, PidType::kTemperature]->Value);
+					nSlope = (float)Convert::ToDouble(PidGrid[4, PidType::kTemperature]->Value);
+					nYIntercept = (float)Convert::ToDouble(PidGrid[5, PidType::kTemperature]->Value);
+					nStabilizationTolerance_C = (float)Convert::ToDouble(PidGrid[6, PidType::kTemperature]->Value);
+					nStabilizationTime_s = (float)Convert::ToDouble(PidGrid[7, PidType::kTemperature]->Value);
+					_nHostDevCommErrCode = AD_SetPidParams(nSiteIdx, PidType::kTemperature, nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s);
 
-			nKp = (float)Convert::ToDouble(PidGrid[1, PidType::kCurrent]->Value);
-			nKi = (float)Convert::ToDouble(PidGrid[2, PidType::kCurrent]->Value);
-			nKd = (float)Convert::ToDouble(PidGrid[3, PidType::kCurrent]->Value);
-			nSlope = (float)Convert::ToDouble(PidGrid[4, PidType::kCurrent]->Value);
-			nYIntercept = (float)Convert::ToDouble(PidGrid[5, PidType::kCurrent]->Value);
-			nStabilizationTolerance_C = (float)Convert::ToDouble(PidGrid[6, PidType::kCurrent]->Value);
-			nStabilizationTime_s = (float)Convert::ToDouble(PidGrid[7, PidType::kCurrent]->Value);
-			_nHostDevCommErrCode = AD_SetPidParams(0, PidType::kCurrent, nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s);
+					nKp = (float)Convert::ToDouble(PidGrid[1, PidType::kCurrent]->Value);
+					nKi = (float)Convert::ToDouble(PidGrid[2, PidType::kCurrent]->Value);
+					nKd = (float)Convert::ToDouble(PidGrid[3, PidType::kCurrent]->Value);
+					nSlope = (float)Convert::ToDouble(PidGrid[4, PidType::kCurrent]->Value);
+					nYIntercept = (float)Convert::ToDouble(PidGrid[5, PidType::kCurrent]->Value);
+					nStabilizationTolerance_C = (float)Convert::ToDouble(PidGrid[6, PidType::kCurrent]->Value);
+					nStabilizationTime_s = (float)Convert::ToDouble(PidGrid[7, PidType::kCurrent]->Value);
+					_nHostDevCommErrCode = AD_SetPidParams(nSiteIdx, PidType::kCurrent, nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s);
+				}
+			}
 		}
 	}
 
@@ -1694,50 +1754,82 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			PidGrid->Rows->Add(gcnew DataGridViewRow);
 		}
 
-		float nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s;
-		_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kTemperature, &nKp, &nKi, &nKd, &nSlope, &nYIntercept, &nStabilizationTolerance_C, &nStabilizationTime_s);
-		PidGrid[0, PidType::kTemperature]->Value = "Temperature";
-		PidGrid[1, PidType::kTemperature]->Value = Convert::ToString(nKp);
-		PidGrid[2, PidType::kTemperature]->Value = Convert::ToString(nKi);
-		PidGrid[3, PidType::kTemperature]->Value = Convert::ToString(nKd);
-		PidGrid[4, PidType::kTemperature]->Value = Convert::ToString(nSlope);
-		PidGrid[5, PidType::kTemperature]->Value = Convert::ToString(nYIntercept);
-		PidGrid[6, PidType::kTemperature]->Value = Convert::ToString(nStabilizationTolerance_C);
-		PidGrid[7, PidType::kTemperature]->Value = Convert::ToString(nStabilizationTime_s);
+		bool bSelectedFound = false;
+		for (int nSiteIdx = 0; nSiteIdx < RunStatusGrid->Rows->Count; nSiteIdx++)
+		{
+			if (((RunStatusGrid->Rows[nSiteIdx])->Selected) && (!bSelectedFound))
+			{
+				bSelectedFound = true;
+				float nKp, nKi, nKd, nSlope, nYIntercept, nStabilizationTolerance_C, nStabilizationTime_s;
+				_nHostDevCommErrCode = AD_GetPidParams(nSiteIdx, PidType::kTemperature, &nKp, &nKi, &nKd, &nSlope, &nYIntercept, &nStabilizationTolerance_C, &nStabilizationTime_s);
+				PidGrid[0, PidType::kTemperature]->Value = "Temperature";
+				PidGrid[1, PidType::kTemperature]->Value = Convert::ToString(nKp);
+				PidGrid[2, PidType::kTemperature]->Value = Convert::ToString(nKi);
+				PidGrid[3, PidType::kTemperature]->Value = Convert::ToString(nKd);
+				PidGrid[4, PidType::kTemperature]->Value = Convert::ToString(nSlope);
+				PidGrid[5, PidType::kTemperature]->Value = Convert::ToString(nYIntercept);
+				PidGrid[6, PidType::kTemperature]->Value = Convert::ToString(nStabilizationTolerance_C);
+				PidGrid[7, PidType::kTemperature]->Value = Convert::ToString(nStabilizationTime_s);
 
-		_nHostDevCommErrCode = AD_GetPidParams(0, PidType::kCurrent, &nKp, &nKi, &nKd, &nSlope, &nYIntercept, &nStabilizationTolerance_C, &nStabilizationTime_s);
-		PidGrid[0, PidType::kCurrent]->Value = "Current";
-		PidGrid[1, PidType::kCurrent]->Value = Convert::ToString(nKp);
-		PidGrid[2, PidType::kCurrent]->Value = Convert::ToString(nKi);
-		PidGrid[3, PidType::kCurrent]->Value = Convert::ToString(nKd);
-		PidGrid[4, PidType::kCurrent]->Value = Convert::ToString(nSlope);
-		PidGrid[5, PidType::kCurrent]->Value = Convert::ToString(nYIntercept);
-		PidGrid[6, PidType::kCurrent]->Value = Convert::ToString(nStabilizationTolerance_C);
-		PidGrid[7, PidType::kCurrent]->Value = Convert::ToString(nStabilizationTime_s);
+				_nHostDevCommErrCode = AD_GetPidParams(nSiteIdx, PidType::kCurrent, &nKp, &nKi, &nKd, &nSlope, &nYIntercept, &nStabilizationTolerance_C, &nStabilizationTime_s);
+				PidGrid[0, PidType::kCurrent]->Value = "Current";
+				PidGrid[1, PidType::kCurrent]->Value = Convert::ToString(nKp);
+				PidGrid[2, PidType::kCurrent]->Value = Convert::ToString(nKi);
+				PidGrid[3, PidType::kCurrent]->Value = Convert::ToString(nKd);
+				PidGrid[4, PidType::kCurrent]->Value = Convert::ToString(nSlope);
+				PidGrid[5, PidType::kCurrent]->Value = Convert::ToString(nYIntercept);
+				PidGrid[6, PidType::kCurrent]->Value = Convert::ToString(nStabilizationTolerance_C);
+				PidGrid[7, PidType::kCurrent]->Value = Convert::ToString(nStabilizationTime_s);
+			}
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void DisableManControlBtn_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		ErrCode nErrCode = (ErrCode)AD_DisableManualControl(0);
-		if (nErrCode != ErrCode::kNoError)
-			MessageBox::Show("Could not stop manual control.");
+		bool bSelectedFound = false;
+		for (int nSiteIdx = 0; nSiteIdx < AD_GetNumExpectedSites(); nSiteIdx++)
+		{
+			if (((RunStatusGrid->Rows[nSiteIdx])->Selected) && (!bSelectedFound))
+			{
+				bSelectedFound = true;
+				ErrCode nErrCode = (ErrCode)AD_DisableManualControl(nSiteIdx);
+				if (nErrCode != ErrCode::kNoError)
+					MessageBox::Show("Could not stop manual control.");
+			}
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void ActuateTemperature_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		ErrCode nErrCode = (ErrCode)AD_SetTemperatureSetpoint(0, (int)(Convert::ToDouble(TemperatureSetpoint->Text)));
-		if (nErrCode != ErrCode::kNoError)
-			MessageBox::Show("Could not start manual control.");
+		bool bSelectedFound = false;
+		for (int nSiteIdx = 0; nSiteIdx < AD_GetNumExpectedSites(); nSiteIdx++)
+		{
+			if (((RunStatusGrid->Rows[nSiteIdx])->Selected) && (!bSelectedFound))
+			{
+				bSelectedFound = true;
+				ErrCode nErrCode = (ErrCode)AD_SetTemperatureSetpoint(nSiteIdx, (int)(Convert::ToDouble(TemperatureSetpoint->Text)));
+				if (nErrCode != ErrCode::kNoError)
+					MessageBox::Show("Could not start manual control.");
+			}
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
 	private: System::Void ActuateCurrent_Click(System::Object^  sender, System::EventArgs^  e)
 	{
-		ErrCode nErrCode = (ErrCode)AD_SetCurrentSetpoint(0, (int)(Convert::ToDouble(CurrentSetpoint->Text)));
-		if (nErrCode != ErrCode::kNoError)
-			MessageBox::Show("Could not start manual control.");
+		bool bSelectedFound = false;
+		for (int nSiteIdx = 0; nSiteIdx < AD_GetNumExpectedSites(); nSiteIdx++)
+		{
+			if (((RunStatusGrid->Rows[nSiteIdx])->Selected) && (!bSelectedFound))
+			{
+				bSelectedFound = true;
+				ErrCode nErrCode = (ErrCode)AD_SetCurrentSetpoint(nSiteIdx, (int)(Convert::ToDouble(CurrentSetpoint->Text)));
+				if (nErrCode != ErrCode::kNoError)
+					MessageBox::Show("Could not start manual control.");
+			}
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
@@ -1915,28 +2007,12 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			{
 				bGraphsUpdated = true;
 
-				//Indicate selected site.
-				String^ sTemp = (GraphsTab->Text)->Remove(GraphsTab->Text->IndexOf("(")) + "(site " + (nSiteIdx + 1) + ")";
-				if (sTemp != GraphsTab->Text)
-				{
-					GraphsTab->Text = sTemp;
-					illuminatedSeries->Points->Clear();
-					darkSeries->Points->Clear();
-					shuttleTempSeries->Points->Clear();
-					refIlluminatedSeries->Points->Clear();
-					refDarkSeries->Points->Clear();
-					blockSeries->Points->Clear();
-					topSeries->Points->Clear();
-					sampleSeries->Points->Clear();
-					currentSeries->Points->Clear();
-				}
-
 				if (AD_GetCachedNumOpticsRecs(nSiteIdx) > (int)illuminatedSeries->Points->Count)
 				{
 					int nFirstRecToReadIdx = (uint32_t)illuminatedSeries->Points->Count;
 					int nMaxRecsToRead = AD_GetCachedNumOpticsRecs(nSiteIdx) - (int)illuminatedSeries->Points->Count;
 					int nNumRecsReturned = 0;
-					uint32_t nErrCode = AD_UpdateOpticalRecCache(0, nFirstRecToReadIdx, nMaxRecsToRead, &nNumRecsReturned);
+					uint32_t nErrCode = AD_UpdateOpticalRecCache(nSiteIdx, nFirstRecToReadIdx, nMaxRecsToRead, &nNumRecsReturned);
 					if (nErrCode == ErrCode::kNoError)
 					{
 						for (int i = 0; i < nNumRecsReturned; i++)
@@ -1996,15 +2072,6 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 				if (_arThermalDataFiles[nSiteIdx] != nullptr)
 					delete (IDisposable^)(_arThermalDataFiles[nSiteIdx]);
 			}
-		}
-
-		//If there is no selection made.
-		if (bGraphsUpdated == false)
-		{
-			//Indicate no site is selected.
-			String^ sTemp = (GraphsTab->Text)->Remove(GraphsTab->Text->IndexOf("(")) + "(no selection)";
-			if (sTemp != GraphsTab->Text)
-				GraphsTab->Text = sTemp;
 		}
 	}
 };
