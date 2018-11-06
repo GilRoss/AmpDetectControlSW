@@ -65,6 +65,17 @@ namespace CppCLR_WinformsProjekt {
 		kTemperatureIdx
 	};
 
+	enum SeriesId
+	{
+		kSample,
+		kBlock,
+		kTopHeater,
+		kCurrent,
+		kLight,
+		kDark,
+		kNumSeries
+	};
+
 	/// <summary>
 	/// Zusammenfassung für Form1
 	/// </summary>
@@ -80,10 +91,10 @@ namespace CppCLR_WinformsProjekt {
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
 			OpticsTypeCombo->SelectedIndex = 0;
-			Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
+			Series^ blockSeries = PcrCharts->Series[kSample];
 			blockSeries->Points->AddXY(0, 0);
-			Series^ illuminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[0];
-			illuminatedSeries->Points->AddXY(0, 45000);
+			Series^ lightSeries = PcrCharts->Series[kLight];
+			lightSeries->Points->AddXY(0, 45000);
 
 			for (int i = 0; i < 40; i++)
 			{
@@ -197,6 +208,7 @@ namespace CppCLR_WinformsProjekt {
 
 	private: System::Windows::Forms::ComboBox^  CommPortSelection;
 	private: System::Windows::Forms::Label^  label2;
+private: System::Windows::Forms::DataVisualization::Charting::Chart^  PcrCharts;
 
 
 
@@ -206,8 +218,8 @@ namespace CppCLR_WinformsProjekt {
 
 
 
-	private: System::Windows::Forms::DataVisualization::Charting::Chart^  ThermalGraph;
-	private: System::Windows::Forms::DataVisualization::Charting::Chart^  OpticalGraph;
+
+
 
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::Button^  SelectDataFolderButton;
@@ -410,23 +422,27 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
+			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
 			System::Windows::Forms::DataVisualization::Charting::CustomLabel^  customLabel1 = (gcnew System::Windows::Forms::DataVisualization::Charting::CustomLabel());
 			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::Legend^  legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
 			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			System::Windows::Forms::DataVisualization::Charting::Series^  series3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			System::Windows::Forms::DataVisualization::Charting::Series^  series4 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::Legend^  legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
+			System::Windows::Forms::DataVisualization::Charting::DataPoint^  dataPoint1 = (gcnew System::Windows::Forms::DataVisualization::Charting::DataPoint(1,
+				4));
+			System::Windows::Forms::DataVisualization::Charting::DataPoint^  dataPoint2 = (gcnew System::Windows::Forms::DataVisualization::Charting::DataPoint(2,
+				3));
 			System::Windows::Forms::DataVisualization::Charting::Series^  series5 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::DataPoint^  dataPoint3 = (gcnew System::Windows::Forms::DataVisualization::Charting::DataPoint(1,
+				50));
+			System::Windows::Forms::DataVisualization::Charting::DataPoint^  dataPoint4 = (gcnew System::Windows::Forms::DataVisualization::Charting::DataPoint(2,
+				60));
 			System::Windows::Forms::DataVisualization::Charting::Series^  series6 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series7 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series8 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^  series9 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->AmpDetectTabs = (gcnew System::Windows::Forms::TabControl());
 			this->GraphsTab = (gcnew System::Windows::Forms::TabPage());
-			this->ThermalGraph = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
-			this->OpticalGraph = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
+			this->PcrCharts = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->ProtocolsTab = (gcnew System::Windows::Forms::TabPage());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->DelOptReadBtn = (gcnew System::Windows::Forms::Button());
@@ -499,8 +515,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->DeviceCount = (gcnew System::Windows::Forms::NumericUpDown());
 			this->AmpDetectTabs->SuspendLayout();
 			this->GraphsTab->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalGraph))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PcrCharts))->BeginInit();
 			this->ProtocolsTab->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalReadsGrid))->BeginInit();
@@ -529,98 +544,109 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			// 
 			// GraphsTab
 			// 
-			this->GraphsTab->Controls->Add(this->ThermalGraph);
-			this->GraphsTab->Controls->Add(this->OpticalGraph);
+			this->GraphsTab->Controls->Add(this->PcrCharts);
 			this->GraphsTab->Location = System::Drawing::Point(4, 22);
 			this->GraphsTab->Margin = System::Windows::Forms::Padding(2);
 			this->GraphsTab->Name = L"GraphsTab";
 			this->GraphsTab->Padding = System::Windows::Forms::Padding(2);
 			this->GraphsTab->Size = System::Drawing::Size(878, 322);
 			this->GraphsTab->TabIndex = 0;
-			this->GraphsTab->Text = L"Graphs (no selection)";
+			this->GraphsTab->Text = L"Charts (no selection)";
 			this->GraphsTab->UseVisualStyleBackColor = true;
 			this->GraphsTab->Enter += gcnew System::EventHandler(this, &Form1::AmpDetectTab_Enter);
 			// 
-			// ThermalGraph
+			// PcrCharts
 			// 
-			this->ThermalGraph->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
+			this->PcrCharts->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->ThermalGraph->BorderlineColor = System::Drawing::Color::Black;
+			this->PcrCharts->BorderlineColor = System::Drawing::Color::Black;
+			chartArea1->AlignWithChartArea = L"ThermalChart";
+			chartArea1->AxisX->Enabled = System::Windows::Forms::DataVisualization::Charting::AxisEnabled::True;
+			chartArea1->AxisX->Interval = 60;
+			chartArea1->AxisX->IntervalOffsetType = System::Windows::Forms::DataVisualization::Charting::DateTimeIntervalType::Seconds;
+			chartArea1->AxisX->IntervalType = System::Windows::Forms::DataVisualization::Charting::DateTimeIntervalType::Seconds;
+			chartArea1->AxisX->MajorTickMark->TickMarkStyle = System::Windows::Forms::DataVisualization::Charting::TickMarkStyle::InsideArea;
+			chartArea1->AxisX->Minimum = 0;
+			chartArea1->AxisX->MinorTickMark->Enabled = true;
+			chartArea1->AxisX->MinorTickMark->TickMarkStyle = System::Windows::Forms::DataVisualization::Charting::TickMarkStyle::InsideArea;
+			chartArea1->AxisY->Interval = 10000;
+			chartArea1->AxisY->Maximum = 65535;
+			chartArea1->AxisY->Minimum = 0;
+			chartArea1->AxisY->Title = L"Counts";
+			chartArea1->Name = L"OpticalChart";
+			chartArea2->AlignWithChartArea = L"OpticalChart";
 			customLabel1->Text = L"*C";
-			chartArea1->AxisX->CustomLabels->Add(customLabel1);
-			chartArea1->AxisY->Maximum = 100;
-			chartArea1->AxisY->Minimum = 50;
-			chartArea1->AxisY2->Maximum = 20;
-			chartArea1->AxisY2->Minimum = -20;
-			chartArea1->Name = L"ChartArea1";
-			this->ThermalGraph->ChartAreas->Add(chartArea1);
-			legend1->Name = L"Legend1";
-			this->ThermalGraph->Legends->Add(legend1);
-			this->ThermalGraph->Location = System::Drawing::Point(7, 178);
-			this->ThermalGraph->Margin = System::Windows::Forms::Padding(2);
-			this->ThermalGraph->Name = L"ThermalGraph";
-			series1->ChartArea = L"ChartArea1";
+			chartArea2->AxisX->CustomLabels->Add(customLabel1);
+			chartArea2->AxisX->Interval = 60;
+			chartArea2->AxisX->IntervalOffsetType = System::Windows::Forms::DataVisualization::Charting::DateTimeIntervalType::Seconds;
+			chartArea2->AxisX->IntervalType = System::Windows::Forms::DataVisualization::Charting::DateTimeIntervalType::Seconds;
+			chartArea2->AxisX->MajorTickMark->TickMarkStyle = System::Windows::Forms::DataVisualization::Charting::TickMarkStyle::InsideArea;
+			chartArea2->AxisX->MinorTickMark->Enabled = true;
+			chartArea2->AxisX->MinorTickMark->TickMarkStyle = System::Windows::Forms::DataVisualization::Charting::TickMarkStyle::InsideArea;
+			chartArea2->AxisX->Title = L"Time (s)";
+			chartArea2->AxisY->Maximum = 100;
+			chartArea2->AxisY->Minimum = 50;
+			chartArea2->AxisY->Title = L"Temperature (*C)";
+			chartArea2->AxisY2->Maximum = 20;
+			chartArea2->AxisY2->Minimum = -20;
+			chartArea2->AxisY2->Title = L"Current (A)";
+			chartArea2->Name = L"ThermalChart";
+			this->PcrCharts->ChartAreas->Add(chartArea1);
+			this->PcrCharts->ChartAreas->Add(chartArea2);
+			legend1->Alignment = System::Drawing::StringAlignment::Center;
+			legend1->DockedToChartArea = L"OpticalChart";
+			legend1->IsDockedInsideChartArea = false;
+			legend1->Name = L"OpticalLegend";
+			legend1->Title = L"Optics";
+			legend2->Alignment = System::Drawing::StringAlignment::Center;
+			legend2->DockedToChartArea = L"ThermalChart";
+			legend2->IsDockedInsideChartArea = false;
+			legend2->Name = L"ThermalLegend";
+			legend2->Title = L"Thermals";
+			this->PcrCharts->Legends->Add(legend1);
+			this->PcrCharts->Legends->Add(legend2);
+			this->PcrCharts->Location = System::Drawing::Point(10, 10);
+			this->PcrCharts->Margin = System::Windows::Forms::Padding(2);
+			this->PcrCharts->Name = L"PcrCharts";
+			series1->ChartArea = L"ThermalChart";
 			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series1->Legend = L"Legend1";
-			series1->Name = L"Block";
-			series2->ChartArea = L"ChartArea1";
+			series1->Legend = L"ThermalLegend";
+			series1->Name = L"Sample (*C)";
+			series2->ChartArea = L"ThermalChart";
 			series2->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series2->Legend = L"Legend1";
-			series2->Name = L"Top Heater";
-			series3->ChartArea = L"ChartArea1";
+			series2->Legend = L"ThermalLegend";
+			series2->Name = L"Block (*C)";
+			series3->ChartArea = L"ThermalChart";
 			series3->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series3->Legend = L"Legend1";
-			series3->Name = L"Current";
-			series4->ChartArea = L"ChartArea1";
+			series3->Legend = L"ThermalLegend";
+			series3->Name = L"Top Heater (*C)";
+			series4->ChartArea = L"ThermalChart";
 			series4->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series4->Legend = L"Legend1";
-			series4->Name = L"Sample";
-			this->ThermalGraph->Series->Add(series1);
-			this->ThermalGraph->Series->Add(series2);
-			this->ThermalGraph->Series->Add(series3);
-			this->ThermalGraph->Series->Add(series4);
-			this->ThermalGraph->Size = System::Drawing::Size(857, 140);
-			this->ThermalGraph->TabIndex = 11;
-			this->ThermalGraph->Text = L"Thermal Data";
-			// 
-			// OpticalGraph
-			// 
-			this->OpticalGraph->Anchor = System::Windows::Forms::AnchorStyles::None;
-			chartArea2->Name = L"ChartArea1";
-			this->OpticalGraph->ChartAreas->Add(chartArea2);
-			legend2->Name = L"Legend1";
-			this->OpticalGraph->Legends->Add(legend2);
-			this->OpticalGraph->Location = System::Drawing::Point(7, 29);
-			this->OpticalGraph->Margin = System::Windows::Forms::Padding(2);
-			this->OpticalGraph->Name = L"OpticalGraph";
-			series5->ChartArea = L"ChartArea1";
+			series4->Legend = L"ThermalLegend";
+			series4->Name = L"Current (A)";
+			series4->Points->Add(dataPoint1);
+			series4->Points->Add(dataPoint2);
+			series4->YAxisType = System::Windows::Forms::DataVisualization::Charting::AxisType::Secondary;
+			series5->ChartArea = L"OpticalChart";
 			series5->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series5->Legend = L"Legend1";
-			series5->Name = L"Illuminated";
-			series6->ChartArea = L"ChartArea1";
+			series5->Legend = L"OpticalLegend";
+			series5->Name = L"Light";
+			series5->Points->Add(dataPoint3);
+			series5->Points->Add(dataPoint4);
+			series6->ChartArea = L"OpticalChart";
 			series6->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series6->Legend = L"Legend1";
+			series6->Legend = L"OpticalLegend";
 			series6->Name = L"Dark";
-			series7->ChartArea = L"ChartArea1";
-			series7->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series7->Legend = L"Legend1";
-			series7->Name = L"Temperature";
-			series8->ChartArea = L"ChartArea1";
-			series8->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series8->Legend = L"Legend1";
-			series8->Name = L"RefIlluminated";
-			series9->ChartArea = L"ChartArea1";
-			series9->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
-			series9->Legend = L"Legend1";
-			series9->Name = L"RefDark";
-			this->OpticalGraph->Series->Add(series5);
-			this->OpticalGraph->Series->Add(series6);
-			this->OpticalGraph->Series->Add(series7);
-			this->OpticalGraph->Series->Add(series8);
-			this->OpticalGraph->Series->Add(series9);
-			this->OpticalGraph->Size = System::Drawing::Size(857, 134);
-			this->OpticalGraph->TabIndex = 10;
-			this->OpticalGraph->Text = L"Optical Data";
+			this->PcrCharts->Series->Add(series1);
+			this->PcrCharts->Series->Add(series2);
+			this->PcrCharts->Series->Add(series3);
+			this->PcrCharts->Series->Add(series4);
+			this->PcrCharts->Series->Add(series5);
+			this->PcrCharts->Series->Add(series6);
+			this->PcrCharts->Size = System::Drawing::Size(857, 301);
+			this->PcrCharts->TabIndex = 11;
+			this->PcrCharts->Text = L"PCR Data";
 			// 
 			// ProtocolsTab
 			// 
@@ -1311,8 +1337,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->Text = L"AmpDetect";
 			this->AmpDetectTabs->ResumeLayout(false);
 			this->GraphsTab->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->ThermalGraph))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->OpticalGraph))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PcrCharts))->EndInit();
 			this->ProtocolsTab->ResumeLayout(false);
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
@@ -1557,21 +1582,9 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			{
 				bSelectedFound = true;
 
-				//Clear optical graph.
-				for (int i = 0; i < ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)->Count; i++)
-				{
-					Series^ series = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[i];
-					series->Points->Clear();
-				}
-
-				//Clear thermal graph.
-				for (int i = 0; i < ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)->Count; i++)
-				{
-					Series^ series = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[i];
-					series->Points->Clear();
-				}
-
-//				AdvancedTab->Refresh();
+				//Clear all series.
+				for (int i = 0; i < PcrCharts->Series->Count; i++)
+					PcrCharts->Series[i]->Points->Clear();
 
 				//Indicate selected site.
 				GraphsTab->Text = (GraphsTab->Text)->Remove(GraphsTab->Text->IndexOf("(")) + "(site " + (nSiteIdx + 1) + ")";
@@ -1621,7 +1634,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 
 		if (bAtLeastOneSiteReady == false)
 		{
-			MessageBox::Show("Before starting, make sure at least one selected site is connected and has a specified protocol.");
+			MessageBox::Show("Before starting, make sure at least one selected site is connected and has a protocol specified.");
 			return;
 		}
 
@@ -1669,25 +1682,9 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 							"unused" + "," +
 							"Current (mA)");
 
-						Series^ illuminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[0];
-						Series^ darkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[1];
-						Series^ shuttleTempSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[2];
-						Series^ refIlluminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[3];
-						Series^ refDarkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[4];
-						illuminatedSeries->Points->Clear();
-						darkSeries->Points->Clear();
-						shuttleTempSeries->Points->Clear();
-						refIlluminatedSeries->Points->Clear();
-						refDarkSeries->Points->Clear();
-
-						Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
-						Series^ topSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[1];
-						Series^ currentSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[2];
-						Series^ sampleSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[3];
-						blockSeries->Points->Clear();
-						topSeries->Points->Clear();
-						sampleSeries->Points->Clear();
-						currentSeries->Points->Clear();
+						//Clear all series.
+						for (int i = 0; i < PcrCharts->Series->Count; i++)
+							PcrCharts->Series[i]->Points->Clear();
 					}
 				}
 			}
@@ -1993,40 +1990,30 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 				RunStatusGrid[kTemperatureIdx, nSiteIdx]->Value = Convert::ToString((double)AD_GetCachedTemperature(nSiteIdx) / 1000);
 			}
 
-			Series^ illuminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[0];
-			Series^ darkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[1];
-			Series^ shuttleTempSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[2];
-			Series^ refIlluminatedSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[3];
-			Series^ refDarkSeries = ((System::Collections::Generic::IList<Series^>^)OpticalGraph->Series)[4];
-			Series^ blockSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[0];
-			Series^ topSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[1];
-			Series^ currentSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[2];
-			Series^ sampleSeries = ((System::Collections::Generic::IList<Series^>^)ThermalGraph->Series)[3];
-
 			if (((RunStatusGrid->Rows[nSiteIdx])->Selected) && (bGraphsUpdated == false))
 			{
 				bGraphsUpdated = true;
 
-				if (AD_GetCachedNumOpticsRecs(nSiteIdx) > (int)illuminatedSeries->Points->Count)
+
+				Series^ lightSeries = PcrCharts->Series[kLight];
+				Series^ darkSeries = PcrCharts->Series[kDark];
+				if (AD_GetCachedNumOpticsRecs(nSiteIdx) > (int)lightSeries->Points->Count)
 				{
-					int nFirstRecToReadIdx = (uint32_t)illuminatedSeries->Points->Count;
-					int nMaxRecsToRead = AD_GetCachedNumOpticsRecs(nSiteIdx) - (int)illuminatedSeries->Points->Count;
+					int nFirstRecToReadIdx = (uint32_t)lightSeries->Points->Count;
+					int nMaxRecsToRead = AD_GetCachedNumOpticsRecs(nSiteIdx) - (int)lightSeries->Points->Count;
 					int nNumRecsReturned = 0;
 					uint32_t nErrCode = AD_UpdateOpticalRecCache(nSiteIdx, nFirstRecToReadIdx, nMaxRecsToRead, &nNumRecsReturned);
 					if (nErrCode == ErrCode::kNoError)
 					{
 						for (int i = 0; i < nNumRecsReturned; i++)
 						{
-							int nCycleNum = AD_GetCachedOpticalRecCycleNum(nSiteIdx, i);
-							illuminatedSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecIlluminatedRead(nSiteIdx, i));
-							darkSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecDarkRead(nSiteIdx, i));
-							shuttleTempSeries->Points->AddXY(nCycleNum - 1, 0);
-							refIlluminatedSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecRefIlluminatedRead(nSiteIdx, i));
-							refDarkSeries->Points->AddXY(nCycleNum - 1, AD_GetCachedOpticalRecRefDarkRead(nSiteIdx, i));
+							double	nTimeTag = (double)AD_GetCachedThermalRecTimeTag(nSiteIdx, i) / 1000;
+							lightSeries->Points->AddXY(nTimeTag, AD_GetCachedOpticalRecIlluminatedRead(nSiteIdx, i));
+							darkSeries->Points->AddXY(nTimeTag, AD_GetCachedOpticalRecDarkRead(nSiteIdx, i));
 
 							if (_arOpticalDataFiles[nSiteIdx] != nullptr)
 							{
-								_arOpticalDataFiles[nSiteIdx]->WriteLine((nCycleNum - 1) + "," +
+								_arOpticalDataFiles[nSiteIdx]->WriteLine((nTimeTag) + "," +
 									(AD_GetCachedOpticalRecLedIdx(nSiteIdx, i)).ToString() + "," +
 									(AD_GetCachedOpticalRecDetectorIdx(nSiteIdx, i)).ToString() + "," +
 									(AD_GetCachedOpticalRecIlluminatedRead(nSiteIdx, i)).ToString() + "," +
@@ -2038,6 +2025,10 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 					}
 				}
 
+				Series^ sampleSeries = PcrCharts->Series[kSample];
+				Series^ blockSeries = PcrCharts->Series[kBlock];
+				Series^ topHeaterSeries = PcrCharts->Series[kTopHeater];
+				Series^ currentSeries = PcrCharts->Series[kCurrent];
 				if (AD_GetCachedNumThermalRecs(nSiteIdx) != 0)
 				{
 					int nNumRecsReturned = 0;
@@ -2047,9 +2038,11 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 						double	nTimeTag = (double)AD_GetCachedThermalRecTimeTag(nSiteIdx, i) / 1000;
 						blockSeries->Points->AddXY(nTimeTag, (double)AD_GetCachedThermalRecChan1(nSiteIdx, i) / 1000);
 						sampleSeries->Points->AddXY(nTimeTag, (double)AD_GetCachedThermalRecChan2(nSiteIdx, i) / 1000);
-						topSeries->Points->AddXY(nTimeTag, (double)AD_GetCachedThermalRecChan3(nSiteIdx, i) / 1000);
+						topHeaterSeries->Points->AddXY(nTimeTag, (double)AD_GetCachedThermalRecChan3(nSiteIdx, i) / 1000);
 						currentSeries->YAxisType = DataVisualization::Charting::AxisType::Secondary;
 						currentSeries->Points->AddXY(nTimeTag, (double)AD_GetCachedThermalRecCurrent(nSiteIdx, i) / 1000);
+
+						PcrCharts->ChartAreas[0]->AxisX->Maximum = PcrCharts->ChartAreas[1]->AxisX->Maximum;
 
 						if (_arThermalDataFiles[nSiteIdx] != nullptr)
 						{

@@ -6,11 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AmpDetectDLL", "..\Shared\AmpDetectDLL\AmpDetectDLL.vcxproj", "{D89AB9D7-8745-4A97-B4AC-D0906F89E522}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AmpDetectControlSWInstaller", "AmpDetectControlSWInstaller\AmpDetectControlSWInstaller.vdproj", "{9EC48160-5546-448E-B046-5A6DCDC5894F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AmpDetectControlSW", "AmpDetectControlSW\AmpDetectControlSW.vcxproj", "{5BBE4A19-C4CB-4DFC-93BB-372D2F248D48}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D89AB9D7-8745-4A97-B4AC-D0906F89E522} = {D89AB9D7-8745-4A97-B4AC-D0906F89E522}
 	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AmpDetectControlSW", "AmpDetectControlSW\AmpDetectControlSW.vcxproj", "{5BBE4A19-C4CB-4DFC-93BB-372D2F248D48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

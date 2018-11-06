@@ -21,7 +21,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C548061B8EDC42DAA5AC6DC2FD5726D4"
+        "MsmKey" = "8:_BF0F4AD0228044D1B03511B2C324034F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -120,9 +120,9 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C548061B8EDC42DAA5AC6DC2FD5726D4"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BF0F4AD0228044D1B03511B2C324034F"
             {
-            "SourcePath" = "8:..\\x64\\Release\\AmpDetectDLL.dll"
+            "SourcePath" = "8:..\\Win32\\Release\\AmpDetectDLL.dll"
             "TargetName" = "8:AmpDetectDLL.dll"
             "Tag" = "8:"
             "Folder" = "8:_8801ADA16F984EC5AD750EADF9D79302"
@@ -197,7 +197,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AmpDetectControlSWInstaller"
         "ProductCode" = "8:{E13C8548-2B45-4813-9505-0086DFF356B4}"
-        "PackageCode" = "8:{A99B38C5-C016-4879-B702-38C5FB6461B4}"
+        "PackageCode" = "8:{BFDB5B44-7D6C-4BDD-92E7-7CE77FE959F7}"
         "UpgradeCode" = "8:{67EE22AE-38FC-4203-978B-C50001925AA3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -718,7 +718,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6F67BA6E828F4DD3B52BA926D517EDDD"
             {
-            "SourcePath" = "8:..\\x64\\Release\\AmpDetectControlSW.exe"
+            "SourcePath" = "8:..\\Win32\\Release\\AmpDetectControlSW.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_8801ADA16F984EC5AD750EADF9D79302"
