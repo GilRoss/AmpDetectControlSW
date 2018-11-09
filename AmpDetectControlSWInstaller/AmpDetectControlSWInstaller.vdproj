@@ -21,7 +21,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_BF0F4AD0228044D1B03511B2C324034F"
+        "MsmKey" = "8:_D5D71D161C6D4405A3963C1940BE459D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -120,9 +120,9 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BF0F4AD0228044D1B03511B2C324034F"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D5D71D161C6D4405A3963C1940BE459D"
             {
-            "SourcePath" = "8:..\\Win32\\Release\\AmpDetectDLL.dll"
+            "SourcePath" = "8:..\\x64\\Release\\AmpDetectDLL.dll"
             "TargetName" = "8:AmpDetectDLL.dll"
             "Tag" = "8:"
             "Folder" = "8:_8801ADA16F984EC5AD750EADF9D79302"
@@ -718,7 +718,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6F67BA6E828F4DD3B52BA926D517EDDD"
             {
-            "SourcePath" = "8:..\\Win32\\Release\\AmpDetectControlSW.exe"
+            "SourcePath" = "8:..\\x64\\Debug\\AmpDetectControlSW.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_8801ADA16F984EC5AD750EADF9D79302"

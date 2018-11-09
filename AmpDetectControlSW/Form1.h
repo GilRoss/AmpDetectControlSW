@@ -423,7 +423,6 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->components = (gcnew System::ComponentModel::Container());
 			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
 			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea2 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
-			System::Windows::Forms::DataVisualization::Charting::CustomLabel^  customLabel1 = (gcnew System::Windows::Forms::DataVisualization::Charting::CustomLabel());
 			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
 			System::Windows::Forms::DataVisualization::Charting::Legend^  legend2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
 			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
@@ -563,7 +562,6 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->PcrCharts->BorderlineColor = System::Drawing::Color::Black;
 			chartArea1->AlignWithChartArea = L"ThermalChart";
 			chartArea1->AxisX->Enabled = System::Windows::Forms::DataVisualization::Charting::AxisEnabled::True;
-			chartArea1->AxisX->Interval = 60;
 			chartArea1->AxisX->IntervalOffsetType = System::Windows::Forms::DataVisualization::Charting::DateTimeIntervalType::Seconds;
 			chartArea1->AxisX->IntervalType = System::Windows::Forms::DataVisualization::Charting::DateTimeIntervalType::Seconds;
 			chartArea1->AxisX->MajorTickMark->TickMarkStyle = System::Windows::Forms::DataVisualization::Charting::TickMarkStyle::InsideArea;
@@ -576,11 +574,10 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			chartArea1->AxisY->Title = L"Counts";
 			chartArea1->Name = L"OpticalChart";
 			chartArea2->AlignWithChartArea = L"OpticalChart";
-			customLabel1->Text = L"*C";
-			chartArea2->AxisX->CustomLabels->Add(customLabel1);
 			chartArea2->AxisX->Interval = 60;
-			chartArea2->AxisX->IntervalOffsetType = System::Windows::Forms::DataVisualization::Charting::DateTimeIntervalType::Seconds;
-			chartArea2->AxisX->IntervalType = System::Windows::Forms::DataVisualization::Charting::DateTimeIntervalType::Seconds;
+			chartArea2->AxisX->IntervalAutoMode = System::Windows::Forms::DataVisualization::Charting::IntervalAutoMode::VariableCount;
+			chartArea2->AxisX->IntervalOffsetType = System::Windows::Forms::DataVisualization::Charting::DateTimeIntervalType::Number;
+			chartArea2->AxisX->IntervalType = System::Windows::Forms::DataVisualization::Charting::DateTimeIntervalType::Number;
 			chartArea2->AxisX->MajorTickMark->TickMarkStyle = System::Windows::Forms::DataVisualization::Charting::TickMarkStyle::InsideArea;
 			chartArea2->AxisX->MinorTickMark->Enabled = true;
 			chartArea2->AxisX->MinorTickMark->TickMarkStyle = System::Windows::Forms::DataVisualization::Charting::TickMarkStyle::InsideArea;
@@ -1335,6 +1332,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			this->Controls->Add(this->RunStatusGrid);
 			this->Name = L"Form1";
 			this->Text = L"AmpDetect";
+			this->WindowState = System::Windows::Forms::FormWindowState::Maximized;
 			this->AmpDetectTabs->ResumeLayout(false);
 			this->GraphsTab->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PcrCharts))->EndInit();
@@ -1994,7 +1992,6 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 			{
 				bGraphsUpdated = true;
 
-
 				Series^ lightSeries = PcrCharts->Series[kLight];
 				Series^ darkSeries = PcrCharts->Series[kDark];
 				if (AD_GetCachedNumOpticsRecs(nSiteIdx) > (int)lightSeries->Points->Count)
@@ -2007,7 +2004,7 @@ private: System::Windows::Forms::DataGridViewTextBoxColumn^  TemperatureCol;
 					{
 						for (int i = 0; i < nNumRecsReturned; i++)
 						{
-							double	nTimeTag = (double)AD_GetCachedThermalRecTimeTag(nSiteIdx, i) / 1000;
+							double	nTimeTag = (double)AD_GetCachedOpticalRecTimeTag(nSiteIdx, i) / 1000;
 							lightSeries->Points->AddXY(nTimeTag, AD_GetCachedOpticalRecIlluminatedRead(nSiteIdx, i));
 							darkSeries->Points->AddXY(nTimeTag, AD_GetCachedOpticalRecDarkRead(nSiteIdx, i));
 
